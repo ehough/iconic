@@ -93,7 +93,7 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      */
     public function __construct(ehough_iconic_api_parameterbag_IParameterBag $parameterBag = null)
     {
-        $this->parameterBag = null === $parameterBag ? new ehough_iconic_impl_parameterbag_StandardParameterBag() : $parameterBag;
+        $this->parameterBag = null === $parameterBag ? new ehough_iconic_impl_parameterbag_ParameterBag() : $parameterBag;
 
         $this->services       = array();
 

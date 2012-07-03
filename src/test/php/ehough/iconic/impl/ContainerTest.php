@@ -50,13 +50,13 @@ class ehough_iconic_impl_ContainerTest extends PHPUnit_Framework_TestCase
         $sc = new ehough_iconic_impl_Container();
         $this->assertSame($sc, $sc->get('service_container'), '__construct() automatically registers itself as a service');
 
-        $sc = new ehough_iconic_impl_Container(new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'bar')));
+        $sc = new ehough_iconic_impl_Container(new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'bar')));
         $this->assertEquals(array('foo' => 'bar'), $sc->getParameterBag()->all(), '__construct() takes an array of parameters as its first argument');
     }
 
     public function testCompile()
     {
-        $sc = new ehough_iconic_impl_Container(new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'bar')));
+        $sc = new ehough_iconic_impl_Container(new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'bar')));
         $sc->compile();
         $this->assertInstanceOf('ehough_iconic_impl_parameterbag_FrozenParameterBag', $sc->getParameterBag(), '->compile() changes the parameter bag to a FrozenParameterBag instance');
         $this->assertEquals(array('foo' => 'bar'), $sc->getParameterBag()->all(), '->compile() copies the current parameters to the new parameter bag');
@@ -64,7 +64,7 @@ class ehough_iconic_impl_ContainerTest extends PHPUnit_Framework_TestCase
 
     public function testIsFrozen()
     {
-        $sc = new ehough_iconic_impl_Container(new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'bar')));
+        $sc = new ehough_iconic_impl_Container(new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'bar')));
         $this->assertFalse($sc->isFrozen(), '->isFrozen() returns false if the parameters are not frozen');
         $sc->compile();
         $this->assertTrue($sc->isFrozen(), '->isFrozen() returns true if the parameters are frozen');
@@ -78,7 +78,7 @@ class ehough_iconic_impl_ContainerTest extends PHPUnit_Framework_TestCase
 
     public function testGetSetParameter()
     {
-        $sc = new ehough_iconic_impl_Container(new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'bar')));
+        $sc = new ehough_iconic_impl_Container(new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'bar')));
         $sc->setParameter('bar', 'foo');
         $this->assertEquals('foo', $sc->getParameter('bar'), '->setParameter() sets the value of a new parameter');
 

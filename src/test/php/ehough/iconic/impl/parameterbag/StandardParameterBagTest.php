@@ -47,7 +47,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
 {
     public function testConstructor()
     {
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag($parameters = array(
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag($parameters = array(
             'foo' => 'foo',
             'bar' => 'bar',
         ));
@@ -56,7 +56,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
 
     public function testClear()
     {
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag($parameters = array(
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag($parameters = array(
             'foo' => 'foo',
             'bar' => 'bar',
         ));
@@ -66,7 +66,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
 
     public function testGetSet()
     {
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'bar'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'bar'));
         $bag->set('bar', 'foo');
         $this->assertEquals('foo', $bag->get('bar'), '->set() sets the value of a new parameter');
 
@@ -88,7 +88,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
 
     public function testHas()
     {
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'bar'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'bar'));
         $this->assertTrue($bag->has('foo'), '->has() returns true if a parameter is defined');
         $this->assertTrue($bag->has('Foo'), '->has() converts the key to lowercase');
         $this->assertFalse($bag->has('bar'), '->has() returns false if a parameter is not defined');
@@ -96,10 +96,10 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
 
     public function testResolveValue()
     {
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array());
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array());
         $this->assertEquals('foo', $bag->resolveValue('foo'), '->resolveValue() returns its argument unmodified if no placeholders are found');
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'bar'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'bar'));
         $this->assertEquals('I\'m a bar', $bag->resolveValue('I\'m a %foo%'), '->resolveValue() replaces placeholders by their values');
         $this->assertEquals(array('bar' => 'bar'), $bag->resolveValue(array('%foo%' => '%foo%')), '->resolveValue() replaces placeholders in keys and values of arrays');
         $this->assertEquals(array('bar' => array('bar' => array('bar' => 'bar'))), $bag->resolveValue(array('%foo%' => array('%foo%' => array('%foo%' => '%foo%')))), '->resolveValue() replaces placeholders in nested arrays');
@@ -107,18 +107,18 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
         $this->assertEquals('I\'m a bar %%foo bar', $bag->resolveValue('I\'m a %foo% %%foo %foo%'), '->resolveValue() supports % escaping by doubling it');
         $this->assertEquals(array('foo' => array('bar' => array('ding' => 'I\'m a bar %%foo %%bar'))), $bag->resolveValue(array('foo' => array('bar' => array('ding' => 'I\'m a bar %%foo %%bar')))), '->resolveValue() supports % escaping by doubling it');
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => true));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => true));
         $this->assertTrue($bag->resolveValue('%foo%'), '->resolveValue() replaces arguments that are just a placeholder by their value without casting them to strings');
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => null));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => null));
         $this->assertNull($bag->resolveValue('%foo%'), '->resolveValue() replaces arguments that are just a placeholder by their value without casting them to strings');
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'bar', 'baz' => '%%%foo% %foo%%% %%foo%% %%%foo%%%'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'bar', 'baz' => '%%%foo% %foo%%% %%foo%% %%%foo%%%'));
         $this->assertEquals('%%bar bar%% %%foo%% %%bar%%', $bag->resolveValue('%baz%'), '->resolveValue() replaces params placed besides escaped %');
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('baz' => '%%s?%%s'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('baz' => '%%s?%%s'));
         $this->assertEquals('%%s?%%s', $bag->resolveValue('%baz%'), '->resolveValue() is not replacing greedily');
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array());
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array());
         try {
             $bag->resolveValue('%foobar%');
             $this->fail('->resolveValue() throws an InvalidArgumentException if a placeholder references a non-existent parameter');
@@ -133,7 +133,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
             $this->assertEquals('You have requested a non-existent parameter "foobar".', $e->getMessage(), '->resolveValue() throws a ParameterNotFoundException if a placeholder references a non-existent parameter');
         }
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'a %bar%', 'bar' => array()));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'a %bar%', 'bar' => array()));
         try {
             $bag->resolveValue('%foo%');
             $this->fail('->resolveValue() throws a RuntimeException when a parameter embeds another non-string parameter');
@@ -141,7 +141,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
             $this->assertEquals('A string value must be composed of strings and/or numbers, but found parameter "bar" of type array inside string value "a %bar%".', $e->getMessage(), '->resolveValue() throws a RuntimeException when a parameter embeds another non-string parameter');
         }
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => '%bar%', 'bar' => '%foobar%', 'foobar' => '%foo%'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => '%bar%', 'bar' => '%foobar%', 'foobar' => '%foo%'));
         try {
             $bag->resolveValue('%foo%');
             $this->fail('->resolveValue() throws a ParameterCircularReferenceException when a parameter has a circular reference');
@@ -149,7 +149,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
             $this->assertEquals('Circular reference detected for parameter "foo" ("foo" > "bar" > "foobar" > "foo").', $e->getMessage(), '->resolveValue() throws a ParameterCircularReferenceException when a parameter has a circular reference');
         }
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'a %bar%', 'bar' => 'a %foobar%', 'foobar' => 'a %foo%'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'a %bar%', 'bar' => 'a %foobar%', 'foobar' => 'a %foo%'));
         try {
             $bag->resolveValue('%foo%');
             $this->fail('->resolveValue() throws a ParameterCircularReferenceException when a parameter has a circular reference');
@@ -157,13 +157,13 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
             $this->assertEquals('Circular reference detected for parameter "foo" ("foo" > "bar" > "foobar" > "foo").', $e->getMessage(), '->resolveValue() throws a ParameterCircularReferenceException when a parameter has a circular reference');
         }
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('host' => 'foo.bar', 'port' => 1337));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('host' => 'foo.bar', 'port' => 1337));
         $this->assertEquals('foo.bar:1337', $bag->resolveValue('%host%:%port%'));
     }
 
     public function testResolveIndicatesWhyAParameterIsNeeded()
     {
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => '%bar%'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => '%bar%'));
 
         try {
             $bag->resolve();
@@ -171,7 +171,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
             $this->assertEquals('The parameter "foo" has a dependency on a non-existent parameter "bar".', $e->getMessage());
         }
 
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => '%bar%'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => '%bar%'));
 
         try {
             $bag->resolve();
@@ -182,7 +182,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
 
     public function testResolveUnescapesValue()
     {
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array(
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array(
             'foo' => array('bar' => array('ding' => 'I\'m a bar %%foo %%bar')),
             'bar' => 'I\'m a %%foo%%',
         ));
@@ -195,7 +195,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
 
     public function testEscapeValue()
     {
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag();
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag();
 
         $bag->add(array(
             'foo' => $bag->escapeValue(array('bar' => array('ding' => 'I\'m a bar %foo %bar', 'zero' => null))),
@@ -211,7 +211,7 @@ class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework
      */
     public function testResolveStringWithSpacesReturnsString($expected, $test, $description)
     {
-        $bag = new ehough_iconic_impl_parameterbag_StandardParameterBag(array('foo' => 'bar'));
+        $bag = new ehough_iconic_impl_parameterbag_ParameterBag(array('foo' => 'bar'));
 
         try {
             $this->assertEquals($expected, $bag->_resolveString($test), $description);

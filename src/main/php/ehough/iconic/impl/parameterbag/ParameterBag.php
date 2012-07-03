@@ -49,7 +49,7 @@
  * @author Eric Hough <eric@ehough.com>
  * @author Fabien Potencier <fabien@symfony.com>
  */
-final class ehough_iconic_impl_parameterbag_StandardParameterBag extends ehough_iconic_impl_parameterbag_AbstractParameterBag
+final class ehough_iconic_impl_parameterbag_ParameterBag extends ehough_iconic_impl_parameterbag_AbstractParameterBag
 {
     /**
      * Constructor.
