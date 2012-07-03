@@ -49,9 +49,9 @@
  * @author Eric Hough <eric@ehough.com>
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
+final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
 {
-    private $definitions = array();
+    private $_definitions = array();
 
     /**
      * Sets a service.
@@ -73,7 +73,7 @@ class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
 
         $id = strtolower($id);
 
-        unset($this->definitions[$id]);
+        unset($this->_definitions[$id]);
     }
 
     /**
@@ -83,7 +83,7 @@ class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
      */
     public function removeDefinition($id)
     {
-        unset($this->definitions[strtolower($id)]);
+        unset($this->_definitions[strtolower($id)]);
     }
 
     /**
@@ -95,7 +95,7 @@ class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
      */
     protected function _childHas($id)
     {
-        return isset($this->definitions[strtolower($id)]);
+        return isset($this->_definitions[strtolower($id)]);
     }
 
     /**
@@ -223,7 +223,7 @@ class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
      */
     public function setDefinitions(array $definitions)
     {
-        $this->definitions = array();
+        $this->_definitions = array();
 
         $this->addDefinitions($definitions);
     }
@@ -235,7 +235,7 @@ class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
      */
     public function getDefinitions()
     {
-        return $this->definitions;
+        return $this->_definitions;
     }
 
     /**
@@ -257,7 +257,7 @@ class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
 
         $id = strtolower($id);
 
-        return $this->definitions[$id] = $definition;
+        return $this->_definitions[$id] = $definition;
     }
 
     /**
@@ -269,7 +269,7 @@ class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
      */
     public function hasDefinition($id)
     {
-        return array_key_exists(strtolower($id), $this->definitions);
+        return array_key_exists(strtolower($id), $this->_definitions);
     }
 
     /**
@@ -290,7 +290,7 @@ class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
             throw new ehough_iconic_api_exception_InvalidArgumentException(sprintf('The service definition "%s" does not exist.', $id));
         }
 
-        return $this->definitions[$id];
+        return $this->_definitions[$id];
     }
 
     /**

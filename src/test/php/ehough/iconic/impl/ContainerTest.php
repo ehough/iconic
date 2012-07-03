@@ -170,17 +170,6 @@ class ehough_iconic_impl_ContainerTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($sc->has('foo.baz'), '->has() returns true if a get*Method() is defined');
     }
 
-    public function testInitialized()
-    {
-        $sc = new ProjectServiceContainer();
-        $sc->set('foo', new \stdClass());
-        $this->assertTrue($sc->initialized('foo'), '->initialized() returns true if service is loaded');
-        $this->assertFalse($sc->initialized('foo1'), '->initialized() returns false if service is not loaded');
-        $this->assertFalse($sc->initialized('bar'), '->initialized() returns false if a service is defined, but not currently loaded');
-    }
-
-
-
     public function testGetThrowsException()
     {
         $c = new ProjectServiceContainer();

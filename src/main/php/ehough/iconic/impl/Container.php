@@ -80,7 +80,7 @@
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableContainer
+class ehough_iconic_impl_Container implements ehough_iconic_api_IContainer
 {
     private $_parameterBag;
     private $_services;
@@ -282,18 +282,6 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
     }
 
     /**
-     * Returns true if the given service has actually been initialized
-     *
-     * @param string $id The service identifier
-     *
-     * @return Boolean true if service has already been initialized, false otherwise
-     */
-    public final function initialized($id)
-    {
-        return isset($this->_services[strtolower($id)]);
-    }
-
-    /**
      * Gets all service ids.
      *
      * @return array An array of all defined service ids
@@ -366,13 +354,15 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
         //override point
     }
 
-    protected function _childHas($id)
+    protected function _childHas(/** @noinspection PhpUnusedParameterInspection */ $id)
     {
         //override point
         return false;
     }
 
-    protected function _onGetCausedInvalidArgumentException(ehough_iconic_api_exception_InvalidArgumentException $e, $id, $invalidBehavior)
+    protected function _onGetCausedInvalidArgumentException(ehough_iconic_api_exception_InvalidArgumentException $e,
+        /** @noinspection PhpUnusedParameterInspection */ $id,
+        /** @noinspection PhpUnusedParameterInspection */ $invalidBehavior)
     {
         //override point
         throw $e;
