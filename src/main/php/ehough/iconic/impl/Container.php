@@ -82,9 +82,9 @@
  */
 class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableContainer
 {
-    private $parameterBag;
-    private $services;
-    private $loading = array();
+    private $_parameterBag;
+    private $_services;
+    private $_loading = array();
 
     /**
      * Constructor.
@@ -93,9 +93,9 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      */
     public function __construct(ehough_iconic_api_parameterbag_IParameterBag $parameterBag = null)
     {
-        $this->parameterBag = null === $parameterBag ? new ehough_iconic_impl_parameterbag_ParameterBag() : $parameterBag;
+        $this->_parameterBag = null === $parameterBag ? new ehough_iconic_impl_parameterbag_ParameterBag() : $parameterBag;
 
-        $this->services       = array();
+        $this->_services = array();
 
         $this->set('service_container', $this);
     }
@@ -108,11 +108,11 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *  * Parameter values are resolved;
      *  * The parameter bag is frozen.
      */
-    public function compile()
+    public final function compile()
     {
-        $this->parameterBag->resolve();
+        $this->_parameterBag->resolve();
 
-        $this->parameterBag = new ehough_iconic_impl_parameterbag_FrozenParameterBag($this->parameterBag->all());
+        $this->_parameterBag = new ehough_iconic_impl_parameterbag_FrozenParameterBag($this->_parameterBag->all());
     }
 
     /**
@@ -120,9 +120,9 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @return boolean True if the container parameter bag are frozen, false otherwise
      */
-    public function isFrozen()
+    public final function isFrozen()
     {
-        return $this->parameterBag instanceof ehough_iconic_impl_parameterbag_FrozenParameterBag;
+        return $this->_parameterBag instanceof ehough_iconic_impl_parameterbag_FrozenParameterBag;
     }
 
     /**
@@ -130,9 +130,9 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @return ehough_iconic_api_parameterbag_IParameterBag A ParameterBagInterface instance
      */
-    public function getParameterBag()
+    public final function getParameterBag()
     {
-        return $this->parameterBag;
+        return $this->_parameterBag;
     }
 
     /**
@@ -144,9 +144,9 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @throws ehough_iconic_api_exception_InvalidArgumentException if the parameter is not defined
      */
-    public function getParameter($name)
+    public final function getParameter($name)
     {
-        return $this->parameterBag->get($name);
+        return $this->_parameterBag->get($name);
     }
 
     /**
@@ -156,9 +156,9 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @return Boolean The presence of parameter in container
      */
-    public function hasParameter($name)
+    public final function hasParameter($name)
     {
-        return $this->parameterBag->has($name);
+        return $this->_parameterBag->has($name);
     }
 
     /**
@@ -167,9 +167,9 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      * @param string $name  The parameter name
      * @param mixed  $value The parameter value
      */
-    public function setParameter($name, $value)
+    public final function setParameter($name, $value)
     {
-        $this->parameterBag->set($name, $value);
+        $this->_parameterBag->set($name, $value);
     }
 
     /**
@@ -181,14 +181,14 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @throws ehough_iconic_api_exception_InvalidArgumentException
      */
-    public function set($id, $service, $scope = self::SCOPE_CONTAINER)
+    public final function set($id, $service, $scope = self::SCOPE_CONTAINER)
     {
         if (self::SCOPE_PROTOTYPE === $scope) {
 
             throw new ehough_iconic_api_exception_InvalidArgumentException('You cannot set services of scope "prototype".');
         }
 
-        $this->services[strtolower($id)] = $service;
+        $this->_services[strtolower($id)] = $service;
     }
 
     /**
@@ -198,11 +198,11 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @return Boolean true if the service is defined, false otherwise
      */
-    public function has($id)
+    public final function has($id)
     {
         $id = strtolower($id);
 
-        return isset($this->services[$id]) || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service');
+        return isset($this->_services[$id]) || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service');
     }
 
     /**
@@ -220,23 +220,23 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      * @throws ehough_iconic_api_exception_ServiceNotFoundException
      * @throws Exception
      */
-    public function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
+    public final function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
     {
         $id = strtolower($id);
 
-        if (isset($this->services[$id])) {
+        if (isset($this->_services[$id])) {
 
-            return $this->services[$id];
+            return $this->_services[$id];
         }
 
-        if (isset($this->loading[$id])) {
+        if (isset($this->_loading[$id])) {
 
-            throw new ehough_iconic_api_exception_ServiceCircularReferenceException($id, array_keys($this->loading));
+            throw new ehough_iconic_api_exception_ServiceCircularReferenceException($id, array_keys($this->_loading));
         }
 
         if (method_exists($this, $method = 'get'.strtr($id, array('_' => '', '.' => '_')).'Service')) {
 
-            $this->loading[$id] = true;
+            $this->_loading[$id] = true;
 
             try {
 
@@ -244,12 +244,12 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
 
             } catch (Exception $e) {
 
-                unset($this->loading[$id]);
+                unset($this->_loading[$id]);
 
                 throw $e;
             }
 
-            unset($this->loading[$id]);
+            unset($this->_loading[$id]);
 
             return $service;
         }
@@ -269,9 +269,9 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @return Boolean true if service has already been initialized, false otherwise
      */
-    public function initialized($id)
+    public final function initialized($id)
     {
-        return isset($this->services[strtolower($id)]);
+        return isset($this->_services[strtolower($id)]);
     }
 
     /**
@@ -279,7 +279,7 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @return array An array of all defined service ids
      */
-    public function getServiceIds()
+    public final function getServiceIds()
     {
         $ids     = array();
         $r       = new \ReflectionClass($this);
@@ -293,7 +293,7 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
             }
         }
 
-        return array_unique(array_merge($ids, array_keys($this->services)));
+        return array_unique(array_merge($ids, array_keys($this->_services)));
     }
 
     /**
@@ -303,7 +303,7 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @return string The camelized string
      */
-    static public function camelize($id)
+    public static final function camelize($id)
     {
         return preg_replace_callback('/(^|_|\.)+(.)/', function ($match) { return ('.' === $match[1] ? '_' : '').strtoupper($match[2]); }, $id);
     }
@@ -315,8 +315,23 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      *
      * @return string The underscored string
      */
-    static public function underscore($id)
+    public static final function underscore($id)
     {
         return strtolower(preg_replace(array('/([A-Z]+)([A-Z][a-z])/', '/([a-z\d])([A-Z])/'), array('\\1_\\2', '\\1_\\2'), strtr($id, '_', '.')));
+    }
+
+    protected function _isServiceLoading($id)
+    {
+        return isset($this->_loading[$id]);
+    }
+
+    protected function _markServiceAsLoading($id)
+    {
+        $this->_loading[$id] = true;
+    }
+
+    protected function _markServiceAsDoneLoading($id)
+    {
+        unset($this->_loading[$id]);
     }
 }
