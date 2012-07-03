@@ -44,20 +44,31 @@
  */
 
 /**
- * ehough_iconic_api_IIntrospectableContainerInterface defines additional introspection functionality
- * for containers, allowing logic to be implemented based on a Container's state.
+ * This exception is thrown when a circular reference is detected.
  *
- * @author Evan Villemez <evillemez@gmail.com>
- *
+ * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface ehough_iconic_api_IIntrospectableContainer extends ehough_iconic_api_IContainer
+class ehough_iconic_api_exception_ServiceCircularReferenceException extends ehough_iconic_api_exception_RuntimeException
 {
-    /**
-     * Check for whether or not a service has been initialized.
-     *
-     * @param string $id
-     *
-     * @return boolean True if the service has been initialized, false otherwise
-     */
-    function initialized($id);
+    private $serviceId;
+
+    private $path;
+
+    public function __construct($serviceId, array $path)
+    {
+        parent::__construct(sprintf('Circular reference detected for service "%s", path: "%s".', $serviceId, implode(' -> ', $path)));
+
+        $this->serviceId = $serviceId;
+        $this->path      = $path;
+    }
+
+    public function getServiceId()
+    {
+        return $this->serviceId;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
 }

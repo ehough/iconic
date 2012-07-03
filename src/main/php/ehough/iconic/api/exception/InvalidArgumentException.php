@@ -44,20 +44,10 @@
  */
 
 /**
- * ehough_iconic_api_IIntrospectableContainerInterface defines additional introspection functionality
- * for containers, allowing logic to be implemented based on a Container's state.
+ * Base InvalidArgumentException for Dependency Injection component.
  *
- * @author Evan Villemez <evillemez@gmail.com>
- *
+ * @author Bulat Shakirzyanov <bulat@theopenskyproject.com>
  */
-interface ehough_iconic_api_IIntrospectableContainer extends ehough_iconic_api_IContainer
+class ehough_iconic_api_exception_InvalidArgumentException extends InvalidArgumentException implements ehough_iconic_api_exception_IException
 {
-    /**
-     * Check for whether or not a service has been initialized.
-     *
-     * @param string $id
-     *
-     * @return boolean True if the service has been initialized, false otherwise
-     */
-    function initialized($id);
 }

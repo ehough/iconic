@@ -44,20 +44,40 @@
  */
 
 /**
- * ehough_iconic_api_IIntrospectableContainerInterface defines additional introspection functionality
- * for containers, allowing logic to be implemented based on a Container's state.
+ * This exception is thrown when a non-existent service is requested.
  *
- * @author Evan Villemez <evillemez@gmail.com>
- *
+ * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface ehough_iconic_api_IIntrospectableContainer extends ehough_iconic_api_IContainer
+class ehough_iconic_api_exception_ServiceNotFoundException extends ehough_iconic_api_exception_InvalidArgumentException
 {
-    /**
-     * Check for whether or not a service has been initialized.
-     *
-     * @param string $id
-     *
-     * @return boolean True if the service has been initialized, false otherwise
-     */
-    function initialized($id);
+    private $id;
+
+    private $sourceId;
+
+    public function __construct($id, $sourceId = null)
+    {
+        if (null === $sourceId) {
+
+            $msg = sprintf('You have requested a non-existent service "%s".', $id);
+
+        } else {
+
+            $msg = sprintf('The service "%s" has a dependency on a non-existent service "%s".', $sourceId, $id);
+        }
+
+        parent::__construct($msg);
+
+        $this->id       = $id;
+        $this->sourceId = $sourceId;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getSourceId()
+    {
+        return $this->sourceId;
+    }
 }
