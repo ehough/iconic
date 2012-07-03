@@ -183,6 +183,8 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      */
     public final function set($id, $service, $scope = self::SCOPE_CONTAINER)
     {
+        $this->_onBeforeSet($id, $service, $scope);
+
         if (self::SCOPE_PROTOTYPE === $scope) {
 
             throw new ehough_iconic_api_exception_InvalidArgumentException('You cannot set services of scope "prototype".');
@@ -201,6 +203,11 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
     public final function has($id)
     {
         $id = strtolower($id);
+
+        if ($this->_childHas($id)) {
+
+            return true;
+        }
 
         return isset($this->_services[$id]) || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service');
     }
@@ -221,6 +228,18 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
      * @throws Exception
      */
     public final function get($id, $invalidBehavior = self::EXCEPTION_ON_INVALID_REFERENCE)
+    {
+        try {
+
+            return $this->_doGet($id, $invalidBehavior);
+
+        } catch (ehough_iconic_api_exception_InvalidArgumentException $e) {
+
+            return $this->_onGetCausedInvalidArgumentException($e, $id, $invalidBehavior);
+        }
+    }
+
+    private function _doget($id, $invalidBehavior)
     {
         $id = strtolower($id);
 
@@ -293,7 +312,9 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
             }
         }
 
-        return array_unique(array_merge($ids, array_keys($this->_services)));
+        return array_unique(
+            array_merge($this->_childServiceIds(), $ids, array_keys($this->_services))
+        );
     }
 
     /**
@@ -333,5 +354,33 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IIntrospectableC
     protected function _markServiceAsDoneLoading($id)
     {
         unset($this->_loading[$id]);
+    }
+
+    protected function _addService($id, $instance)
+    {
+        $this->_services[$id] = $instance;
+    }
+
+    protected function _onBeforeSet($id, $service, $scope)
+    {
+        //override point
+    }
+
+    protected function _childHas($id)
+    {
+        //override point
+        return false;
+    }
+
+    protected function _onGetCausedInvalidArgumentException(ehough_iconic_api_exception_InvalidArgumentException $e, $id, $invalidBehavior)
+    {
+        //override point
+        throw $e;
+    }
+
+    protected function _childServiceIds()
+    {
+        //override point
+        return array();
     }
 }
