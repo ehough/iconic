@@ -44,21 +44,26 @@
  */
 
 /**
- * Holds parameters.
+ * Holds read-only parameters.
  *
- * @author Eric Hough <eric@ehough.com>
  * @author Fabien Potencier <fabien@symfony.com>
  */
-final class ehough_iconic_impl_parameterbag_StandardParameterBag extends ehough_iconic_impl_parameterbag_AbstractParameterBag
+final class ehough_iconic_impl_parameterbag_FrozenParameterBag extends ehough_iconic_impl_parameterbag_AbstractParameterBag
 {
     /**
      * Constructor.
+     *
+     * For performance reasons, the constructor assumes that
+     * all keys are already lowercased.
+     *
+     * This is always the case when used internally.
      *
      * @param array $parameters An array of parameters
      */
     public function __construct(array $parameters = array())
     {
-        $this->add($parameters);
+        $this->_setParameters($parameters);
+        $this->_setResolved(true);
     }
 
     /**
@@ -66,20 +71,19 @@ final class ehough_iconic_impl_parameterbag_StandardParameterBag extends ehough_
      */
     public function clear()
     {
-        $this->_setParameters(array());
+        throw new ehough_iconic_api_exception_LogicException('Impossible to call clear() on a frozen ParameterBag.');
     }
 
     /**
      * Adds parameters to the service container parameters.
      *
      * @param array $parameters An array of parameters
+     *
+     * @throws ehough_iconic_api_exception_LogicException
      */
     public function add(array $parameters)
     {
-        foreach ($parameters as $key => $value) {
-
-            $this->set($key, $value);
-        }
+        throw new ehough_iconic_api_exception_LogicException('Impossible to call add() on a frozen ParameterBag.');
     }
 
     /**
@@ -87,9 +91,11 @@ final class ehough_iconic_impl_parameterbag_StandardParameterBag extends ehough_
      *
      * @param string $name  The parameter name
      * @param mixed  $value The parameter value
+     *
+     * @throws ehough_iconic_api_exception_LogicException
      */
     public function set($name, $value)
     {
-        $this->_setSingleParam($name, $value);
+        throw new ehough_iconic_api_exception_LogicException('Impossible to call set() on a frozen ParameterBag.');
     }
 }

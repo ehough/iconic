@@ -44,52 +44,10 @@
  */
 
 /**
- * Holds parameters.
+ * Base RuntimeException for Dependency Injection component.
  *
- * @author Eric Hough <eric@ehough.com>
- * @author Fabien Potencier <fabien@symfony.com>
+ * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-final class ehough_iconic_impl_parameterbag_StandardParameterBag extends ehough_iconic_impl_parameterbag_AbstractParameterBag
+class ehough_iconic_api_exception_RuntimeException extends RuntimeException implements ehough_iconic_api_exception_IException
 {
-    /**
-     * Constructor.
-     *
-     * @param array $parameters An array of parameters
-     */
-    public function __construct(array $parameters = array())
-    {
-        $this->add($parameters);
-    }
-
-    /**
-     * Clears all parameters.
-     */
-    public function clear()
-    {
-        $this->_setParameters(array());
-    }
-
-    /**
-     * Adds parameters to the service container parameters.
-     *
-     * @param array $parameters An array of parameters
-     */
-    public function add(array $parameters)
-    {
-        foreach ($parameters as $key => $value) {
-
-            $this->set($key, $value);
-        }
-    }
-
-    /**
-     * Sets a service container parameter.
-     *
-     * @param string $name  The parameter name
-     * @param mixed  $value The parameter value
-     */
-    public function set($name, $value)
-    {
-        $this->_setSingleParam($name, $value);
-    }
 }

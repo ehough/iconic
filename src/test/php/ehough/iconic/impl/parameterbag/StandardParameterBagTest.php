@@ -43,7 +43,7 @@
  * THE SOFTWARE.
  */
 
-class ParameterBagTest extends PHPUnit_Framework_TestCase
+class ehough_iconic_impl_parameterbag_ParameterBagTest extends PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {

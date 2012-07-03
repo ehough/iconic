@@ -43,53 +43,42 @@
  * THE SOFTWARE.
  */
 
-/**
- * Holds parameters.
- *
- * @author Eric Hough <eric@ehough.com>
- * @author Fabien Potencier <fabien@symfony.com>
- */
-final class ehough_iconic_impl_parameterbag_StandardParameterBag extends ehough_iconic_impl_parameterbag_AbstractParameterBag
+class ehough_iconic_impl_parameterbag_FrozenParameterBagTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * Constructor.
-     *
-     * @param array $parameters An array of parameters
-     */
-    public function __construct(array $parameters = array())
+    public function testConstructor()
     {
-        $this->add($parameters);
+        $parameters = array(
+            'foo' => 'foo',
+            'bar' => 'bar',
+        );
+        $bag = new ehough_iconic_impl_parameterbag_FrozenParameterBag($parameters);
+        $this->assertEquals($parameters, $bag->all(), '__construct() takes an array of parameters as its first argument');
     }
 
     /**
-     * Clears all parameters.
+     * @expectedException  @expectedException ehough_iconic_api_exception_LogicException
      */
-    public function clear()
+    public function testClear()
     {
-        $this->_setParameters(array());
+        $bag = new ehough_iconic_impl_parameterbag_FrozenParameterBag(array());
+        $bag->clear();
     }
 
     /**
-     * Adds parameters to the service container parameters.
-     *
-     * @param array $parameters An array of parameters
+     * @expectedException ehough_iconic_api_exception_LogicException
      */
-    public function add(array $parameters)
+    public function testSet()
     {
-        foreach ($parameters as $key => $value) {
-
-            $this->set($key, $value);
-        }
+        $bag = new ehough_iconic_impl_parameterbag_FrozenParameterBag(array());
+        $bag->set('foo', 'bar');
     }
 
     /**
-     * Sets a service container parameter.
-     *
-     * @param string $name  The parameter name
-     * @param mixed  $value The parameter value
+     * @expectedException ehough_iconic_api_exception_LogicException
      */
-    public function set($name, $value)
+    public function testAdd()
     {
-        $this->_setSingleParam($name, $value);
+        $bag = new ehough_iconic_impl_parameterbag_FrozenParameterBag(array());
+        $bag->add(array());
     }
 }
