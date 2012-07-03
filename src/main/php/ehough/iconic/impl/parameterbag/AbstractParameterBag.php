@@ -307,12 +307,16 @@ abstract class ehough_iconic_impl_parameterbag_AbstractParameterBag implements e
 
     private function _getSavedResolving()
     {
-        return end(array_values($this->_resolvingStack));
+        $vals = array_values($this->_resolvingStack);
+
+        return end($vals);
     }
 
     private function _getSavedValue()
     {
-        return end(array_values($this->_valueStack));
+        $vals = array_values($this->_valueStack);
+
+        return end($vals);
     }
 
     private function _pushState($resolving, $value)
