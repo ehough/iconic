@@ -1,0 +1,19 @@
+{
+    "hash": "fd3b735e5e43f2aa2f771c48621a158d",
+    "packages": [
+
+    ],
+    "packages-dev": [
+        {
+            "package": "ehough/pulsar",
+            "version": "1.0.2"
+        }
+    ],
+    "aliases": [
+
+    ],
+    "minimum-stability": "dev",
+    "stability-flags": [
+
+    ]
+}
