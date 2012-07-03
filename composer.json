@@ -1,7 +1,7 @@
 {
     "name": "ehough/iconic",
 
-    "description": "Dependency Injection (DI) container heavily based on Symfony's DI component, but more lightweight. Requires PHP 5.1.0 or higher.",
+    "description": "PHP Dependency Injection (DI) container heavily based on Symfony's DI component, but more lightweight. Requires PHP 5.1.0 or higher.",
 
     "homepage": "https://github.com/ehough/iconic",
 
