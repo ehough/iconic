@@ -110,6 +110,8 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IContainer
      */
     public final function compile()
     {
+        $this->_onBeforeCompile();
+
         $this->_parameterBag->resolve();
 
         $this->_parameterBag = new ehough_iconic_impl_parameterbag_FrozenParameterBag($this->_parameterBag->all());
@@ -350,6 +352,11 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IContainer
     }
 
     protected function _onBeforeSet($id, $service, $scope)
+    {
+        //override point
+    }
+
+    protected function _onBeforeCompile()
     {
         //override point
     }

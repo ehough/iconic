@@ -49,9 +49,183 @@
  * @author Eric Hough <eric@ehough.com>
  * @author Fabien Potencier <fabien@symfony.com>
  */
-final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container
+final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Container implements ehough_iconic_api_ITaggedContainer
 {
+    private $_extensions  = array();
     private $_definitions = array();
+    private $_compiler;
+
+    /**
+     * Registers an extension.
+     *
+     * @param ehough_iconic_api_extension_IExtension $extension An extension instance
+     *
+     * @return void
+     */
+    public final function registerExtension(ehough_iconic_api_extension_IExtension $extension)
+    {
+        $this->_extensions[$extension->getAlias()] = $extension;
+    }
+
+    /**
+     * Returns an extension by alias or namespace.
+     *
+     * @param string $name An alias or a namespace
+     *
+     * @return ehough_iconic_api_extension_IExtension An extension instance
+     *
+     * @throws ehough_iconic_api_exception_LogicException if the extension is not registered
+     *
+     * @api
+     */
+    public final function getExtension($name)
+    {
+        if (isset($this->_extensions[$name])) {
+
+            return $this->_extensions[$name];
+        }
+
+        throw new ehough_iconic_api_exception_LogicException(sprintf('Container extension "%s" is not registered', $name));
+    }
+
+    /**
+     * Returns all registered extensions.
+     *
+     * @return array An array of ehough_iconic_api_extension_IExtension
+     */
+    public final function getExtensions()
+    {
+        return $this->_extensions;
+    }
+
+    /**
+     * Checks if we have an extension.
+     *
+     * @param string $name The name of the extension
+     *
+     * @return boolean True if the extension exists
+     */
+    public final function hasExtension($name)
+    {
+        return isset($this->_extensions[$name]);
+    }
+
+    /**
+     * Adds a compiler pass.
+     *
+     * @param ehough_iconic_api_compiler_ICompilerPass $pass A compiler pass
+     * @param string                $type The type of compiler pass
+     *
+     * @return void
+     */
+    public function addCompilerPass(ehough_iconic_api_compiler_ICompilerPass $pass, $type = ehough_iconic_impl_compiler_PassConfig::TYPE_BEFORE_OPTIMIZATION)
+    {
+        if ($this->_compiler === null) {
+
+            $this->_compiler = new ehough_iconic_impl_compiler_Compiler();
+        }
+
+        $this->_compiler->addPass($pass, $type);
+    }
+
+    /**
+     * Returns the compiler pass config which can then be modified.
+     *
+     * @return ehough_iconic_impl_compiler_PassConfig The compiler pass config
+     */
+    public function getCompilerPassConfig()
+    {
+        if ($this->_compiler === null) {
+
+            $this->_compiler = new ehough_iconic_impl_compiler_Compiler();
+        }
+
+        return $this->_compiler->getPassConfig();
+    }
+
+    /**
+     * Returns the compiler.
+     *
+     * @return ehough_iconic_impl_compiler_Compiler The compiler
+     */
+    public function getCompiler()
+    {
+        if ($this->_compiler === null) {
+
+            $this->_compiler = new ehough_iconic_impl_compiler_Compiler();
+        }
+
+        return $this->_compiler;
+    }
+
+    /**
+     * Compiles the container.
+     *
+     * This method passes the container to compiler
+     * passes whose job is to manipulate and optimize
+     * the container.
+     *
+     * The main compiler passes roughly do four things:
+     *
+     *  * The extension configurations are merged;
+     *  * Parameter values are resolved;
+     *  * The parameter bag is frozen;
+     *  * Extension loading is disabled.
+     *
+     * @return void
+     */
+    public function _onBeforeCompile()
+    {
+        if (null === $this->_compiler) {
+
+            $this->_compiler = new ehough_iconic_impl_compiler_Compiler();
+        }
+
+        $this->_compiler->compile($this);
+    }
+
+    /**
+     * Returns service ids for a given tag.
+     *
+     * @param string $name The tag name
+     *
+     * @return array An array of tags
+     */
+    public function findTaggedServiceIds($name)
+    {
+        $tags = array();
+
+        foreach ($this->getDefinitions() as $id => $definition) {
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            if ($definition->getTag($name)) {
+
+                /** @noinspection PhpUndefinedMethodInspection */
+                $tags[$id] = $definition->getTag($name);
+            }
+        }
+
+        return $tags;
+    }
+
+    /**
+     * Returns all tags the defined services use.
+     *
+     * @return array An array of tags
+     */
+    public function findTags()
+    {
+        $tags = array();
+
+        /** @noinspection PhpUnusedLocalVariableInspection */
+        foreach ($this->getDefinitions() as $id => $definition) {
+
+            /** @noinspection PhpUndefinedMethodInspection */
+            $tags = array_merge(array_keys($definition->getTags()), $tags);
+        }
+
+        return array_unique($tags);
+    }
 
     /**
      * Sets a service.
@@ -205,7 +379,7 @@ final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Conta
     /**
      * Adds the service definitions.
      *
-     * @param Definition[] $definitions An array of service definitions
+     * @param ehough_iconic_impl_Definition[] $definitions An array of service definitions
      */
     public function addDefinitions(array $definitions)
     {
