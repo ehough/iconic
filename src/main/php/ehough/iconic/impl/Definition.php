@@ -63,6 +63,7 @@ class ehough_iconic_impl_Definition
     private $_synthetic;
     private $_abstract;
     private $_arguments;
+    private $_tags;
 
     /**
      * Constructor.
@@ -74,14 +75,15 @@ class ehough_iconic_impl_Definition
      */
     public function __construct($class = null, array $arguments = array())
     {
-        $this->_class = $class;
-        $this->_arguments = $arguments;
-        $this->_calls = array();
-        $this->_scope = ehough_iconic_api_IContainer::SCOPE_CONTAINER;
-        $this->_public = true;
-        $this->_synthetic = false;
-        $this->_abstract = false;
+        $this->_class      = $class;
+        $this->_arguments  = $arguments;
+        $this->_calls      = array();
+        $this->_scope      = ehough_iconic_api_IContainer::SCOPE_CONTAINER;
+        $this->_public     = true;
+        $this->_synthetic  = false;
+        $this->_abstract   = false;
         $this->_properties = array();
+        $this->_tags       = array();
     }
 
     /**
@@ -378,13 +380,105 @@ class ehough_iconic_impl_Definition
     }
 
     /**
+     * Sets tags for this definition
+     *
+     * @param array $tags
+     *
+     * @return ehough_iconic_impl_Definition the current instance
+     */
+    public function setTags(array $tags)
+    {
+        $this->_tags = $tags;
+
+        return $this;
+    }
+
+    /**
+     * Returns all tags.
+     *
+     * @return array An array of tags
+     */
+    public function getTags()
+    {
+        return $this->_tags;
+    }
+
+    /**
+     * Gets a tag by name.
+     *
+     * @param string $name The tag name
+     *
+     * @return array An array of attributes
+     */
+    public function getTag($name)
+    {
+        return isset($this->_tags[$name]) ? $this->_tags[$name] : array();
+    }
+
+    /**
+     * Adds a tag for this definition.
+     *
+     * @param string $name       The tag name
+     * @param array  $attributes An array of attributes
+     *
+     * @return ehough_iconic_impl_Definition The current instance
+     *
+     * @api
+     */
+    public function addTag($name, array $attributes = array())
+    {
+        $this->_tags[$name][] = $attributes;
+
+        return $this;
+    }
+
+    /**
+     * Whether this definition has a tag with the given name
+     *
+     * @param string $name
+     *
+     * @return Boolean
+     */
+    public function hasTag($name)
+    {
+        return isset($this->_tags[$name]);
+    }
+
+    /**
+     * Clears all tags for a given name.
+     *
+     * @param string $name The tag name
+     *
+     * @return ehough_iconic_impl_Definition
+     */
+    public function clearTag($name)
+    {
+        if (isset($this->_tags[$name])) {
+
+            unset($this->_tags[$name]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Clears the tags for this definition.
+     *
+     * @return ehough_iconic_impl_Definition The current instance
+     */
+    public function clearTags()
+    {
+        $this->_tags = array();
+
+        return $this;
+    }
+
+    /**
      * Sets a file to require before creating the service.
      *
      * @param string $file A full pathname to include
      *
      * @return ehough_iconic_impl_Definition The current instance
-     *
-     * @api
      */
     public function setFile($file)
     {
@@ -397,8 +491,6 @@ class ehough_iconic_impl_Definition
      * Gets the file to require before creating the service.
      *
      * @return string The full pathname to include
-     *
-     * @api
      */
     public function getFile()
     {
@@ -411,8 +503,6 @@ class ehough_iconic_impl_Definition
      * @param string $scope Whether the service must be shared or not
      *
      * @return ehough_iconic_impl_Definition The current instance
-     *
-     * @api
      */
     public function setScope($scope)
     {
@@ -425,8 +515,6 @@ class ehough_iconic_impl_Definition
      * Returns the scope of the service
      *
      * @return string
-     *
-     * @api
      */
     public function getScope()
     {
@@ -439,8 +527,6 @@ class ehough_iconic_impl_Definition
      * @param Boolean $boolean
      *
      * @return ehough_iconic_impl_Definition The current instance
-     *
-     * @api
      */
     public function setPublic($boolean)
     {

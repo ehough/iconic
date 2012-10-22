@@ -44,6 +44,7 @@
  */
 
 require_once __DIR__.'/../../../../resources/fixtures/includes/classes.php';
+require_once __DIR__.'/../../../../resources/fixtures/includes/ProjectExtension.php';
 
 class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 {
@@ -130,6 +131,14 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->bar = $bar = new stdClass();
         $builder->register('bar', 'stdClass');
         $this->assertEquals(array('foo', 'bar', 'service_container'), $builder->getServiceIds(), '->getServiceIds() returns all defined service ids');
+    }
+
+    public function testAddGetCompilerPass()
+    {
+        $builder = new ehough_iconic_impl_ContainerBuilder();
+        $builderCompilerPasses = $builder->getCompiler()->getPassConfig()->getPasses();
+        $builder->addCompilerPass($this->getMock('ehough_iconic_api_compiler_ICompilerPass'));
+        $this->assertEquals(sizeof($builderCompilerPasses) + 1, sizeof($builder->getCompiler()->getPassConfig()->getPasses()));
     }
 
     public function testCreateService()
@@ -265,12 +274,53 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $container->merge(new ehough_iconic_impl_ContainerBuilder());
     }
 
+    public function testfindTaggedServiceIds()
+    {
+        $builder = new ehough_iconic_impl_ContainerBuilder();
+        $builder
+            ->register('foo', 'FooClass')
+            ->addTag('foo', array('foo' => 'foo'))
+            ->addTag('bar', array('bar' => 'bar'))
+            ->addTag('foo', array('foofoo' => 'foofoo'))
+        ;
+        $this->assertEquals($builder->findTaggedServiceIds('foo'), array(
+            'foo' => array(
+                array('foo' => 'foo'),
+                array('foofoo' => 'foofoo'),
+            )
+        ), '->findTaggedServiceIds() returns an array of service ids and its tag attributes');
+        $this->assertEquals(array(), $builder->findTaggedServiceIds('foobar'), '->findTaggedServiceIds() returns an empty array if there is annotated services');
+    }
+
     public function testFindDefinition()
     {
         $container = new ehough_iconic_impl_ContainerBuilder();
         $container->setDefinition('foo', $definition = new ehough_iconic_impl_Definition('FooClass'));
         $this->assertEquals($definition, $container->findDefinition('foo'), '->findDefinition() returns a Definition');
     }
+
+    public function testExtension()
+    {
+        $container = new ehough_iconic_impl_ContainerBuilder();
+
+        $container->registerExtension($extension = new ehough_iconic_impl_extension_ProjectExtension());
+        $this->assertTrue($container->getExtension('project') === $extension, '->registerExtension() registers an extension');
+
+        $this->setExpectedException('ehough_iconic_api_exception_LogicException');
+        $container->getExtension('no_registered');
+    }
+
+    public function testRegisteredAndLoadedExtension()
+    {
+        $extension = $this->getMock('ehough_iconic_api_extension_IExtension');
+        $extension->expects($this->exactly(1))->method('getAlias')->will($this->returnValue('project'));
+        $extension->expects($this->once())->method('load');
+
+        $container = new ehough_iconic_impl_ContainerBuilder();
+        $container->registerExtension($extension);
+        $container->compile();
+    }
+
 
     public function testPrivateServiceUser()
     {

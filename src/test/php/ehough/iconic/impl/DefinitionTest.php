@@ -220,4 +220,48 @@ class ehough_iconic_impl_DefinitionTest extends PHPUnit_Framework_TestCase
         $this->assertSame($def, $def->setProperty('foo', 'bar'));
         $this->assertEquals(array('foo' => 'bar'), $def->getProperties());
     }
+
+
+    public function testClearTags()
+    {
+        $def = new ehough_iconic_impl_Definition('stdClass');
+        $this->assertSame($def, $def->clearTags(), '->clearTags() implements a fluent interface');
+        $def->addTag('foo', array('foo' => 'bar'));
+        $def->clearTags();
+        $this->assertEquals(array(), $def->getTags(), '->clearTags() removes all current tags');
+    }
+
+
+    public function testClearTag()
+    {
+        $def = new ehough_iconic_impl_Definition('stdClass');
+        $this->assertSame($def, $def->clearTags(), '->clearTags() implements a fluent interface');
+        $def->addTag('1foo1', array('foo1' => 'bar1'));
+        $def->addTag('2foo2', array('foo2' => 'bar2'));
+        $def->addTag('3foo3', array('foo3' => 'bar3'));
+        $def->clearTag('2foo2');
+        $this->assertTrue($def->hasTag('1foo1'));
+        $this->assertFalse($def->hasTag('2foo2'));
+        $this->assertTrue($def->hasTag('3foo3'));
+        $def->clearTag('1foo1');
+        $this->assertFalse($def->hasTag('1foo1'));
+        $this->assertTrue($def->hasTag('3foo3'));
+    }
+
+    public function testTags()
+    {
+        $def = new ehough_iconic_impl_Definition('stdClass');
+        $this->assertEquals(array(), $def->getTag('foo'), '->getTag() returns an empty array if the tag is not defined');
+        $this->assertFalse($def->hasTag('foo'));
+        $this->assertSame($def, $def->addTag('foo'), '->addTag() implements a fluent interface');
+        $this->assertTrue($def->hasTag('foo'));
+        $this->assertEquals(array(array()), $def->getTag('foo'), '->getTag() returns attributes for a tag name');
+        $def->addTag('foo', array('foo' => 'bar'));
+        $this->assertEquals(array(array(), array('foo' => 'bar')), $def->getTag('foo'), '->addTag() can adds the same tag several times');
+        $def->addTag('bar', array('bar' => 'bar'));
+        $this->assertEquals($def->getTags(), array(
+            'foo' => array(array(), array('foo' => 'bar')),
+            'bar' => array(array('bar' => 'bar')),
+        ), '->getTags() returns all tags');
+    }
 }
