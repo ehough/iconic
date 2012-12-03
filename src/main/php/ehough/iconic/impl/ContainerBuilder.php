@@ -53,6 +53,7 @@ final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Conta
 {
     private $_extensions  = array();
     private $_definitions = array();
+    private $_aliases     = array();
     private $_compiler;
 
     /**
@@ -247,7 +248,7 @@ final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Conta
 
         $id = strtolower($id);
 
-        unset($this->_definitions[$id]);
+        unset($this->_definitions[$id], $this->_aliases[$id]);
     }
 
     /**
@@ -269,7 +270,9 @@ final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Conta
      */
     protected function _childHas($id)
     {
-        return isset($this->_definitions[strtolower($id)]);
+        $id = strtolower($id);
+
+        return isset($this->_definitions[$id]) || isset($this->_aliases[$id]);
     }
 
     /**
@@ -296,6 +299,11 @@ final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Conta
             $definition = $this->getDefinition($id);
 
         } catch (ehough_iconic_api_exception_InvalidArgumentException $e) {
+
+            if (!$this->hasDefinition($id) && isset($this->_aliases[$id])) {
+
+                return $this->get($this->_aliases[$id]);
+            }
 
             if (ehough_iconic_api_IContainer::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
 
@@ -347,6 +355,7 @@ final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Conta
         }
 
         $this->addDefinitions($container->getDefinitions());
+        $this->addAliases($container->getAliases());
         $this->getParameterBag()->add($container->getParameterBag()->all());
     }
 
@@ -357,7 +366,127 @@ final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Conta
      */
     protected function _childServiceIds()
     {
-        return array_unique(array_keys($this->getDefinitions()));
+        return array_unique(array_merge(
+            array_keys($this->getDefinitions()),
+            array_keys($this->_aliases)
+        ));
+    }
+
+    /**
+     * Adds the service aliases.
+     *
+     * @param array $aliases An array of aliases
+     *
+     * @return void
+     */
+    public function addAliases(array $aliases)
+    {
+        foreach ($aliases as $alias => $id) {
+
+            $this->setAlias($alias, $id);
+        }
+    }
+
+    /**
+     * Sets an alias for an existing service.
+     *
+     * @param string $alias The alias to create
+     * @param string $id    The service to alias
+     *
+     * @throws ehough_iconic_api_exception_InvalidArgumentException if the id is not a string or an Alias
+     * @throws ehough_iconic_api_exception_InvalidArgumentException if the alias is for itself
+     *
+     * @return void
+     */
+    public function setAlias($alias, $id)
+    {
+        $alias = strtolower($alias);
+
+        if (is_string($id)) {
+
+            $id = new ehough_iconic_impl_Alias($id);
+
+        } elseif (!$id instanceof ehough_iconic_impl_Alias) {
+
+            throw new ehough_iconic_api_exception_InvalidArgumentException('$id must be a string, or an ehough_iconic_impl_Alias object.');
+        }
+
+        if ($alias === strtolower($id)) {
+
+            throw new ehough_iconic_api_exception_InvalidArgumentException('An alias can not reference itself, got a circular reference on "'.$alias.'".');
+        }
+
+        unset($this->_definitions[$alias]);
+
+        $this->_aliases[$alias] = $id;
+    }
+
+    /**
+     * Sets the service aliases.
+     *
+     * @param array $aliases An array of aliases
+     *
+     * @return void
+     */
+    public function setAliases(array $aliases)
+    {
+        $this->_aliases = array();
+        $this->addAliases($aliases);
+    }
+
+    /**
+     * Removes an alias.
+     *
+     * @param string $alias The alias to remove
+     *
+     * @return void
+     */
+    public function removeAlias($alias)
+    {
+        unset($this->_aliases[strtolower($alias)]);
+    }
+
+    /**
+     * Returns true if an alias exists under the given identifier.
+     *
+     * @param string $id The service identifier
+     *
+     * @return Boolean true if the alias exists, false otherwise
+     */
+    public function hasAlias($id)
+    {
+        return isset($this->_aliases[strtolower($id)]);
+    }
+
+    /**
+     * Gets all defined aliases.
+     *
+     * @return ehough_iconic_impl_Alias[] An array of aliases
+     */
+    public function getAliases()
+    {
+        return $this->_aliases;
+    }
+
+    /**
+     * Gets an alias.
+     *
+     * @param string $id The service identifier
+     *
+     * @return ehough_iconic_impl_Alias An Alias instance
+     *
+     * @throws ehough_iconic_api_exception_InvalidArgumentException if the alias does not exist
+     */
+    public function getAlias($id)
+    {
+        $id = strtolower($id);
+
+        if (!$this->hasAlias($id)) {
+
+            throw new ehough_iconic_api_exception_InvalidArgumentException(sprintf('The service alias "%s" does not exist.', $id));
+        }
+
+        return $this->_aliases[$id];
     }
 
     /**
@@ -431,6 +560,8 @@ final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Conta
 
         $id = strtolower($id);
 
+        unset($this->_aliases[$id]);
+
         return $this->_definitions[$id] = $definition;
     }
 
@@ -480,6 +611,11 @@ final class ehough_iconic_impl_ContainerBuilder extends ehough_iconic_impl_Conta
      */
     public function findDefinition($id)
     {
+        while ($this->hasAlias($id)) {
+
+            $id = (string) $this->getAlias($id);
+        }
+
         return $this->getDefinition($id);
     }
 

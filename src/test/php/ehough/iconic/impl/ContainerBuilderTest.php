@@ -253,9 +253,13 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $container->register('bar', 'BarClass');
         $config = new ehough_iconic_impl_ContainerBuilder();
         $config->setDefinition('baz', new ehough_iconic_impl_Definition('BazClass'));
+        $config->setAlias('alias_for_foo', 'foo');
         $container->merge($config);
         $this->assertEquals(array('foo', 'bar', 'baz'), array_keys($container->getDefinitions()), '->merge() merges definitions already defined ones');
 
+        $aliases = $container->getAliases();
+        $this->assertTrue(isset($aliases['alias_for_foo']));
+        $this->assertEquals('foo', (string) $aliases['alias_for_foo']);
 
         $container = new ehough_iconic_impl_ContainerBuilder();
         $container->register('foo', 'FooClass');
@@ -296,6 +300,10 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $container = new ehough_iconic_impl_ContainerBuilder();
         $container->setDefinition('foo', $definition = new ehough_iconic_impl_Definition('FooClass'));
+
+        $container->setAlias('bar', 'foo');
+        $container->setAlias('foobar', 'bar');
+
         $this->assertEquals($definition, $container->findDefinition('foo'), '->findDefinition() returns a Definition');
     }
 
@@ -357,5 +365,68 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $container = new ehough_iconic_impl_ContainerBuilder();
         $container->compile();
         $container->setDefinition('a', new ehough_iconic_impl_Definition());
+    }
+
+    public function testAliases()
+    {
+        $builder = new ehough_iconic_impl_ContainerBuilder();
+        $builder->register('foo', 'stdClass');
+        $builder->setAlias('bar', 'foo');
+        $this->assertTrue($builder->hasAlias('bar'), '->hasAlias() returns true if the alias exists');
+        $this->assertFalse($builder->hasAlias('foobar'), '->hasAlias() returns false if the alias does not exist');
+        $this->assertEquals('foo', (string) $builder->getAlias('bar'), '->getAlias() returns the aliased service');
+        $this->assertTrue($builder->has('bar'), '->setAlias() defines a new service');
+        $this->assertTrue($builder->get('bar') === $builder->get('foo'), '->setAlias() creates a service that is an alias to another one');
+
+        try {
+            $builder->getAlias('foobar');
+            $this->fail('->getAlias() throws an InvalidArgumentException if the alias does not exist');
+        } catch (\ehough_iconic_api_exception_InvalidArgumentException $e) {
+            $this->assertEquals('The service alias "foobar" does not exist.', $e->getMessage(), '->getAlias() throws an InvalidArgumentException if the alias does not exist');
+        }
+    }
+
+    public function testGetAliases()
+    {
+        $builder = new ehough_iconic_impl_ContainerBuilder();
+        $builder->setAlias('bar', 'foo');
+        $builder->setAlias('foobar', 'foo');
+        $builder->setAlias('moo', new ehough_iconic_impl_Alias('foo', false));
+
+        $aliases = $builder->getAliases();
+        $this->assertEquals('foo', (string) $aliases['bar']);
+        $this->assertTrue($aliases['bar']->isPublic());
+        $this->assertEquals('foo', (string) $aliases['foobar']);
+        $this->assertEquals('foo', (string) $aliases['moo']);
+        $this->assertFalse($aliases['moo']->isPublic());
+
+        $builder->register('bar', 'stdClass');
+        $this->assertFalse($builder->hasAlias('bar'));
+
+        $builder->set('foobar', 'stdClass');
+        $builder->set('moo', 'stdClass');
+        $this->assertCount(0, $builder->getAliases(), '->getAliases() does not return aliased services that have been overridden');
+    }
+
+
+    public function testSetAliases()
+    {
+        $builder = new ehough_iconic_impl_ContainerBuilder();
+        $builder->setAliases(array('bar' => 'foo', 'foobar' => 'foo'));
+
+        $aliases = $builder->getAliases();
+        $this->assertTrue(isset($aliases['bar']));
+        $this->assertTrue(isset($aliases['foobar']));
+    }
+
+    public function testAddAliases()
+    {
+        $builder = new ehough_iconic_impl_ContainerBuilder();
+        $builder->setAliases(array('bar' => 'foo'));
+        $builder->addAliases(array('foobar' => 'foo'));
+
+        $aliases = $builder->getAliases();
+        $this->assertTrue(isset($aliases['bar']));
+        $this->assertTrue(isset($aliases['foobar']));
     }
 }
