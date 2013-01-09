@@ -291,7 +291,7 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IContainer
     public final function getServiceIds()
     {
         $ids     = array();
-        $r       = new \ReflectionClass($this);
+        $r       = new ReflectionClass($this);
         $methods = $r->getMethods();
 
         foreach ($methods as $method) {
@@ -316,7 +316,12 @@ class ehough_iconic_impl_Container implements ehough_iconic_api_IContainer
      */
     public static final function camelize($id)
     {
-        return preg_replace_callback('/(^|_|\.)+(.)/', function ($match) { return ('.' === $match[1] ? '_' : '').strtoupper($match[2]); }, $id);
+        return preg_replace_callback('/(^|_|\.)+(.)/', array('ehough_iconic_impl_Container', '_callbackCamelize'), $id);
+    }
+
+    public static function _callbackCamelize($string)
+    {
+        return ('.' === $string[1] ? '_' : '') . strtoupper($string[2]);
     }
 
     /**
