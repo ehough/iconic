@@ -22,7 +22,7 @@
  *
  * @api
  */
-class PassConfig
+class ehough_iconic_compiler_PassConfig
 {
     const TYPE_AFTER_REMOVING = 'afterRemoving';
     const TYPE_BEFORE_OPTIMIZATION = 'beforeOptimization';
@@ -102,7 +102,7 @@ class PassConfig
      *
      * @api
      */
-    public function addPass(CompilerPassInterface $pass, $type = self::TYPE_BEFORE_OPTIMIZATION)
+    public function addPass(ehough_iconic_compiler_CompilerPassInterface $pass, $type = self::TYPE_BEFORE_OPTIMIZATION)
     {
         $property = $type.'Passes';
         if (!isset($this->$property)) {
@@ -192,7 +192,7 @@ class PassConfig
      *
      * @api
      */
-    public function setMergePass(CompilerPassInterface $pass)
+    public function setMergePass(ehough_iconic_compiler_CompilerPassInterface $pass)
     {
         $this->mergePass = $pass;
     }

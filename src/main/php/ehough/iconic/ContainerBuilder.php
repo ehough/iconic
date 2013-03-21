@@ -42,12 +42,12 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     private $extensionsByNs = array();
 
     /**
-     * @var Definition[]
+     * @var ehough_iconic_Definition[]
      */
     private $definitions = array();
 
     /**
-     * @var Alias[]
+     * @var ehough_iconic_Alias[]
      */
     private $aliases = array();
 
@@ -265,7 +265,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @api
      */
-    public function addCompilerPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
+    public function addCompilerPass(ehough_iconic_compiler_CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
     {
         if (null === $this->compiler) {
             $this->compiler = new Compiler();
@@ -400,16 +400,16 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      * @throws InvalidArgumentException if the service is not defined
      * @throws LogicException if the service has a circular reference to itself
      *
-     * @see Reference
+     * @see ehough_iconic_Reference
      *
      * @api
      */
-    public function get($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
+    public function get($id, $invalidBehavior = ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE)
     {
         $id = strtolower($id);
 
         try {
-            return parent::get($id, ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
+            return parent::get($id, ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
         } catch (InvalidArgumentException $e) {
             if (isset($this->loading[$id])) {
                 throw new LogicException(sprintf('The service "%s" has a circular reference to itself.', $id), 0, $e);
@@ -422,7 +422,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
             try {
                 $definition = $this->getDefinition($id);
             } catch (InvalidArgumentException $e) {
-                if (ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
+                if (ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
                     return null;
                 }
 
@@ -462,14 +462,14 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      * parameter, the value will still be 'bar' as defined in the ContainerBuilder
      * constructor.
      *
-     * @param ContainerBuilder $container The ContainerBuilder instance to merge.
+     * @param ehough_iconic_ContainerBuilder $container The ContainerBuilder instance to merge.
      *
      *
      * @throws BadMethodCallException When this ContainerBuilder is frozen
      *
      * @api
      */
-    public function merge(ContainerBuilder $container)
+    public function merge(ehough_iconic_ContainerBuilder $container)
     {
         if ($this->isFrozen()) {
             throw new BadMethodCallException('Cannot merge on a frozen container.');
@@ -605,7 +605,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      * @param string        $alias The alias to create
      * @param string|Alias  $id    The service to alias
      *
-     * @throws InvalidArgumentException if the id is not a string or an Alias
+     * @throws InvalidArgumentException if the id is not a string or an ehough_iconic_Alias
      * @throws InvalidArgumentException if the alias is for itself
      *
      * @api
@@ -615,9 +615,9 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
         $alias = strtolower($alias);
 
         if (is_string($id)) {
-            $id = new Alias($id);
-        } elseif (!$id instanceof Alias) {
-            throw new InvalidArgumentException('$id must be a string, or an Alias object.');
+            $id = new ehough_iconic_Alias($id);
+        } elseif (!$id instanceof ehough_iconic_Alias) {
+            throw new InvalidArgumentException('$id must be a string, or an ehough_iconic_Alias object.');
         }
 
         if ($alias === strtolower($id)) {
@@ -658,7 +658,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Gets all defined aliases.
      *
-     * @return Alias[] An array of aliases
+     * @return ehough_iconic_Alias[] An array of aliases
      *
      * @api
      */
@@ -672,7 +672,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @param string $id The service identifier
      *
-     * @return Alias An Alias instance
+     * @return ehough_iconic_Alias An ehough_iconic_Alias instance
      *
      * @throws InvalidArgumentException if the alias does not exist
      *
@@ -698,19 +698,19 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      * @param string $id    The service identifier
      * @param string $class The service class
      *
-     * @return Definition A Definition instance
+     * @return ehough_iconic_Definition A ehough_iconic_Definition instance
      *
      * @api
      */
     public function register($id, $class = null)
     {
-        return $this->setDefinition(strtolower($id), new Definition($class));
+        return $this->setDefinition(strtolower($id), new ehough_iconic_Definition($class));
     }
 
     /**
      * Adds the service definitions.
      *
-     * @param Definition[] $definitions An array of service definitions
+     * @param ehough_iconic_Definition[] $definitions An array of service definitions
      *
      * @api
      */
@@ -724,7 +724,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Sets the service definitions.
      *
-     * @param Definition[] $definitions An array of service definitions
+     * @param ehough_iconic_Definition[] $definitions An array of service definitions
      *
      * @api
      */
@@ -737,7 +737,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Gets all service definitions.
      *
-     * @return Definition[] An array of Definition instances
+     * @return ehough_iconic_Definition[] An array of ehough_iconic_Definition instances
      *
      * @api
      */
@@ -750,15 +750,15 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      * Sets a service definition.
      *
      * @param string     $id         The service identifier
-     * @param Definition $definition A Definition instance
+     * @param ehough_iconic_Definition $definition A ehough_iconic_Definition instance
      *
-     * @return Definition the service definition
+     * @return ehough_iconic_Definition the service definition
      *
      * @throws BadMethodCallException When this ContainerBuilder is frozen
      *
      * @api
      */
-    public function setDefinition($id, Definition $definition)
+    public function setDefinition($id, ehough_iconic_Definition $definition)
     {
         if ($this->isFrozen()) {
             throw new BadMethodCallException('Adding definition to a frozen container is not allowed');
@@ -790,7 +790,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @param string $id The service identifier
      *
-     * @return Definition A Definition instance
+     * @return ehough_iconic_Definition A ehough_iconic_Definition instance
      *
      * @throws InvalidArgumentException if the service definition does not exist
      *
@@ -810,11 +810,11 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Gets a service definition by id or alias.
      *
-     * The method "unaliases" recursively to return a Definition instance.
+     * The method "unaliases" recursively to return a ehough_iconic_Definition instance.
      *
      * @param string $id The service identifier or alias
      *
-     * @return Definition A Definition instance
+     * @return ehough_iconic_Definition A ehough_iconic_Definition instance
      *
      * @throws InvalidArgumentException if the service definition does not exist
      *
@@ -832,7 +832,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Creates a service for a service definition.
      *
-     * @param Definition $definition A service definition instance
+     * @param ehough_iconic_Definition $definition A service definition instance
      * @param string     $id         The service identifier
      *
      * @return object The service described by the service definition
@@ -842,7 +842,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      * @throws RuntimeException When the service is a synthetic service
      * @throws InvalidArgumentException When configure callable is not callable
      */
-    private function createService(Definition $definition, $id)
+    private function createService(ehough_iconic_Definition $definition, $id)
     {
         if ($definition->isSynthetic()) {
             throw new RuntimeException(sprintf('You have requested a synthetic service ("%s"). The DIC does not know how to construct this service.', $id));
@@ -907,7 +907,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
 
         if ($callable = $definition->getConfigurator()) {
             if (is_array($callable)) {
-                $callable[0] = $callable[0] instanceof Reference ? $this->get((string) $callable[0]) : $parameterBag->resolveValue($callable[0]);
+                $callable[0] = $callable[0] instanceof ehough_iconic_Reference ? $this->get((string) $callable[0]) : $parameterBag->resolveValue($callable[0]);
             }
 
             if (!is_callable($callable)) {
@@ -933,9 +933,9 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
             foreach ($value as &$v) {
                 $v = $this->resolveServices($v);
             }
-        } elseif ($value instanceof Reference) {
+        } elseif ($value instanceof ehough_iconic_Reference) {
             $value = $this->get((string) $value, $value->getInvalidBehavior());
-        } elseif ($value instanceof Definition) {
+        } elseif ($value instanceof ehough_iconic_Definition) {
             $value = $this->createService($value, null);
         }
 
@@ -993,7 +993,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
             foreach ($value as $v) {
                 $services = array_unique(array_merge($services, self::getServiceConditionals($v)));
             }
-        } elseif ($value instanceof Reference && $value->getInvalidBehavior() === ContainerInterface::IGNORE_ON_INVALID_REFERENCE) {
+        } elseif ($value instanceof ehough_iconic_Reference && $value->getInvalidBehavior() === ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE) {
             $services[] = (string) $value;
         }
 

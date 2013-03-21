@@ -19,12 +19,12 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class MergeExtensionConfigurationPass implements CompilerPassInterface
+class ehough_iconic_compiler_MergeExtensionConfigurationPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $parameters = $container->getParameterBag()->all();
         $definitions = $container->getDefinitions();

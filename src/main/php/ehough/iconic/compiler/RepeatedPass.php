@@ -19,7 +19,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class RepeatedPass implements CompilerPassInterface
+class ehough_iconic_compiler_RepeatedPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     /**
      * @var Boolean
@@ -54,9 +54,9 @@ class RepeatedPass implements CompilerPassInterface
     /**
      * Process the repeatable passes that run more than once.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $this->repeat = false;
         foreach ($this->passes as $pass) {

@@ -20,14 +20,14 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class RemovePrivateAliasesPass implements CompilerPassInterface
+class ehough_iconic_compiler_RemovePrivateAliasesPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     /**
      * Removes private aliases from the ContainerBuilder
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $compiler = $container->getCompiler();
         $formatter = $compiler->getLoggingFormatter();

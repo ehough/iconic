@@ -17,23 +17,23 @@
 //use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
 /**
- * This replaces all DefinitionDecorator instances with their equivalent fully
- * merged Definition instance.
+ * This replaces all ehough_iconic_DefinitionDecorator instances with their equivalent fully
+ * merged ehough_iconic_Definition instance.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ResolveDefinitionTemplatesPass implements CompilerPassInterface
+class ehough_iconic_compiler_ResolveDefinitionTemplatesPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     private $container;
     private $compiler;
     private $formatter;
 
     /**
-     * Process the ContainerBuilder to replace DefinitionDecorator instances with their real Definition instances.
+     * Process the ContainerBuilder to replace ehough_iconic_DefinitionDecorator instances with their real ehough_iconic_Definition instances.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $this->container = $container;
         $this->compiler = $container->getCompiler();
@@ -43,7 +43,7 @@ class ResolveDefinitionTemplatesPass implements CompilerPassInterface
             // yes, we are specifically fetching the definition from the
             // container to ensure we are not operating on stale data
             $definition = $container->getDefinition($id);
-            if (!$definition instanceof DefinitionDecorator || $definition->isAbstract()) {
+            if (!$definition instanceof ehough_iconic_DefinitionDecorator || $definition->isAbstract()) {
                 continue;
             }
 
@@ -55,25 +55,25 @@ class ResolveDefinitionTemplatesPass implements CompilerPassInterface
      * Resolves the definition
      *
      * @param string              $id         The definition identifier
-     * @param DefinitionDecorator $definition
+     * @param ehough_iconic_DefinitionDecorator $definition
      *
-     * @return Definition
+     * @return ehough_iconic_Definition
      *
      * @throws \RuntimeException When the definition is invalid
      */
-    private function resolveDefinition($id, DefinitionDecorator $definition)
+    private function resolveDefinition($id, ehough_iconic_DefinitionDecorator $definition)
     {
         if (!$this->container->hasDefinition($parent = $definition->getParent())) {
             throw new RuntimeException(sprintf('The parent definition "%s" defined for definition "%s" does not exist.', $parent, $id));
         }
 
         $parentDef = $this->container->getDefinition($parent);
-        if ($parentDef instanceof DefinitionDecorator) {
+        if ($parentDef instanceof ehough_iconic_DefinitionDecorator) {
             $parentDef = $this->resolveDefinition($parent, $parentDef);
         }
 
         $this->compiler->addLogMessage($this->formatter->formatResolveInheritance($this, $id, $parent));
-        $def = new Definition();
+        $def = new ehough_iconic_Definition();
 
         // merge in parent definition
         // purposely ignored attributes: scope, abstract, tags

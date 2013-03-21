@@ -25,7 +25,7 @@ interface ConfigurationExtensionInterface
      * Returns extension configuration
      *
      * @param array            $config    $config    An array of configuration values
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param ehough_iconic_ContainerBuilder $container A ContainerBuilder instance
      *
      * @return ConfigurationInterface|null The configuration or null
      */

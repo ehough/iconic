@@ -15,7 +15,7 @@
 //use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
 
 /**
- * Definition represents a service definition.
+ * ehough_iconic_Definition represents a service definition.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
@@ -52,7 +52,7 @@ class ehough_iconic_Definition
         $this->class = $class;
         $this->arguments = $arguments;
         $this->calls = array();
-        $this->scope = ContainerInterface::SCOPE_CONTAINER;
+        $this->scope = ehough_iconic_ContainerInterface::SCOPE_CONTAINER;
         $this->tags = array();
         $this->public = true;
         $this->synthetic = false;
@@ -66,7 +66,7 @@ class ehough_iconic_Definition
      *
      * @param string $factoryClass The factory class name
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -94,7 +94,7 @@ class ehough_iconic_Definition
      *
      * @param string $factoryMethod The factory method name
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -122,7 +122,7 @@ class ehough_iconic_Definition
      *
      * @param string $factoryService The factory service id
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -150,7 +150,7 @@ class ehough_iconic_Definition
      *
      * @param string $class The service class
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -178,7 +178,7 @@ class ehough_iconic_Definition
      *
      * @param array $arguments An array of arguments
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -222,7 +222,7 @@ class ehough_iconic_Definition
      *
      * @param mixed $argument An argument
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -239,7 +239,7 @@ class ehough_iconic_Definition
      * @param integer $index
      * @param mixed   $argument
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @throws OutOfBoundsException When the replaced argument does not exist
      *
@@ -293,7 +293,7 @@ class ehough_iconic_Definition
      *
      * @param array $calls An array of method calls
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -313,7 +313,7 @@ class ehough_iconic_Definition
      * @param string $method    The method name to call
      * @param array  $arguments An array of arguments to pass to the method call
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @throws InvalidArgumentException on empty $method param
      *
@@ -334,7 +334,7 @@ class ehough_iconic_Definition
      *
      * @param string $method The method name to remove
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -387,7 +387,7 @@ class ehough_iconic_Definition
      *
      * @param array $tags
      *
-     * @return Definition the current instance
+     * @return ehough_iconic_Definition the current instance
      *
      * @api
      */
@@ -430,7 +430,7 @@ class ehough_iconic_Definition
      * @param string $name       The tag name
      * @param array  $attributes An array of attributes
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -460,7 +460,7 @@ class ehough_iconic_Definition
      *
      * @param string $name The tag name
      *
-     * @return Definition
+     * @return ehough_iconic_Definition
      */
     public function clearTag($name)
     {
@@ -474,7 +474,7 @@ class ehough_iconic_Definition
     /**
      * Clears the tags for this definition.
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -490,7 +490,7 @@ class ehough_iconic_Definition
      *
      * @param string $file A full pathname to include
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -518,7 +518,7 @@ class ehough_iconic_Definition
      *
      * @param string $scope Whether the service must be shared or not
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -546,7 +546,7 @@ class ehough_iconic_Definition
      *
      * @param Boolean $boolean
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */
@@ -575,7 +575,7 @@ class ehough_iconic_Definition
      *
      * @param Boolean $boolean
      *
-     * @return Definition the current instance
+     * @return ehough_iconic_Definition the current instance
      *
      * @api
      */
@@ -605,7 +605,7 @@ class ehough_iconic_Definition
      *
      * @param Boolean $boolean
      *
-     * @return Definition the current instance
+     * @return ehough_iconic_Definition the current instance
      *
      * @api
      */
@@ -634,7 +634,7 @@ class ehough_iconic_Definition
      *
      * @param callable $callable A PHP callable
      *
-     * @return Definition The current instance
+     * @return ehough_iconic_Definition The current instance
      *
      * @api
      */

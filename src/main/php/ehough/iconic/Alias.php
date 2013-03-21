@@ -22,7 +22,7 @@ class ehough_iconic_Alias
     /**
      * Constructor.
      *
-     * @param string  $id     Alias identifier
+     * @param string  $id     ehough_iconic_Alias identifier
      * @param Boolean $public If this alias is public
      *
      * @api
@@ -34,7 +34,7 @@ class ehough_iconic_Alias
     }
 
     /**
-     * Checks if this DI Alias should be public or not.
+     * Checks if this DI ehough_iconic_Alias should be public or not.
      *
      * @return Boolean
      *
@@ -46,9 +46,9 @@ class ehough_iconic_Alias
     }
 
     /**
-     * Sets if this Alias is public.
+     * Sets if this ehough_iconic_Alias is public.
      *
-     * @param Boolean $boolean If this Alias should be public
+     * @param Boolean $boolean If this ehough_iconic_Alias should be public
      *
      * @api
      */

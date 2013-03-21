@@ -17,12 +17,12 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-interface RepeatablePassInterface extends CompilerPassInterface
+interface ehough_iconic_compiler_RepeatablePassInterface extends ehough_iconic_compiler_CompilerPassInterface
 {
     /**
      * Sets the RepeatedPass interface.
      *
-     * @param RepeatedPass $repeatedPass
+     * @param ehough_iconic_compiler_RepeatedPass $repeatedPass
      */
-    public function setRepeatedPass(RepeatedPass $repeatedPass);
+    public function setRepeatedPass(ehough_iconic_compiler_RepeatedPass $repeatedPass);
 }

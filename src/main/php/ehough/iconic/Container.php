@@ -239,7 +239,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      * @throws ServiceCircularReferenceException When a circular reference is detected
      * @throws ServiceNotFoundException When the service is not defined
      *
-     * @see Reference
+     * @see ehough_iconic_Reference
      *
      * @api
      */

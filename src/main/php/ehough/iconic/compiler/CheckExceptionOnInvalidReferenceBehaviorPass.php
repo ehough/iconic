@@ -23,12 +23,12 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class CheckExceptionOnInvalidReferenceBehaviorPass implements CompilerPassInterface
+class ehough_iconic_compiler_CheckExceptionOnInvalidReferenceBehaviorPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     private $container;
     private $sourceId;
 
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $this->container = $container;
 
@@ -38,7 +38,7 @@ class CheckExceptionOnInvalidReferenceBehaviorPass implements CompilerPassInterf
         }
     }
 
-    private function processDefinition(Definition $definition)
+    private function processDefinition(ehough_iconic_Definition $definition)
     {
         $this->processReferences($definition->getArguments());
         $this->processReferences($definition->getMethodCalls());
@@ -50,9 +50,9 @@ class CheckExceptionOnInvalidReferenceBehaviorPass implements CompilerPassInterf
         foreach ($arguments as $argument) {
             if (is_array($argument)) {
                 $this->processReferences($argument);
-            } elseif ($argument instanceof Definition) {
+            } elseif ($argument instanceof ehough_iconic_Definition) {
                 $this->processDefinition($argument);
-            } elseif ($argument instanceof Reference && ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE === $argument->getInvalidBehavior()) {
+            } elseif ($argument instanceof ehough_iconic_Reference && ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE === $argument->getInvalidBehavior()) {
                 $destId = (string) $argument;
 
                 if (!$this->container->has($destId)) {

@@ -24,7 +24,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class CheckCircularReferencesPass implements CompilerPassInterface
+class ehough_iconic_compiler_CheckCircularReferencesPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     private $currentId;
     private $currentPath;
@@ -32,9 +32,9 @@ class CheckCircularReferencesPass implements CompilerPassInterface
     /**
      * Checks the ContainerBuilder object for circular references.
      *
-     * @param ContainerBuilder $container The ContainerBuilder instances
+     * @param ehough_iconic_ContainerBuilder $container The ContainerBuilder instances
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $graph = $container->getCompiler()->getServiceReferenceGraph();
 

@@ -21,7 +21,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ServiceReferenceGraphNode
+class ehough_iconic_compiler_ServiceReferenceGraphNode
 {
     private $id;
     private $inEdges;
@@ -63,23 +63,23 @@ class ServiceReferenceGraphNode
     }
 
     /**
-     * Checks if the value of this node is an Alias.
+     * Checks if the value of this node is an ehough_iconic_Alias.
      *
-     * @return Boolean True if the value is an Alias instance
+     * @return Boolean True if the value is an ehough_iconic_Alias instance
      */
     public function isAlias()
     {
-        return $this->value instanceof Alias;
+        return $this->value instanceof ehough_iconic_Alias;
     }
 
     /**
-     * Checks if the value of this node is a Definition.
+     * Checks if the value of this node is a ehough_iconic_Definition.
      *
-     * @return Boolean True if the value is a Definition instance
+     * @return Boolean True if the value is a ehough_iconic_Definition instance
      */
     public function isDefinition()
     {
-        return $this->value instanceof Definition;
+        return $this->value instanceof ehough_iconic_Definition;
     }
 
     /**

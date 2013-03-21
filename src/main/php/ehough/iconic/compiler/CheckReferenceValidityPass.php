@@ -29,7 +29,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class CheckReferenceValidityPass implements CompilerPassInterface
+class ehough_iconic_compiler_CheckReferenceValidityPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     private $container;
     private $currentId;
@@ -39,11 +39,11 @@ class CheckReferenceValidityPass implements CompilerPassInterface
     private $currentScopeChildren;
 
     /**
-     * Processes the ContainerBuilder to validate References.
+     * Processes the ContainerBuilder to validate ehough_iconic_References.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $this->container = $container;
 
@@ -68,10 +68,10 @@ class CheckReferenceValidityPass implements CompilerPassInterface
             $this->currentDefinition = $definition;
             $this->currentScope = $scope = $definition->getScope();
 
-            if (ContainerInterface::SCOPE_CONTAINER === $scope) {
+            if (ehough_iconic_ContainerInterface::SCOPE_CONTAINER === $scope) {
                 $this->currentScopeChildren = array_keys($scopes);
                 $this->currentScopeAncestors = array();
-            } elseif (ContainerInterface::SCOPE_PROTOTYPE !== $scope) {
+            } elseif (ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE !== $scope) {
                 $this->currentScopeChildren = $children[$scope];
                 $this->currentScopeAncestors = $ancestors[$scope];
             }
@@ -83,9 +83,9 @@ class CheckReferenceValidityPass implements CompilerPassInterface
     }
 
     /**
-     * Validates an array of References.
+     * Validates an array of ehough_iconic_References.
      *
-     * @param array $arguments An array of Reference objects
+     * @param array $arguments An array of ehough_iconic_Reference objects
      *
      * @throws RuntimeException when there is a reference to an abstract definition.
      */
@@ -94,7 +94,7 @@ class CheckReferenceValidityPass implements CompilerPassInterface
         foreach ($arguments as $argument) {
             if (is_array($argument)) {
                 $this->validateReferences($argument);
-            } elseif ($argument instanceof Reference) {
+            } elseif ($argument instanceof ehough_iconic_Reference) {
                 $targetDefinition = $this->getDefinition((string) $argument);
 
                 if (null !== $targetDefinition && $targetDefinition->isAbstract()) {
@@ -112,17 +112,17 @@ class CheckReferenceValidityPass implements CompilerPassInterface
     }
 
     /**
-     * Validates the scope of a single Reference.
+     * Validates the scope of a single ehough_iconic_Reference.
      *
-     * @param Reference  $reference
-     * @param Definition $definition
+     * @param ehough_iconic_Reference  $reference
+     * @param ehough_iconic_Definition $definition
      *
      * @throws ScopeWideningInjectionException when the definition references a service of a narrower scope
      * @throws ScopeCrossingInjectionException when the definition references a service of another scope hierarchy
      */
-    private function validateScope(Reference $reference, Definition $definition = null)
+    private function validateScope(ehough_iconic_Reference $reference, ehough_iconic_Definition $definition = null)
     {
-        if (ContainerInterface::SCOPE_PROTOTYPE === $this->currentScope) {
+        if (ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE === $this->currentScope) {
             return;
         }
 
@@ -150,11 +150,11 @@ class CheckReferenceValidityPass implements CompilerPassInterface
     }
 
     /**
-     * Returns the Definition given an id.
+     * Returns the ehough_iconic_Definition given an id.
      *
-     * @param string $id Definition identifier
+     * @param string $id ehough_iconic_Definition identifier
      *
-     * @return Definition
+     * @return ehough_iconic_Definition
      */
     private function getDefinition($id)
     {

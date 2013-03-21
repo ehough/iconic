@@ -14,17 +14,17 @@
 //use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Removes abstract Definitions
+ * Removes abstract ehough_iconic_Definitions
  *
  */
-class RemoveAbstractDefinitionsPass implements CompilerPassInterface
+class ehough_iconic_compiler_RemoveAbstractDefinitionsPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     /**
      * Removes abstract definitions from the ContainerBuilder
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $compiler = $container->getCompiler();
         $formatter = $compiler->getLoggingFormatter();

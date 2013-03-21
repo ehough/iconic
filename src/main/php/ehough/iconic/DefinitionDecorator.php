@@ -29,7 +29,7 @@ class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
     /**
      * Constructor.
      *
-     * @param string $parent The id of Definition instance to decorate.
+     * @param string $parent The id of ehough_iconic_Definition instance to decorate.
      *
      * @api
      */
@@ -42,7 +42,7 @@ class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
     }
 
     /**
-     * Returns the Definition being decorated.
+     * Returns the ehough_iconic_Definition being decorated.
      *
      * @return string
      *
@@ -54,9 +54,9 @@ class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
     }
 
     /**
-     * Returns all changes tracked for the Definition object.
+     * Returns all changes tracked for the ehough_iconic_Definition object.
      *
-     * @return array An array of changes for this Definition
+     * @return array An array of changes for this ehough_iconic_Definition
      *
      * @api
      */
@@ -189,7 +189,7 @@ class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
      * @param integer $index
      * @param mixed   $value
      *
-     * @return DefinitionDecorator the current instance
+     * @return ehough_iconic_DefinitionDecorator the current instance
      * @throws InvalidArgumentException when $index isn't an integer
      *
      * @api

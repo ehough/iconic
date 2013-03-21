@@ -20,14 +20,14 @@
  *
  * @api
  */
-interface CompilerPassInterface
+interface ehough_iconic_compiler_CompilerPassInterface
 {
     /**
      * You can modify the container here before it is dumped to PHP code.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      *
      * @api
      */
-    public function process(ContainerBuilder $container);
+    public function process(ehough_iconic_ContainerBuilder $container);
 }

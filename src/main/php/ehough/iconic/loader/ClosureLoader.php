@@ -28,9 +28,9 @@ class ClosureLoader extends Loader
     /**
      * Constructor.
      *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param ehough_iconic_ContainerBuilder $container A ContainerBuilder instance
      */
-    public function __construct(ContainerBuilder $container)
+    public function __construct(ehough_iconic_ContainerBuilder $container)
     {
         $this->container = $container;
     }

@@ -55,7 +55,7 @@ class PhpDumper extends Dumper
      *
      * @api
      */
-    public function __construct(ContainerBuilder $container)
+    public function __construct(ehough_iconic_ContainerBuilder $container)
     {
         parent::__construct($container);
 
@@ -134,10 +134,10 @@ class PhpDumper extends Dumper
                 $name = $this->getNextVariableName();
                 $this->referenceVariables[$id] = new Variable($name);
 
-                if (ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE === $behavior[$id]) {
+                if (ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE === $behavior[$id]) {
                     $code .= sprintf($template, $name, $this->getServiceCall($id));
                 } else {
-                    $code .= sprintf($template, $name, $this->getServiceCall($id, new Reference($id, ContainerInterface::NULL_ON_INVALID_REFERENCE)));
+                    $code .= sprintf($template, $name, $this->getServiceCall($id, new ehough_iconic_Reference($id, ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE)));
                 }
             }
         }
@@ -153,7 +153,7 @@ class PhpDumper extends Dumper
      * Generates the require_once statement for service includes.
      *
      * @param string     $id         The service id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      *
      * @return string
      */
@@ -183,7 +183,7 @@ class PhpDumper extends Dumper
      * Generates the inline definition of a service.
      *
      * @param string     $id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      *
      * @return string
      *
@@ -248,7 +248,7 @@ class PhpDumper extends Dumper
      * Adds the service return statement.
      *
      * @param string     $id         Service id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      *
      * @return string
      */
@@ -265,7 +265,7 @@ class PhpDumper extends Dumper
      * Generates the service instance.
      *
      * @param string     $id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      *
      * @return string
      *
@@ -283,9 +283,9 @@ class PhpDumper extends Dumper
         $simple = $this->isSimpleInstance($id, $definition);
 
         $instantiation = '';
-        if (ContainerInterface::SCOPE_CONTAINER === $definition->getScope()) {
+        if (ehough_iconic_ContainerInterface::SCOPE_CONTAINER === $definition->getScope()) {
             $instantiation = "\$this->services['$id'] = ".($simple ? '' : '$instance');
-        } elseif (ContainerInterface::SCOPE_PROTOTYPE !== $scope = $definition->getScope()) {
+        } elseif (ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE !== $scope = $definition->getScope()) {
             $instantiation = "\$this->services['$id'] = \$this->scopedServices['$scope']['$id'] = ".($simple ? '' : '$instance');
         } elseif (!$simple) {
             $instantiation = '$instance';
@@ -311,7 +311,7 @@ class PhpDumper extends Dumper
      * Checks if the definition is a simple instance.
      *
      * @param string     $id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      *
      * @return Boolean
      */
@@ -334,7 +334,7 @@ class PhpDumper extends Dumper
      * Adds method calls to a service definition.
      *
      * @param string     $id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      * @param string     $variableName
      *
      * @return string
@@ -368,7 +368,7 @@ class PhpDumper extends Dumper
      * Generates the inline definition setup.
      *
      * @param string     $id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      * @return string
      */
     private function addServiceInlinedDefinitionsSetup($id, $definition)
@@ -404,7 +404,7 @@ class PhpDumper extends Dumper
      * Adds configurator definition
      *
      * @param string     $id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      * @param string     $variableName
      *
      * @return string
@@ -416,7 +416,7 @@ class PhpDumper extends Dumper
         }
 
         if (is_array($callable)) {
-            if ($callable[0] instanceof Reference) {
+            if ($callable[0] instanceof ehough_iconic_Reference) {
                 return sprintf("        %s->%s(\$%s);\n", $this->getServiceCall((string) $callable[0]), $callable[1], $variableName);
             }
 
@@ -430,7 +430,7 @@ class PhpDumper extends Dumper
      * Adds a service
      *
      * @param string     $id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      *
      * @return string
      */
@@ -454,7 +454,7 @@ class PhpDumper extends Dumper
         }
 
         $scope = $definition->getScope();
-        if (!in_array($scope, array(ContainerInterface::SCOPE_CONTAINER, ContainerInterface::SCOPE_PROTOTYPE))) {
+        if (!in_array($scope, array(ehough_iconic_ContainerInterface::SCOPE_CONTAINER, ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE))) {
             if ($return && 0 === strpos($return[count($return) - 1], '@return')) {
                 $return[] = '';
             }
@@ -464,7 +464,7 @@ class PhpDumper extends Dumper
         $return = implode("\n     * ", $return);
 
         $doc = '';
-        if (ContainerInterface::SCOPE_PROTOTYPE !== $scope) {
+        if (ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE !== $scope) {
             $doc .= <<<EOF
 
      *
@@ -495,7 +495,7 @@ EOF;
 
 EOF;
 
-        if (!in_array($scope, array(ContainerInterface::SCOPE_CONTAINER, ContainerInterface::SCOPE_PROTOTYPE))) {
+        if (!in_array($scope, array(ehough_iconic_ContainerInterface::SCOPE_CONTAINER, ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE))) {
             $code .= <<<EOF
         if (!isset(\$this->scopedServices['$scope'])) {
             throw new InactiveScopeException('$id', '$scope');
@@ -587,7 +587,7 @@ EOF;
         return $publicServices.$aliasServices.$privateServices;
     }
 
-    private function addNewInstance($id, Definition $definition, $return, $instantiation)
+    private function addNewInstance($id, ehough_iconic_Definition $definition, $return, $instantiation)
     {
         $class = $this->dumpValue($definition->getClass());
 
@@ -831,9 +831,9 @@ EOF;
                 $value = $this->exportParameters($value, $path.'/'.$key, $indent + 4);
             } elseif ($value instanceof Variable) {
                 throw new InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain variable references. Variable "%s" found in "%s".', $value, $path.'/'.$key));
-            } elseif ($value instanceof Definition) {
+            } elseif ($value instanceof ehough_iconic_Definition) {
                 throw new InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain service definitions. Definition for "%s" found in "%s".', $value->getClass(), $path.'/'.$key));
-            } elseif ($value instanceof Reference) {
+            } elseif ($value instanceof ehough_iconic_Reference) {
                 throw new InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain references to other services (reference to service "%s" found in "%s").', $value, $path.'/'.$key));
             } else {
                 $value = var_export($value, true);
@@ -895,7 +895,7 @@ EOF;
         foreach ($arguments as $argument) {
             if (is_array($argument)) {
                 $this->getServiceCallsFromArguments($argument, $calls, $behavior);
-            } elseif ($argument instanceof Reference) {
+            } elseif ($argument instanceof ehough_iconic_Reference) {
                 $id = (string) $argument;
 
                 if (!isset($calls[$id])) {
@@ -903,7 +903,7 @@ EOF;
                 }
                 if (!isset($behavior[$id])) {
                     $behavior[$id] = $argument->getInvalidBehavior();
-                } elseif (ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $behavior[$id]) {
+                } elseif (ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $behavior[$id]) {
                     $behavior[$id] = $argument->getInvalidBehavior();
                 }
 
@@ -915,11 +915,11 @@ EOF;
     /**
      * Returns the inline definition
      *
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      *
      * @return array
      */
-    private function getInlinedDefinitions(Definition $definition)
+    private function getInlinedDefinitions(ehough_iconic_Definition $definition)
     {
         if (false === $this->inlinedDefinitions->contains($definition)) {
             $definitions = array_merge(
@@ -949,7 +949,7 @@ EOF;
         foreach ($arguments as $argument) {
             if (is_array($argument)) {
                 $definitions = array_merge($definitions, $this->getDefinitionsFromArguments($argument));
-            } elseif ($argument instanceof Definition) {
+            } elseif ($argument instanceof ehough_iconic_Definition) {
                 $definitions = array_merge(
                     $definitions,
                     $this->getInlinedDefinitions($argument),
@@ -977,7 +977,7 @@ EOF;
                 if ($this->hasReference($id, $argument, $deep, $visited)) {
                     return true;
                 }
-            } elseif ($argument instanceof Reference) {
+            } elseif ($argument instanceof ehough_iconic_Reference) {
                 if ($id === (string) $argument) {
                     return true;
                 }
@@ -1017,7 +1017,7 @@ EOF;
             }
 
             return sprintf('array(%s)', implode(', ', $code));
-        } elseif ($value instanceof Definition) {
+        } elseif ($value instanceof ehough_iconic_Definition) {
             if (null !== $this->definitionVariables && $this->definitionVariables->contains($value)) {
                 return $this->dumpValue($this->definitionVariables->offsetGet($value), $interpolate);
             }
@@ -1051,7 +1051,7 @@ EOF;
             return sprintf("new \\%s(%s)", substr(str_replace('\\\\', '\\', $class), 1, -1), implode(', ', $arguments));
         } elseif ($value instanceof Variable) {
             return '$'.$value;
-        } elseif ($value instanceof Reference) {
+        } elseif ($value instanceof ehough_iconic_Reference) {
             if (null !== $this->referenceVariables && isset($this->referenceVariables[$id = (string) $value])) {
                 return $this->dumpValue($this->referenceVariables[$id], $interpolate);
             }
@@ -1101,18 +1101,18 @@ EOF;
      * Gets a service call
      *
      * @param string    $id
-     * @param Reference $reference
+     * @param ehough_iconic_Reference $reference
      *
      * @return string
      */
-    private function getServiceCall($id, Reference $reference = null)
+    private function getServiceCall($id, ehough_iconic_Reference $reference = null)
     {
         if ('service_container' === $id) {
             return '$this';
         }
 
-        if (null !== $reference && ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $reference->getInvalidBehavior()) {
-            return sprintf('$this->get(\'%s\', ContainerInterface::NULL_ON_INVALID_REFERENCE)', $id);
+        if (null !== $reference && ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $reference->getInvalidBehavior()) {
+            return sprintf('$this->get(\'%s\', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE)', $id);
         } else {
             if ($this->container->hasAlias($id)) {
                 $id = (string) $this->container->getAlias($id);

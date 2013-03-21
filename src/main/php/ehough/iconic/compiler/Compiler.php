@@ -21,7 +21,7 @@
  *
  * @api
  */
-class Compiler
+class ehough_iconic_compiler_Compiler
 {
     private $passConfig;
     private $log;
@@ -81,7 +81,7 @@ class Compiler
      *
      * @api
      */
-    public function addPass(CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
+    public function addPass(ehough_iconic_compiler_CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
     {
         $this->passConfig->addPass($pass, $type);
     }
@@ -109,11 +109,11 @@ class Compiler
     /**
      * Run the Compiler and process all Passes.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      *
      * @api
      */
-    public function compile(ContainerBuilder $container)
+    public function compile(ehough_iconic_ContainerBuilder $container)
     {
         foreach ($this->passConfig->getPasses() as $pass) {
             $pass->process($container);

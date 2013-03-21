@@ -24,7 +24,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class AnalyzeServiceReferencesPass implements RepeatablePassInterface
+class ehough_iconic_compiler_AnalyzeServiceReferencesPass implements ehough_iconic_compiler_RepeatablePassInterface
 {
     private $graph;
     private $container;
@@ -46,7 +46,7 @@ class AnalyzeServiceReferencesPass implements RepeatablePassInterface
     /**
      * {@inheritDoc}
      */
-    public function setRepeatedPass(RepeatedPass $repeatedPass)
+    public function setRepeatedPass(ehough_iconic_compiler_RepeatedPass $repeatedPass)
     {
         $this->repeatedPass = $repeatedPass;
     }
@@ -54,9 +54,9 @@ class AnalyzeServiceReferencesPass implements RepeatablePassInterface
     /**
      * Processes a ContainerBuilder object to populate the service reference graph.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $this->container = $container;
         $this->graph     = $container->getCompiler()->getServiceReferenceGraph();
@@ -88,14 +88,14 @@ class AnalyzeServiceReferencesPass implements RepeatablePassInterface
     /**
      * Processes service definitions for arguments to find relationships for the service graph.
      *
-     * @param array $arguments An array of Reference or Definition objects relating to service definitions
+     * @param array $arguments An array of ehough_iconic_Reference or ehough_iconic_Definition objects relating to service definitions
      */
     private function processArguments(array $arguments)
     {
         foreach ($arguments as $argument) {
             if (is_array($argument)) {
                 $this->processArguments($argument);
-            } elseif ($argument instanceof Reference) {
+            } elseif ($argument instanceof ehough_iconic_Reference) {
                 $this->graph->connect(
                     $this->currentId,
                     $this->currentDefinition,
@@ -103,7 +103,7 @@ class AnalyzeServiceReferencesPass implements RepeatablePassInterface
                     $this->getDefinition((string) $argument),
                     $argument
                 );
-            } elseif ($argument instanceof Definition) {
+            } elseif ($argument instanceof ehough_iconic_Definition) {
                 $this->processArguments($argument->getArguments());
                 $this->processArguments($argument->getMethodCalls());
                 $this->processArguments($argument->getProperties());
@@ -116,7 +116,7 @@ class AnalyzeServiceReferencesPass implements RepeatablePassInterface
      *
      * @param string $id A full id or alias for a service definition.
      *
-     * @return Definition|null The definition related to the supplied id
+     * @return ehough_iconic_Definition|null The definition related to the supplied id
      */
     private function getDefinition($id)
     {

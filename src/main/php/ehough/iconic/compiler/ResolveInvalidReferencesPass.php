@@ -22,16 +22,16 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ResolveInvalidReferencesPass implements CompilerPassInterface
+class ehough_iconic_compiler_ResolveInvalidReferencesPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     private $container;
 
     /**
      * Process the ContainerBuilder to resolve invalid references.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $this->container = $container;
         foreach ($container->getDefinitions() as $definition) {
@@ -69,7 +69,7 @@ class ResolveInvalidReferencesPass implements CompilerPassInterface
     /**
      * Processes arguments to determine invalid references.
      *
-     * @param array   $arguments    An array of Reference objects
+     * @param array   $arguments    An array of ehough_iconic_Reference objects
      * @param Boolean $inMethodCall
      *
      * @return array
@@ -81,18 +81,18 @@ class ResolveInvalidReferencesPass implements CompilerPassInterface
         foreach ($arguments as $k => $argument) {
             if (is_array($argument)) {
                 $arguments[$k] = $this->processArguments($argument, $inMethodCall);
-            } elseif ($argument instanceof Reference) {
+            } elseif ($argument instanceof ehough_iconic_Reference) {
                 $id = (string) $argument;
 
                 $invalidBehavior = $argument->getInvalidBehavior();
                 $exists = $this->container->has($id);
 
                 // resolve invalid behavior
-                if ($exists && ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
-                    $arguments[$k] = new Reference($id, ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $argument->isStrict());
-                } elseif (!$exists && ContainerInterface::NULL_ON_INVALID_REFERENCE === $invalidBehavior) {
+                if ($exists && ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
+                    $arguments[$k] = new ehough_iconic_Reference($id, ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $argument->isStrict());
+                } elseif (!$exists && ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE === $invalidBehavior) {
                     $arguments[$k] = null;
-                } elseif (!$exists && ContainerInterface::IGNORE_ON_INVALID_REFERENCE === $invalidBehavior) {
+                } elseif (!$exists && ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE === $invalidBehavior) {
                     if ($inMethodCall) {
                         throw new RuntimeException('Method shouldn\'t be called.');
                     }

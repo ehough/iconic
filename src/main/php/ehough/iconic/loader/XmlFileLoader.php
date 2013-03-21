@@ -124,7 +124,7 @@ class XmlFileLoader extends FileLoader
     }
 
     /**
-     * Parses an individual Definition
+     * Parses an individual ehough_iconic_Definition
      *
      * @param string           $id
      * @param SimpleXMLElement $service
@@ -137,15 +137,15 @@ class XmlFileLoader extends FileLoader
             if (isset($service['public'])) {
                 $public = $service->getAttributeAsPhp('public');
             }
-            $this->container->setAlias($id, new Alias((string) $service['alias'], $public));
+            $this->container->setAlias($id, new ehough_iconic_Alias((string) $service['alias'], $public));
 
             return;
         }
 
         if (isset($service['parent'])) {
-            $definition = new DefinitionDecorator((string) $service['parent']);
+            $definition = new ehough_iconic_DefinitionDecorator((string) $service['parent']);
         } else {
-            $definition = new Definition();
+            $definition = new ehough_iconic_Definition();
         }
 
         foreach (array('class', 'scope', 'public', 'factory-class', 'factory-method', 'factory-service', 'synthetic', 'abstract') as $key) {
@@ -167,7 +167,7 @@ class XmlFileLoader extends FileLoader
                 $definition->setConfigurator((string) $service->configurator['function']);
             } else {
                 if (isset($service->configurator['service'])) {
-                    $class = new Reference((string) $service->configurator['service'], ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, false);
+                    $class = new ehough_iconic_Reference((string) $service->configurator['service'], ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, false);
                 } else {
                     $class = (string) $service->configurator['class'];
                 }

@@ -108,14 +108,14 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
     }
 
     /**
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      * @param array            $config
      *
      * @return Boolean Whether the configuration is enabled
      *
      * @throws InvalidArgumentException When the config is not enableable
      */
-    protected function isConfigEnabled(ContainerBuilder $container, array $config)
+    protected function isConfigEnabled(ehough_iconic_ContainerBuilder $container, array $config)
     {
         if (!array_key_exists('enabled', $config)) {
             throw new InvalidArgumentException("The config array has no 'enabled' key.");

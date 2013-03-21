@@ -21,7 +21,7 @@
 abstract class ehough_iconic_ContainerAware implements ContainerAwareInterface
 {
     /**
-     * @var ContainerInterface
+     * @var ehough_iconic_ContainerInterface
      *
      * @api
      */
@@ -30,11 +30,11 @@ abstract class ehough_iconic_ContainerAware implements ContainerAwareInterface
     /**
      * Sets the Container associated with this Controller.
      *
-     * @param ContainerInterface $container A ContainerInterface instance
+     * @param ehough_iconic_ContainerInterface $container A ehough_iconic_ContainerInterface instance
      *
      * @api
      */
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(ehough_iconic_ContainerInterface $container = null)
     {
         $this->container = $container;
     }

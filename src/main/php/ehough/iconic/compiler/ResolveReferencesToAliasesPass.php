@@ -20,16 +20,16 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ResolveReferencesToAliasesPass implements CompilerPassInterface
+class ehough_iconic_compiler_ResolveReferencesToAliasesPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     private $container;
 
     /**
      * Processes the ContainerBuilder to replace references to aliases with actual service references.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $this->container = $container;
 
@@ -46,7 +46,7 @@ class ResolveReferencesToAliasesPass implements CompilerPassInterface
         foreach ($container->getAliases() as $id => $alias) {
             $aliasId = (string) $alias;
             if ($aliasId !== $defId = $this->getDefinitionId($aliasId)) {
-                $container->setAlias($id, new Alias($defId, $alias->isPublic()));
+                $container->setAlias($id, new ehough_iconic_Alias($defId, $alias->isPublic()));
             }
         }
     }
@@ -54,20 +54,20 @@ class ResolveReferencesToAliasesPass implements CompilerPassInterface
     /**
      * Processes the arguments to replace aliases.
      *
-     * @param array $arguments An array of References
+     * @param array $arguments An array of ehough_iconic_References
      *
-     * @return array An array of References
+     * @return array An array of ehough_iconic_References
      */
     private function processArguments(array $arguments)
     {
         foreach ($arguments as $k => $argument) {
             if (is_array($argument)) {
                 $arguments[$k] = $this->processArguments($argument);
-            } elseif ($argument instanceof Reference) {
+            } elseif ($argument instanceof ehough_iconic_Reference) {
                 $defId = $this->getDefinitionId($id = (string) $argument);
 
                 if ($defId !== $id) {
-                    $arguments[$k] = new Reference($defId, $argument->getInvalidBehavior(), $argument->isStrict());
+                    $arguments[$k] = new ehough_iconic_Reference($defId, $argument->getInvalidBehavior(), $argument->isStrict());
                 }
             }
         }

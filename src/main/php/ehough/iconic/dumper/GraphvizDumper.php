@@ -138,7 +138,7 @@ class GraphvizDumper extends Dumper
                 $argument = $this->container->hasParameter($match[1]) ? $this->container->getParameter($match[1]) : null;
             }
 
-            if ($argument instanceof Reference) {
+            if ($argument instanceof ehough_iconic_Reference) {
                 if (!$this->container->has((string) $argument)) {
                     $this->nodes[(string) $argument] = array('name' => $name, 'required' => $required, 'class' => '', 'attributes' => $this->options['node.missing']);
                 }
@@ -164,9 +164,9 @@ class GraphvizDumper extends Dumper
         $container = $this->cloneContainer();
 
         foreach ($container->getDefinitions() as $id => $definition) {
-            $nodes[$id] = array('class' => str_replace('\\', '\\\\', $this->container->getParameterBag()->resolveValue($definition->getClass())), 'attributes' => array_merge($this->options['node.definition'], array('style' => ContainerInterface::SCOPE_PROTOTYPE !== $definition->getScope() ? 'filled' : 'dotted')));
+            $nodes[$id] = array('class' => str_replace('\\', '\\\\', $this->container->getParameterBag()->resolveValue($definition->getClass())), 'attributes' => array_merge($this->options['node.definition'], array('style' => ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE !== $definition->getScope() ? 'filled' : 'dotted')));
 
-            $container->setDefinition($id, new Definition('stdClass'));
+            $container->setDefinition($id, new ehough_iconic_Definition('stdClass'));
         }
 
         foreach ($container->getServiceIds() as $id) {

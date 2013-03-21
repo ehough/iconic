@@ -54,7 +54,7 @@ class ehough_iconic_SimpleXMLElement extends SimpleXMLElement
                 $key = strtolower($key);
             }
 
-            // this is used by DefinitionDecorator to overwrite a specific
+            // this is used by ehough_iconic_DefinitionDecorator to overwrite a specific
             // argument of the parent definition
             if (isset($arg['index'])) {
                 $key = 'index_'.$arg['index'];

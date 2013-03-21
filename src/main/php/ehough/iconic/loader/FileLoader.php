@@ -27,10 +27,10 @@ abstract class FileLoader extends BaseFileLoader
     /**
      * Constructor.
      *
-     * @param ContainerBuilder $container A ContainerBuilder instance
+     * @param ehough_iconic_ContainerBuilder $container A ContainerBuilder instance
      * @param FileLocatorInterface      $locator   A FileLocator instance
      */
-    public function __construct(ContainerBuilder $container, FileLocatorInterface $locator)
+    public function __construct(ehough_iconic_ContainerBuilder $container, FileLocatorInterface $locator)
     {
         $this->container = $container;
 

@@ -102,7 +102,7 @@ class XmlDumper extends Dumper
     /**
      * Adds a service.
      *
-     * @param Definition  $definition
+     * @param ehough_iconic_Definition  $definition
      * @param string      $id
      * @param \DOMElement $parent
      */
@@ -121,7 +121,7 @@ class XmlDumper extends Dumper
         if ($definition->getFactoryService()) {
             $service->setAttribute('factory-service', $definition->getFactoryService());
         }
-        if (ContainerInterface::SCOPE_CONTAINER !== $scope = $definition->getScope()) {
+        if (ehough_iconic_ContainerInterface::SCOPE_CONTAINER !== $scope = $definition->getScope()) {
             $service->setAttribute('scope', $scope);
         }
         if (!$definition->isPublic()) {
@@ -158,7 +158,7 @@ class XmlDumper extends Dumper
         if ($callable = $definition->getConfigurator()) {
             $configurator = $this->document->createElement('configurator');
             if (is_array($callable)) {
-                $configurator->setAttribute($callable[0] instanceof Reference ? 'service' : 'class', $callable[0]);
+                $configurator->setAttribute($callable[0] instanceof ehough_iconic_Reference ? 'service' : 'class', $callable[0]);
                 $configurator->setAttribute('method', $callable[1]);
             } else {
                 $configurator->setAttribute('function', $callable);
@@ -230,16 +230,16 @@ class XmlDumper extends Dumper
             if (is_array($value)) {
                 $element->setAttribute('type', 'collection');
                 $this->convertParameters($value, $type, $element, 'key');
-            } elseif ($value instanceof Reference) {
+            } elseif ($value instanceof ehough_iconic_Reference) {
                 $element->setAttribute('type', 'service');
                 $element->setAttribute('id', (string) $value);
                 $behaviour = $value->getInvalidBehavior();
-                if ($behaviour == ContainerInterface::NULL_ON_INVALID_REFERENCE) {
+                if ($behaviour == ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE) {
                     $element->setAttribute('on-invalid', 'null');
-                } elseif ($behaviour == ContainerInterface::IGNORE_ON_INVALID_REFERENCE) {
+                } elseif ($behaviour == ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE) {
                     $element->setAttribute('on-invalid', 'ignore');
                 }
-            } elseif ($value instanceof Definition) {
+            } elseif ($value instanceof ehough_iconic_Definition) {
                 $element->setAttribute('type', 'service');
                 $this->addService($value, null, $element);
             } else {

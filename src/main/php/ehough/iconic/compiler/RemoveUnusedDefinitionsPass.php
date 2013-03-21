@@ -18,7 +18,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class RemoveUnusedDefinitionsPass implements RepeatablePassInterface
+class ehough_iconic_compiler_RemoveUnusedDefinitionsPass implements ehough_iconic_compiler_RepeatablePassInterface
 {
     private $repeatedPass;
 
@@ -33,9 +33,9 @@ class RemoveUnusedDefinitionsPass implements RepeatablePassInterface
     /**
      * Processes the ContainerBuilder to remove unused definitions.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $compiler = $container->getCompiler();
         $formatter = $compiler->getLoggingFormatter();

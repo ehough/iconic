@@ -21,7 +21,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ReplaceAliasByActualDefinitionPass implements CompilerPassInterface
+class ehough_iconic_compiler_ReplaceAliasByActualDefinitionPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     private $compiler;
     private $formatter;
@@ -30,11 +30,11 @@ class ReplaceAliasByActualDefinitionPass implements CompilerPassInterface
     /**
      * Process the Container to replace aliases with service definitions.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      *
      * @throws InvalidArgumentException if the service definition does not exist
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $this->compiler = $container->getCompiler();
         $this->formatter = $this->compiler->getLoggingFormatter();
@@ -69,7 +69,7 @@ class ReplaceAliasByActualDefinitionPass implements CompilerPassInterface
     /**
      * Updates references to remove aliases.
      *
-     * @param ContainerBuilder $container The container
+     * @param ehough_iconic_ContainerBuilder $container The container
      * @param string           $currentId The alias identifier being replaced
      * @param string           $newId     The id of the service the alias points to
      */
@@ -112,9 +112,9 @@ class ReplaceAliasByActualDefinitionPass implements CompilerPassInterface
         foreach ($arguments as $k => $argument) {
             if (is_array($argument)) {
                 $arguments[$k] = $this->updateArgumentReferences($argument, $currentId, $newId);
-            } elseif ($argument instanceof Reference) {
+            } elseif ($argument instanceof ehough_iconic_Reference) {
                 if ($currentId === (string) $argument) {
-                    $arguments[$k] = new Reference($newId, $argument->getInvalidBehavior());
+                    $arguments[$k] = new ehough_iconic_Reference($newId, $argument->getInvalidBehavior());
                     $this->compiler->addLogMessage($this->formatter->formatUpdateReference($this, $this->sourceId, $currentId, $newId));
                 }
             }

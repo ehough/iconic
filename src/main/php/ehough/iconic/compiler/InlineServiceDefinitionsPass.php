@@ -21,7 +21,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class InlineServiceDefinitionsPass implements RepeatablePassInterface
+class ehough_iconic_compiler_InlineServiceDefinitionsPass implements ehough_iconic_compiler_RepeatablePassInterface
 {
     private $repeatedPass;
     private $graph;
@@ -40,9 +40,9 @@ class InlineServiceDefinitionsPass implements RepeatablePassInterface
     /**
      * Processes the ContainerBuilder for inline service definitions.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $this->compiler = $container->getCompiler();
         $this->formatter = $this->compiler->getLoggingFormatter();
@@ -68,17 +68,17 @@ class InlineServiceDefinitionsPass implements RepeatablePassInterface
     /**
      * Processes inline arguments.
      *
-     * @param ContainerBuilder $container The ContainerBuilder
+     * @param ehough_iconic_ContainerBuilder $container The ContainerBuilder
      * @param array            $arguments An array of arguments
      *
      * @return array
      */
-    private function inlineArguments(ContainerBuilder $container, array $arguments)
+    private function inlineArguments(ehough_iconic_ContainerBuilder $container, array $arguments)
     {
         foreach ($arguments as $k => $argument) {
             if (is_array($argument)) {
                 $arguments[$k] = $this->inlineArguments($container, $argument);
-            } elseif ($argument instanceof Reference) {
+            } elseif ($argument instanceof ehough_iconic_Reference) {
                 if (!$container->hasDefinition($id = (string) $argument)) {
                     continue;
                 }
@@ -86,13 +86,13 @@ class InlineServiceDefinitionsPass implements RepeatablePassInterface
                 if ($this->isInlineableDefinition($container, $id, $definition = $container->getDefinition($id))) {
                     $this->compiler->addLogMessage($this->formatter->formatInlineService($this, $id, $this->currentId));
 
-                    if (ContainerInterface::SCOPE_PROTOTYPE !== $definition->getScope()) {
+                    if (ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE !== $definition->getScope()) {
                         $arguments[$k] = $definition;
                     } else {
                         $arguments[$k] = clone $definition;
                     }
                 }
-            } elseif ($argument instanceof Definition) {
+            } elseif ($argument instanceof ehough_iconic_Definition) {
                 $argument->setArguments($this->inlineArguments($container, $argument->getArguments()));
                 $argument->setMethodCalls($this->inlineArguments($container, $argument->getMethodCalls()));
                 $argument->setProperties($this->inlineArguments($container, $argument->getProperties()));
@@ -105,15 +105,15 @@ class InlineServiceDefinitionsPass implements RepeatablePassInterface
     /**
      * Checks if the definition is inlineable.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      * @param string           $id
-     * @param Definition       $definition
+     * @param ehough_iconic_Definition       $definition
      *
      * @return Boolean If the definition is inlineable
      */
-    private function isInlineableDefinition(ContainerBuilder $container, $id, Definition $definition)
+    private function isInlineableDefinition(ehough_iconic_ContainerBuilder $container, $id, ehough_iconic_Definition $definition)
     {
-        if (ContainerInterface::SCOPE_PROTOTYPE === $definition->getScope()) {
+        if (ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE === $definition->getScope()) {
             return true;
         }
 

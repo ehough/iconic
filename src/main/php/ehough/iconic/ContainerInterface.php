@@ -16,7 +16,7 @@
 //use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
 
 /**
- * ContainerInterface is the interface implemented by service container classes.
+ * ehough_iconic_ContainerInterface is the interface implemented by service container classes.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
@@ -54,7 +54,7 @@ interface ehough_iconic_ContainerInterface
      * @throws ServiceCircularReferenceException When a circular reference is detected
      * @throws ServiceNotFoundException When the service is not defined
      *
-     * @see Reference
+     * @see ehough_iconic_Reference
      *
      * @api
      */

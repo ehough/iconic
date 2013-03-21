@@ -27,11 +27,11 @@ abstract class Dumper implements DumperInterface
     /**
      * Constructor.
      *
-     * @param ContainerBuilder $container The service container to dump
+     * @param ehough_iconic_ContainerBuilder $container The service container to dump
      *
      * @api
      */
-    public function __construct(ContainerBuilder $container)
+    public function __construct(ehough_iconic_ContainerBuilder $container)
     {
         $this->container = $container;
     }

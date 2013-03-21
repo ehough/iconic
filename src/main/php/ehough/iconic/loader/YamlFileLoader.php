@@ -130,15 +130,15 @@ class YamlFileLoader extends FileLoader
             return;
         } elseif (isset($service['alias'])) {
             $public = !array_key_exists('public', $service) || (Boolean) $service['public'];
-            $this->container->setAlias($id, new Alias($service['alias'], $public));
+            $this->container->setAlias($id, new ehough_iconic_Alias($service['alias'], $public));
 
             return;
         }
 
         if (isset($service['parent'])) {
-            $definition = new DefinitionDecorator($service['parent']);
+            $definition = new ehough_iconic_DefinitionDecorator($service['parent']);
         } else {
-            $definition = new Definition();
+            $definition = new ehough_iconic_Definition();
         }
 
         if (isset($service['class'])) {
@@ -283,7 +283,7 @@ class YamlFileLoader extends FileLoader
      *
      * @param string $value
      *
-     * @return Reference
+     * @return ehough_iconic_Reference
      */
     private function resolveServices($value)
     {
@@ -292,10 +292,10 @@ class YamlFileLoader extends FileLoader
         } elseif (is_string($value) &&  0 === strpos($value, '@')) {
             if (0 === strpos($value, '@?')) {
                 $value = substr($value, 2);
-                $invalidBehavior = ContainerInterface::IGNORE_ON_INVALID_REFERENCE;
+                $invalidBehavior = ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE;
             } else {
                 $value = substr($value, 1);
-                $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE;
+                $invalidBehavior = ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE;
             }
 
             if ('=' === substr($value, -1)) {
@@ -305,7 +305,7 @@ class YamlFileLoader extends FileLoader
                 $strict = true;
             }
 
-            $value = new Reference($value, $invalidBehavior, $strict);
+            $value = new ehough_iconic_Reference($value, $invalidBehavior, $strict);
         }
 
         return $value;

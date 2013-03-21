@@ -34,11 +34,11 @@ class YamlDumper extends Dumper
     /**
      * Constructor.
      *
-     * @param ContainerBuilder $container The service container to dump
+     * @param ehough_iconic_ContainerBuilder $container The service container to dump
      *
      * @api
      */
-    public function __construct(ContainerBuilder $container)
+    public function __construct(ehough_iconic_ContainerBuilder $container)
     {
         parent::__construct($container);
 
@@ -63,7 +63,7 @@ class YamlDumper extends Dumper
      * Adds a service
      *
      * @param string     $id
-     * @param Definition $definition
+     * @param ehough_iconic_Definition $definition
      *
      * @return string
      */
@@ -114,13 +114,13 @@ class YamlDumper extends Dumper
             $code .= sprintf("        calls:\n%s\n", $this->dumper->dump($this->dumpValue($definition->getMethodCalls()), 1, 12));
         }
 
-        if (ContainerInterface::SCOPE_CONTAINER !== $scope = $definition->getScope()) {
+        if (ehough_iconic_ContainerInterface::SCOPE_CONTAINER !== $scope = $definition->getScope()) {
             $code .= sprintf("        scope: %s\n", $scope);
         }
 
         if ($callable = $definition->getConfigurator()) {
             if (is_array($callable)) {
-                if ($callable[0] instanceof Reference) {
+                if ($callable[0] instanceof ehough_iconic_Reference) {
                     $callable = array($this->getServiceCall((string) $callable[0], $callable[0]), $callable[1]);
                 } else {
                     $callable = array($callable[0], $callable[1]);
@@ -137,7 +137,7 @@ class YamlDumper extends Dumper
      * Adds a service alias
      *
      * @param string $alias
-     * @param Alias  $id
+     * @param ehough_iconic_Alias  $id
      *
      * @return string
      */
@@ -207,7 +207,7 @@ class YamlDumper extends Dumper
             }
 
             return $code;
-        } elseif ($value instanceof Reference) {
+        } elseif ($value instanceof ehough_iconic_Reference) {
             return $this->getServiceCall((string) $value, $value);
         } elseif ($value instanceof Parameter) {
             return $this->getParameterCall((string) $value);
@@ -222,13 +222,13 @@ class YamlDumper extends Dumper
      * Gets the service call.
      *
      * @param string    $id
-     * @param Reference $reference
+     * @param ehough_iconic_Reference $reference
      *
      * @return string
      */
-    private function getServiceCall($id, Reference $reference = null)
+    private function getServiceCall($id, ehough_iconic_Reference $reference = null)
     {
-        if (null !== $reference && ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $reference->getInvalidBehavior()) {
+        if (null !== $reference && ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $reference->getInvalidBehavior()) {
             return sprintf('@?%s', $id);
         }
 
@@ -260,7 +260,7 @@ class YamlDumper extends Dumper
         foreach ($parameters as $key => $value) {
             if (is_array($value)) {
                 $value = $this->prepareParameters($value, $escape);
-            } elseif ($value instanceof Reference) {
+            } elseif ($value instanceof ehough_iconic_Reference) {
                 $value = '@'.$value;
             }
 

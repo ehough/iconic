@@ -61,7 +61,7 @@ class ehough_iconic_Reference
     }
 
     /**
-     * Returns true when this Reference is strict
+     * Returns true when this ehough_iconic_Reference is strict
      *
      * @return Boolean
      */

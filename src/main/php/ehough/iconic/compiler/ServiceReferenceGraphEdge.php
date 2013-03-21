@@ -18,7 +18,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ServiceReferenceGraphEdge
+class ehough_iconic_compiler_ServiceReferenceGraphEdge
 {
     private $sourceNode;
     private $destNode;

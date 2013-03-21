@@ -19,16 +19,16 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ResolveParameterPlaceHoldersPass implements CompilerPassInterface
+class ehough_iconic_compiler_ResolveParameterPlaceHoldersPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     /**
      * Processes the ContainerBuilder to resolve parameter placeholders.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      *
      * @throws ParameterNotFoundException
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         $parameterBag = $container->getParameterBag();
 

@@ -21,7 +21,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ServiceReferenceGraph
+class ehough_iconic_compiler_ServiceReferenceGraph
 {
     /**
      * @var ServiceReferenceGraphNode[]

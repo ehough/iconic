@@ -28,16 +28,16 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class CheckDefinitionValidityPass implements CompilerPassInterface
+class ehough_iconic_compiler_CheckDefinitionValidityPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     /**
-     * Processes the ContainerBuilder to validate the Definition.
+     * Processes the ContainerBuilder to validate the ehough_iconic_Definition.
      *
-     * @param ContainerBuilder $container
+     * @param ehough_iconic_ContainerBuilder $container
      *
-     * @throws RuntimeException When the Definition is invalid
+     * @throws RuntimeException When the ehough_iconic_Definition is invalid
      */
-    public function process(ContainerBuilder $container)
+    public function process(ehough_iconic_ContainerBuilder $container)
     {
         foreach ($container->getDefinitions() as $id => $definition) {
             // synthetic service is public
@@ -49,7 +49,7 @@ class CheckDefinitionValidityPass implements CompilerPassInterface
             }
 
             // synthetic service has non-prototype scope
-            if ($definition->isSynthetic() && ContainerInterface::SCOPE_PROTOTYPE === $definition->getScope()) {
+            if ($definition->isSynthetic() && ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE === $definition->getScope()) {
                 throw new RuntimeException(sprintf(
                     'A synthetic service ("%s") cannot be of scope "prototype".',
                     $id
