@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Exception;
+//namespace Symfony\Component\DependencyInjection\Exception;
 
 /**
  * This exception is thrown when the a scope crossing injection is detected.

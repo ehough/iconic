@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader;
+//namespace Symfony\Component\DependencyInjection\Loader;
 
-use Symfony\Component\Config\Resource\FileResource;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+//use Symfony\Component\Config\Resource\FileResource;
+//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 
 /**
  * IniFileLoader loads parameters from INI files.

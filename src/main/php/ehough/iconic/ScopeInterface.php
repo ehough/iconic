@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
 /**
  * Scope Interface.
@@ -18,7 +18,7 @@ namespace Symfony\Component\DependencyInjection;
  *
  * @api
  */
-interface ScopeInterface
+interface ehough_iconic_ScopeInterface
 {
     /**
      * @api

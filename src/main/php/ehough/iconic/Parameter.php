@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
 /**
  * Parameter represents a parameter reference.
@@ -18,7 +18,7 @@ namespace Symfony\Component\DependencyInjection;
  *
  * @api
  */
-class Parameter
+class ehough_iconic_Parameter
 {
     private $id;
 

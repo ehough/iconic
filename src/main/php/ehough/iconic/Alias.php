@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
 /**
  * @api
  */
-class Alias
+class ehough_iconic_Alias
 {
     private $id;
     private $public;

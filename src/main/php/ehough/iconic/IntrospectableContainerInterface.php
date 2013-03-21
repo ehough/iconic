@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
 /**
  * IntrospectableContainerInterface defines additional introspection functionality
@@ -18,7 +18,7 @@ namespace Symfony\Component\DependencyInjection;
  * @author Evan Villemez <evillemez@gmail.com>
  *
  */
-interface IntrospectableContainerInterface extends ContainerInterface
+interface ehough_iconic_IntrospectableContainerInterface extends ehough_iconic_ContainerInterface
 {
     /**
      * Check for whether or not a service has been initialized.

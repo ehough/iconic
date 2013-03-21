@@ -9,18 +9,18 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Compiler\Compiler;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Exception\LogicException;
-use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
-use Symfony\Component\Config\Resource\FileResource;
-use Symfony\Component\Config\Resource\ResourceInterface;
+//use Symfony\Component\DependencyInjection\Compiler\Compiler;
+//use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+//use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+//use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
+//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+//use Symfony\Component\DependencyInjection\Exception\LogicException;
+//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+//use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+//use Symfony\Component\Config\Resource\FileResource;
+//use Symfony\Component\Config\Resource\ResourceInterface;
 
 /**
  * ContainerBuilder is a DI container that provides an API to easily describe services.
@@ -29,7 +29,7 @@ use Symfony\Component\Config\Resource\ResourceInterface;
  *
  * @api
  */
-class ContainerBuilder extends Container implements TaggedContainerInterface
+class ehough_iconic_ContainerBuilder extends Container implements TaggedContainerInterface
 {
     /**
      * @var ExtensionInterface[]

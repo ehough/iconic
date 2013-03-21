@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
 /**
  * ContainerAwareInterface should be implemented by classes that depends on a Container.
@@ -23,9 +23,9 @@ interface ContainerAwareInterface
     /**
      * Sets the Container.
      *
-     * @param ContainerInterface $container A ContainerInterface instance
+     * @param ehough_iconic_ContainerInterface $container A ContainerInterface instance
      *
      * @api
      */
-    public function setContainer(ContainerInterface $container = null);
+    public function setContainer(ehough_iconic_ContainerInterface $container = null);
 }

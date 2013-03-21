@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\ParameterBag;
+//namespace Symfony\Component\DependencyInjection\ParameterBag;
 
-use Symfony\Component\DependencyInjection\Exception\LogicException;
+//use Symfony\Component\DependencyInjection\Exception\LogicException;
 
 /**
  * Holds read-only parameters.

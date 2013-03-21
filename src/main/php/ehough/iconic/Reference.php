@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
 /**
  * Reference represents a service reference.
@@ -18,7 +18,7 @@ namespace Symfony\Component\DependencyInjection;
  *
  * @api
  */
-class Reference
+class ehough_iconic_Reference
 {
     private $id;
     private $invalidBehavior;
@@ -33,7 +33,7 @@ class Reference
      *
      * @see Container
      */
-    public function __construct($id, $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $strict = true)
+    public function __construct($id, $invalidBehavior = ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $strict = true)
     {
         $this->id = strtolower($id);
         $this->invalidBehavior = $invalidBehavior;

@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Compiler;
+//namespace Symfony\Component\DependencyInjection\Compiler;
 
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Alias;
+//use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\Alias;
 
 /**
  * Represents a node in your service graph.

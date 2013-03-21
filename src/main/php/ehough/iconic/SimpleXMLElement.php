@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
-use Symfony\Component\Config\Util\XmlUtils;
+//use Symfony\Component\Config\Util\XmlUtils;
 
 /**
  * SimpleXMLElement class.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class SimpleXMLElement extends \SimpleXMLElement
+class ehough_iconic_SimpleXMLElement extends SimpleXMLElement
 {
     /**
      * Converts an attribute as a php type.
@@ -62,11 +62,11 @@ class SimpleXMLElement extends \SimpleXMLElement
 
             switch ($arg['type']) {
                 case 'service':
-                    $invalidBehavior = ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE;
+                    $invalidBehavior = ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE;
                     if (isset($arg['on-invalid']) && 'ignore' == $arg['on-invalid']) {
-                        $invalidBehavior = ContainerInterface::IGNORE_ON_INVALID_REFERENCE;
+                        $invalidBehavior = ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE;
                     } elseif (isset($arg['on-invalid']) && 'null' == $arg['on-invalid']) {
-                        $invalidBehavior = ContainerInterface::NULL_ON_INVALID_REFERENCE;
+                        $invalidBehavior = ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE;
                     }
 
                     if (isset($arg['strict'])) {
@@ -75,7 +75,7 @@ class SimpleXMLElement extends \SimpleXMLElement
                         $strict = true;
                     }
 
-                    $arguments[$key] = new Reference((string) $arg['id'], $invalidBehavior, $strict);
+                    $arguments[$key] = new ehough_iconic_Reference((string) $arg['id'], $invalidBehavior, $strict);
                     break;
                 case 'collection':
                     $arguments[$key] = $arg->getArgumentsAsPhp($name, false);

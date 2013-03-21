@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
+//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+//use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
 
 /**
  * This definition decorates another definition.
@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
  *
  * @api
  */
-class DefinitionDecorator extends Definition
+class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
 {
     private $parent;
     private $changes;

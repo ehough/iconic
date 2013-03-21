@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
 /**
  * A simple implementation of ContainerAwareInterface.
@@ -18,7 +18,7 @@ namespace Symfony\Component\DependencyInjection;
  *
  * @api
  */
-abstract class ContainerAware implements ContainerAwareInterface
+abstract class ehough_iconic_ContainerAware implements ContainerAwareInterface
 {
     /**
      * @var ContainerInterface

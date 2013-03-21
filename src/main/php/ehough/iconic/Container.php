@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
+//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+//use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
+//use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
+//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+//use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
 
 /**
  * Container is a dependency injection container.
@@ -59,7 +59,7 @@ use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
  *
  * @api
  */
-class Container implements IntrospectableContainerInterface
+class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerInterface
 {
     /**
      * @var ParameterBagInterface

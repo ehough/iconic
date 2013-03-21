@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
 /**
  * TaggedContainerInterface is the interface implemented when a container knows how to deals with tags.
@@ -18,7 +18,7 @@ namespace Symfony\Component\DependencyInjection;
  *
  * @api
  */
-interface TaggedContainerInterface extends ContainerInterface
+interface ehough_iconic_TaggedContainerInterface extends ehough_iconic_ContainerInterface
 {
     /**
      * Returns service ids for a given tag.

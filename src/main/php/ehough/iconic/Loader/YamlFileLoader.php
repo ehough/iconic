@@ -9,16 +9,16 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader;
+//namespace Symfony\Component\DependencyInjection\Loader;
 
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\Config\Resource\FileResource;
-use Symfony\Component\Yaml\Yaml;
+//use Symfony\Component\DependencyInjection\DefinitionDecorator;
+//use Symfony\Component\DependencyInjection\Alias;
+//use Symfony\Component\DependencyInjection\ContainerInterface;
+//use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+//use Symfony\Component\Config\Resource\FileResource;
+//use Symfony\Component\Yaml\Yaml;
 
 /**
  * YamlFileLoader loads YAML files service definitions.

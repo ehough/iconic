@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection;
+//namespace Symfony\Component\DependencyInjection;
 
 /**
  * Represents a variable.
@@ -24,7 +24,7 @@ namespace Symfony\Component\DependencyInjection;
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class Variable
+class ehough_iconic_Variable
 {
     private $name;
 

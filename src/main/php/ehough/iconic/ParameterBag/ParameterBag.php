@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\ParameterBag;
+//namespace Symfony\Component\DependencyInjection\ParameterBag;
 
-use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
-use Symfony\Component\DependencyInjection\Exception\ParameterCircularReferenceException;
-use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+//use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
+//use Symfony\Component\DependencyInjection\Exception\ParameterCircularReferenceException;
+//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 
 /**
  * Holds parameters.
