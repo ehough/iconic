@@ -1,15 +1,5 @@
 <?php
 
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Container;
-//use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\LogicException;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Parameter;
-//use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
-
 /**
  * ProjectServiceContainer
  *
@@ -56,7 +46,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
         $name = strtolower($name);
 
         if (!(isset($this->parameters[$name]) || array_key_exists($name, $this->parameters))) {
-            throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
         }
 
         return $this->parameters[$name];
@@ -77,7 +67,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
      */
     public function setParameter($name, $value)
     {
-        throw new LogicException('Impossible to call set() on a frozen ehough_iconic_parameterbag_ParameterBag.');
+        throw new ehough_iconic_exception_LogicException('Impossible to call set() on a frozen ehough_iconic_parameterbag_ParameterBag.');
     }
 
     /**
@@ -86,7 +76,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
     public function getParameterBag()
     {
         if (null === $this->parameterBag) {
-            $this->parameterBag = new FrozenParameterBag($this->parameters);
+            $this->parameterBag = new ehough_iconic_parameterbag_FrozenParameterBag($this->parameters);
         }
 
         return $this->parameterBag;

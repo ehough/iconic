@@ -18,12 +18,12 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsConfigEnabledReturnsTheResolvedValue($enabled)
     {
-        $pb = $this->getMockBuilder('Symfony\Component\DependencyInjection\ParameterBag\ParameterBag')
+        $pb = $this->getMockBuilder('ehough_iconic_parameterbag_ParameterBag')
             ->setMethods(array('resolveValue'))
             ->getMock()
         ;
 
-        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
+        $container = $this->getMockBuilder('ehough_iconic_ContainerBuilder')
             ->setMethods(array('getParameterBag'))
             ->getMock()
         ;
@@ -39,12 +39,12 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($pb))
         ;
 
-        $extension = $this->getMockBuilder('Symfony\Component\DependencyInjection\Extension\Extension')
+        $extension = $this->getMockBuilder('ehough_iconic_extension_Extension')
             ->setMethods(array())
             ->getMockForAbstractClass()
         ;
 
-        $r = new \ReflectionMethod('Symfony\Component\DependencyInjection\Extension\Extension', 'isConfigEnabled');
+        $r = new \ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
         $r->setAccessible(true);
 
         $r->invoke($extension, $container, array('enabled' => $enabled));
@@ -64,16 +64,16 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsConfigEnabledOnNonEnableableConfig()
     {
-        $container = $this->getMockBuilder('Symfony\Component\DependencyInjection\ContainerBuilder')
+        $container = $this->getMockBuilder('ehough_iconic_ContainerBuilder')
             ->getMock()
         ;
 
-        $extension = $this->getMockBuilder('Symfony\Component\DependencyInjection\Extension\Extension')
+        $extension = $this->getMockBuilder('ehough_iconic_extension_Extension')
             ->setMethods(array())
             ->getMockForAbstractClass()
         ;
 
-        $r = new \ReflectionMethod('Symfony\Component\DependencyInjection\Extension\Extension', 'isConfigEnabled');
+        $r = new \ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
         $r->setAccessible(true);
 
         $r->invoke($extension, $container, array());

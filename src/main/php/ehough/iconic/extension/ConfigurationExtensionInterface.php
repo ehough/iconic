@@ -19,7 +19,7 @@
  *
  * @author Kevin Bond <kevinbond@gmail.com>
  */
-interface ConfigurationExtensionInterface
+interface ehough_iconic_extension_ConfigurationExtensionInterface
 {
     /**
      * Returns extension configuration
@@ -27,7 +27,7 @@ interface ConfigurationExtensionInterface
      * @param array            $config    $config    An array of configuration values
      * @param ehough_iconic_ContainerBuilder $container A ContainerBuilder instance
      *
-     * @return ConfigurationInterface|null The configuration or null
+     * @return \Symfony\Component\Config\Definition\ConfigurationInterface|null The configuration or null
      */
-    public function getConfiguration(array $config, ContainerBuilder $container);
+    public function getConfiguration(array $config, ehough_iconic_ContainerBuilder $container);
 }

@@ -13,7 +13,7 @@
 
 //use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-interface PrependExtensionInterface
+interface ehough_iconic_extension_PrependExtensionInterface
 {
     /**
      * Allow an extension to prepend the extension configurations.

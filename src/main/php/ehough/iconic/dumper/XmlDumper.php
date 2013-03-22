@@ -294,7 +294,7 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
                 return 'true';
             case false === $value:
                 return 'false';
-            case $value instanceof Parameter:
+            case $value instanceof ehough_iconic_Parameter:
                 return '%'.$value.'%';
             case is_object($value) || is_resource($value):
                 throw new RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');

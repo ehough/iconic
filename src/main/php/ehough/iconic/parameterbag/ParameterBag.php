@@ -152,7 +152,7 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
             try {
                 $value = $this->resolveValue($value);
                 $parameters[$key] = $this->unescapeValue($value);
-            } catch (ParameterNotFoundException $e) {
+            } catch (ehough_iconic_exception_ParameterNotFoundException $e) {
                 $e->setSourceKey($key);
 
                 throw $e;
@@ -171,8 +171,8 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
      *
      * @return mixed The resolved value
      *
-     * @throws ParameterNotFoundException if a placeholder references a parameter that does not exist
-     * @throws ParameterCircularReferenceException if a circular reference if detected
+     * @throws ehough_iconic_exception_ParameterNotFoundException if a placeholder references a parameter that does not exist
+     * @throws ehough_iconic_exception_ParameterCircularReferenceException if a circular reference if detected
      * @throws RuntimeException when a given parameter has a type problem.
      */
     public function resolveValue($value, array $resolving = array())
@@ -201,8 +201,8 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
      *
      * @return string The resolved string
      *
-     * @throws ParameterNotFoundException if a placeholder references a parameter that does not exist
-     * @throws ParameterCircularReferenceException if a circular reference if detected
+     * @throws ehough_iconic_exception_ParameterNotFoundException if a placeholder references a parameter that does not exist
+     * @throws ehough_iconic_exception_ParameterCircularReferenceException if a circular reference if detected
      * @throws RuntimeException when a given parameter has a type problem.
      */
     public function resolveString($value, array $resolving = array())
@@ -214,7 +214,7 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
             $key = strtolower($match[1]);
 
             if (isset($resolving[$key])) {
-                throw new ParameterCircularReferenceException(array_keys($resolving));
+                throw new ehough_iconic_exception_ParameterCircularReferenceException(array_keys($resolving));
             }
 
             $resolving[$key] = true;
@@ -232,13 +232,13 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
 
             $key = strtolower($match[1]);
             if (isset($resolving[$key])) {
-                throw new ParameterCircularReferenceException(array_keys($resolving));
+                throw new ehough_iconic_exception_ParameterCircularReferenceException(array_keys($resolving));
             }
 
             $resolved = $self->get($key);
 
             if (!is_string($resolved) && !is_numeric($resolved)) {
-                throw new RuntimeException(sprintf('A string value must be composed of strings and/or numbers, but found parameter "%s" of type %s inside string value "%s".', $key, gettype($resolved), $value));
+                throw new ehough_iconic_exception_RuntimeException(sprintf('A string value must be composed of strings and/or numbers, but found parameter "%s" of type %s inside string value "%s".', $key, gettype($resolved), $value));
             }
 
             $resolved = (string) $resolved;

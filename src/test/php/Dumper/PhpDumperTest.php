@@ -31,7 +31,7 @@ class PhpDumperTest extends \PHPUnit_Framework_TestCase
         $dumper = new ehough_iconic_dumper_PhpDumper($container = new ehough_iconic_ContainerBuilder());
 
         $this->assertStringEqualsFile(self::$fixturesPath.'/php/services1.php', $dumper->dump(), '->dump() dumps an empty container as an empty PHP class');
-        $this->assertStringEqualsFile(self::$fixturesPath.'/php/services1-1.php', $dumper->dump(array('class' => 'Container', 'base_class' => 'AbstractContainer')), '->dump() takes a class and a base_class options');
+        $this->assertStringEqualsFile(self::$fixturesPath.'/php/services1-1.php', $dumper->dump(array('class' => 'ehough_iconic_Container', 'base_class' => 'AbstractContainer')), '->dump() takes a class and a base_class options');
 
         $container = new ehough_iconic_ContainerBuilder();
         new ehough_iconic_dumper_PhpDumper($container);

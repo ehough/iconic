@@ -126,14 +126,14 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
         try {
             $bag->resolveValue('%foobar%');
             $this->fail('->resolveValue() throws an InvalidArgumentException if a placeholder references a non-existent parameter');
-        } catch (ParameterNotFoundException $e) {
+        } catch (ehough_iconic_exception_ParameterNotFoundException $e) {
             $this->assertEquals('You have requested a non-existent parameter "foobar".', $e->getMessage(), '->resolveValue() throws a ParameterNotFoundException if a placeholder references a non-existent parameter');
         }
 
         try {
             $bag->resolveValue('foo %foobar% bar');
             $this->fail('->resolveValue() throws a ParameterNotFoundException if a placeholder references a non-existent parameter');
-        } catch (ParameterNotFoundException $e) {
+        } catch (ehough_iconic_exception_ParameterNotFoundException $e) {
             $this->assertEquals('You have requested a non-existent parameter "foobar".', $e->getMessage(), '->resolveValue() throws a ParameterNotFoundException if a placeholder references a non-existent parameter');
         }
 
@@ -149,7 +149,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
         try {
             $bag->resolveValue('%foo%');
             $this->fail('->resolveValue() throws a ParameterCircularReferenceException when a parameter has a circular reference');
-        } catch (ParameterCircularReferenceException $e) {
+        } catch (ehough_iconic_exception_ParameterCircularReferenceException $e) {
             $this->assertEquals('Circular reference detected for parameter "foo" ("foo" > "bar" > "foobar" > "foo").', $e->getMessage(), '->resolveValue() throws a ParameterCircularReferenceException when a parameter has a circular reference');
         }
 
@@ -157,7 +157,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
         try {
             $bag->resolveValue('%foo%');
             $this->fail('->resolveValue() throws a ParameterCircularReferenceException when a parameter has a circular reference');
-        } catch (ParameterCircularReferenceException $e) {
+        } catch (ehough_iconic_exception_ParameterCircularReferenceException $e) {
             $this->assertEquals('Circular reference detected for parameter "foo" ("foo" > "bar" > "foobar" > "foo").', $e->getMessage(), '->resolveValue() throws a ParameterCircularReferenceException when a parameter has a circular reference');
         }
 
@@ -174,7 +174,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
 
         try {
             $bag->resolve();
-        } catch (ParameterNotFoundException $e) {
+        } catch (ehough_iconic_exception_ParameterNotFoundException $e) {
             $this->assertEquals('The parameter "foo" has a dependency on a non-existent parameter "bar".', $e->getMessage());
         }
 
@@ -182,7 +182,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
 
         try {
             $bag->resolve();
-        } catch (ParameterNotFoundException $e) {
+        } catch (ehough_iconic_exception_ParameterNotFoundException $e) {
             $this->assertEquals('The parameter "foo" has a dependency on a non-existent parameter "bar".', $e->getMessage());
         }
     }
@@ -229,7 +229,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
 
         try {
             $this->assertEquals($expected, $bag->resolveString($test), $description);
-        } catch (ParameterNotFoundException $e) {
+        } catch (ehough_iconic_exception_ParameterNotFoundException $e) {
             $this->fail(sprintf('%s - "%s"', $description, $expected));
         }
     }

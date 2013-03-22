@@ -80,7 +80,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     {
         $options = array_merge(array(
             'class'      => 'ProjectServiceContainer',
-            'base_class' => 'Container',
+            'base_class' => 'ehough_iconic_Container',
         ), $options);
 
         $code = $this->startClass($options['class'], $options['base_class']);
@@ -187,7 +187,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
      *
      * @return string
      *
-     * @throws RuntimeException When the factory definition is incomplete
+     * @throws ehough_iconic_exception_RuntimeException When the factory definition is incomplete
      * @throws ehough_iconic_exception_ServiceCircularReferenceException When a circular reference is detected
      */
     private function addServiceInlinedDefinitions($id, $definition)
@@ -269,15 +269,15 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
      *
      * @return string
      *
-     * @throws InvalidArgumentException
-     * @throws RuntimeException
+     * @throws ehough_iconic_exception_InvalidArgumentException
+     * @throws ehough_iconic_exception_RuntimeException
      */
     private function addServiceInstance($id, $definition)
     {
         $class = $this->dumpValue($definition->getClass());
 
         if (0 === strpos($class, "'") && !preg_match('/^\'[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*(\\\{2}[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)*\'$/', $class)) {
-            throw new InvalidArgumentException(sprintf('"%s" is not a valid class name for the "%s" service.', $class, $id));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('"%s" is not a valid class name for the "%s" service.', $class, $id));
         }
 
         $simple = $this->isSimpleInstance($id, $definition);
@@ -444,7 +444,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
         $return = array();
 
         if ($definition->isSynthetic()) {
-            $return[] = '@throws RuntimeException always since this service is expected to be injected dynamically';
+            $return[] = '@throws ehough_iconic_exception_RuntimeException always since this service is expected to be injected dynamically';
         } elseif ($class = $definition->getClass()) {
             $return[] = sprintf("@return %s A %s instance.", 0 === strpos($class, '%') ? 'object' : $class, $class);
         } elseif ($definition->getFactoryClass()) {
@@ -458,7 +458,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
             if ($return && 0 === strpos($return[count($return) - 1], '@return')) {
                 $return[] = '';
             }
-            $return[] = sprintf("@throws InactiveScopeException when the '%s' service is requested while the '%s' scope is not active", $id, $scope);
+            $return[] = sprintf("@throws ehough_iconic_exception_InactiveScopeException when the '%s' service is requested while the '%s' scope is not active", $id, $scope);
         }
 
         $return = implode("\n     * ", $return);
@@ -498,7 +498,7 @@ EOF;
         if (!in_array($scope, array(ehough_iconic_ContainerInterface::SCOPE_CONTAINER, ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE))) {
             $code .= <<<EOF
         if (!isset(\$this->scopedServices['$scope'])) {
-            throw new InactiveScopeException('$id', '$scope');
+            throw new ehough_iconic_exception_InactiveScopeException('$id', '$scope');
         }
 
 
@@ -506,7 +506,7 @@ EOF;
         }
 
         if ($definition->isSynthetic()) {
-            $code .= sprintf("        throw new RuntimeException('You have requested a synthetic service (\"%s\"). The DIC does not know how to construct this service.');\n    }\n", $id);
+            $code .= sprintf("        throw new ehough_iconic_exception_RuntimeException('You have requested a synthetic service (\"%s\"). The DIC does not know how to construct this service.');\n    }\n", $id);
         } else {
             $code .=
                 $this->addServiceInclude($id, $definition).
@@ -605,7 +605,7 @@ EOF;
                 return sprintf("        $return{$instantiation}%s->%s(%s);\n", $this->getServiceCall($definition->getFactoryService()), $definition->getFactoryMethod(), implode(', ', $arguments));
             }
 
-            throw new RuntimeException('Factory method requires a factory service or factory class in service definition for '.$id);
+            throw new ehough_iconic_exception_RuntimeException('Factory method requires a factory service or factory class in service definition for '.$id);
         }
 
         if (false !== strpos($class, '$')) {
@@ -625,20 +625,10 @@ EOF;
      */
     private function startClass($class, $baseClass)
     {
-        $bagClass = $this->container->isFrozen() ? 'use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;' : 'use Symfony\Component\DependencyInjection\ParameterBag\\ParameterBag;';
+        //$bagClass = $this->container->isFrozen() ? 'use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;' : 'use Symfony\Component\DependencyInjection\ParameterBag\\ParameterBag;';
 
         return <<<EOF
 <?php
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Exception\LogicException;
-use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Parameter;
-$bagClass
 
 /**
  * $class
@@ -757,7 +747,7 @@ EOF;
         \$name = strtolower(\$name);
 
         if (!(isset(\$this->parameters[\$name]) || array_key_exists(\$name, \$this->parameters))) {
-            throw new InvalidArgumentException(sprintf('The parameter "%s" must be defined.', \$name));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The parameter "%s" must be defined.', \$name));
         }
 
         return \$this->parameters[\$name];
@@ -778,7 +768,7 @@ EOF;
      */
     public function setParameter(\$name, \$value)
     {
-        throw new LogicException('Impossible to call set() on a frozen ehough_iconic_parameterbag_ParameterBag.');
+        throw new ehough_iconic_exception_LogicException('Impossible to call set() on a frozen ehough_iconic_parameterbag_ParameterBag.');
     }
 
     /**
@@ -787,7 +777,7 @@ EOF;
     public function getParameterBag()
     {
         if (null === \$this->parameterBag) {
-            \$this->parameterBag = new FrozenParameterBag(\$this->parameters);
+            \$this->parameterBag = new ehough_iconic_parameterbag_FrozenParameterBag(\$this->parameters);
         }
 
         return \$this->parameterBag;
@@ -821,7 +811,7 @@ EOF;
      *
      * @return string
      *
-     * @throws InvalidArgumentException
+     * @throws ehough_iconic_exception_InvalidArgumentException
      */
     private function exportParameters($parameters, $path = '', $indent = 12)
     {
@@ -830,11 +820,11 @@ EOF;
             if (is_array($value)) {
                 $value = $this->exportParameters($value, $path.'/'.$key, $indent + 4);
             } elseif ($value instanceof ehough_iconic_Variable) {
-                throw new InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain variable references. Variable "%s" found in "%s".', $value, $path.'/'.$key));
+                throw new ehough_iconic_exception_InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain variable references. Variable "%s" found in "%s".', $value, $path.'/'.$key));
             } elseif ($value instanceof ehough_iconic_Definition) {
-                throw new InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain service definitions. Definition for "%s" found in "%s".', $value->getClass(), $path.'/'.$key));
+                throw new ehough_iconic_exception_InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain service definitions. Definition for "%s" found in "%s".', $value->getClass(), $path.'/'.$key));
             } elseif ($value instanceof ehough_iconic_Reference) {
-                throw new InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain references to other services (reference to service "%s" found in "%s").', $value, $path.'/'.$key));
+                throw new ehough_iconic_exception_InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain references to other services (reference to service "%s" found in "%s").', $value, $path.'/'.$key));
             } else {
                 $value = var_export($value, true);
             }
@@ -1006,7 +996,7 @@ EOF;
      *
      * @return string
      *
-     * @throws RuntimeException
+     * @throws ehough_iconic_exception_RuntimeException
      */
     private function dumpValue($value, $interpolate = true)
     {
@@ -1022,10 +1012,10 @@ EOF;
                 return $this->dumpValue($this->definitionVariables->offsetGet($value), $interpolate);
             }
             if (count($value->getMethodCalls()) > 0) {
-                throw new RuntimeException('Cannot dump definitions which have method calls.');
+                throw new ehough_iconic_exception_RuntimeException('Cannot dump definitions which have method calls.');
             }
             if (null !== $value->getConfigurator()) {
-                throw new RuntimeException('Cannot dump definitions which have a configurator.');
+                throw new ehough_iconic_exception_RuntimeException('Cannot dump definitions which have a configurator.');
             }
 
             $arguments = array();
@@ -1035,7 +1025,7 @@ EOF;
             $class = $this->dumpValue($value->getClass());
 
             if (false !== strpos($class, '$')) {
-                throw new RuntimeException('Cannot dump definitions which have a variable class name.');
+                throw new ehough_iconic_exception_RuntimeException('Cannot dump definitions which have a variable class name.');
             }
 
             if (null !== $value->getFactoryMethod()) {
@@ -1044,7 +1034,7 @@ EOF;
                 } elseif (null !== $value->getFactoryService()) {
                     return sprintf("%s->%s(%s)", $this->getServiceCall($value->getFactoryService()), $value->getFactoryMethod(), implode(', ', $arguments));
                 } else {
-                    throw new RuntimeException('Cannot dump definitions which have factory method without factory service or factory class.');
+                    throw new ehough_iconic_exception_RuntimeException('Cannot dump definitions which have factory method without factory service or factory class.');
                 }
             }
 
@@ -1075,7 +1065,7 @@ EOF;
                 return $code;
             }
         } elseif (is_object($value) || is_resource($value)) {
-            throw new RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
+            throw new ehough_iconic_exception_RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
         } else {
             return var_export($value, true);
         }

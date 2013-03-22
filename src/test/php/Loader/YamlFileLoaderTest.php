@@ -113,7 +113,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
         $loader->load('services6.yml');
         $services = $container->getDefinitions();
         $this->assertTrue(isset($services['foo']), '->load() parses service elements');
-        $this->assertEquals('Symfony\\Component\\DependencyInjection\\Definition', get_class($services['foo']), '->load() converts service element to ehough_iconic_Definition instances');
+        $this->assertEquals('ehough_iconic_Definition', get_class($services['foo']), '->load() converts service element to ehough_iconic_Definition instances');
         $this->assertEquals('FooClass', $services['foo']->getClass(), '->load() parses the class attribute');
         $this->assertEquals('container', $services['scope.container']->getScope());
         $this->assertEquals('custom', $services['scope.custom']->getScope());
@@ -180,7 +180,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
             $loader->load('badtag1.yml');
             $this->fail('->load() should throw an exception when the tags key of a service is not an array');
         } catch (\Exception $e) {
-            $this->assertInstanceOf('Symfony\Component\DependencyInjection\Exception\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the tags key is not an array');
+            $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the tags key is not an array');
             $this->assertStringStartsWith('Parameter "tags" must be an array for service', $e->getMessage(), '->load() throws an InvalidArgumentException if the tags key is not an array');
         }
     }
@@ -192,7 +192,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
             $loader->load('badtag2.yml');
             $this->fail('->load() should throw an exception when a tag is missing the name key');
         } catch (\Exception $e) {
-            $this->assertInstanceOf('Symfony\Component\DependencyInjection\Exception\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if a tag is missing the name key');
+            $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if a tag is missing the name key');
             $this->assertStringStartsWith('A "tags" entry is missing a "name" key for service ', $e->getMessage(), '->load() throws an InvalidArgumentException if a tag is missing the name key');
         }
     }
@@ -204,7 +204,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
             $loader->load('badtag3.yml');
             $this->fail('->load() should throw an exception when a tag-attribute is not a scalar');
         } catch (\Exception $e) {
-            $this->assertInstanceOf('Symfony\Component\DependencyInjection\Exception\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if a tag-attribute is not a scalar');
+            $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if a tag-attribute is not a scalar');
             $this->assertStringStartsWith('A "tags" attribute must be of a scalar-type for service ', $e->getMessage(), '->load() throws an InvalidArgumentException if a tag-attribute is not a scalar');
         }
     }

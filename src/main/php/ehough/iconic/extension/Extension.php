@@ -24,7 +24,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class Extension implements ExtensionInterface, ConfigurationExtensionInterface
+abstract class ehough_iconic_extension_Extension implements ehough_iconic_extension_ExtensionInterface, ehough_iconic_extension_ConfigurationExtensionInterface
 {
     /**
      * Returns the base path for the XSD files.
@@ -74,13 +74,13 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
         }
         $classBaseName = substr(strrchr($className, '\\'), 1, -9);
 
-        return Container::underscore($classBaseName);
+        return ehough_iconic_Container::underscore($classBaseName);
     }
 
     /**
      * {@inheritDoc}
      */
-    public function getConfiguration(array $config, ContainerBuilder $container)
+    public function getConfiguration(array $config, ehough_iconic_ContainerBuilder $container)
     {
         $reflected = new \ReflectionClass($this);
         $namespace = $reflected->getNamespaceName();
@@ -113,12 +113,12 @@ abstract class Extension implements ExtensionInterface, ConfigurationExtensionIn
      *
      * @return Boolean Whether the configuration is enabled
      *
-     * @throws InvalidArgumentException When the config is not enableable
+     * @throws ehough_iconic_exception_InvalidArgumentException When the config is not enableable
      */
     protected function isConfigEnabled(ehough_iconic_ContainerBuilder $container, array $config)
     {
         if (!array_key_exists('enabled', $config)) {
-            throw new InvalidArgumentException("The config array has no 'enabled' key.");
+            throw new ehough_iconic_exception_InvalidArgumentException("The config array has no 'enabled' key.");
         }
 
         return (Boolean) $container->getParameterBag()->resolveValue($config['enabled']);

@@ -81,7 +81,7 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
         }
 
         $xml = $m->invoke($loader, self::$fixturesPath.'/xml/services1.xml');
-        $this->assertEquals('Symfony\\Component\\DependencyInjection\\SimpleXMLElement', get_class($xml), '->parseFile() returns an SimpleXMLElement object');
+        $this->assertEquals('ehough_iconic_SimpleXMLElement', get_class($xml), '->parseFile() returns an SimpleXMLElement object');
     }
 
     public function testLoadParameters()
@@ -131,7 +131,7 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
         // anonymous service as an argument
         $args = $services['foo']->getArguments();
         $this->assertEquals(1, count($args), '->load() references anonymous services as "normal" ones');
-        $this->assertEquals('Symfony\\Component\\DependencyInjection\\Reference', get_class($args[0]), '->load() converts anonymous services to references to "normal" services');
+        $this->assertEquals('ehough_iconic_Reference', get_class($args[0]), '->load() converts anonymous services to references to "normal" services');
         $this->assertTrue(isset($services[(string) $args[0]]), '->load() makes a reference to the created ones');
         $inner = $services[(string) $args[0]];
         $this->assertEquals('BarClass', $inner->getClass(), '->load() uses the same configuration as for the anonymous ones');
@@ -139,7 +139,7 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
         // inner anonymous services
         $args = $inner->getArguments();
         $this->assertEquals(1, count($args), '->load() references anonymous services as "normal" ones');
-        $this->assertEquals('Symfony\\Component\\DependencyInjection\\Reference', get_class($args[0]), '->load() converts anonymous services to references to "normal" services');
+        $this->assertEquals('ehough_iconic_Reference', get_class($args[0]), '->load() converts anonymous services to references to "normal" services');
         $this->assertTrue(isset($services[(string) $args[0]]), '->load() makes a reference to the created ones');
         $inner = $services[(string) $args[0]];
         $this->assertEquals('BazClass', $inner->getClass(), '->load() uses the same configuration as for the anonymous ones');
@@ -147,7 +147,7 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
         // anonymous service as a property
         $properties = $services['foo']->getProperties();
         $property = $properties['p'];
-        $this->assertEquals('Symfony\\Component\\DependencyInjection\\Reference', get_class($property), '->load() converts anonymous services to references to "normal" services');
+        $this->assertEquals('ehough_iconic_Reference', get_class($property), '->load() converts anonymous services to references to "normal" services');
         $this->assertTrue(isset($services[(string) $property]), '->load() makes a reference to the created ones');
         $inner = $services[(string) $property];
         $this->assertEquals('BazClass', $inner->getClass(), '->load() uses the same configuration as for the anonymous ones');
@@ -160,7 +160,7 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
         $loader->load('services6.xml');
         $services = $container->getDefinitions();
         $this->assertTrue(isset($services['foo']), '->load() parses <service> elements');
-        $this->assertEquals('Symfony\\Component\\DependencyInjection\\Definition', get_class($services['foo']), '->load() converts <service> element to ehough_iconic_Definition instances');
+        $this->assertEquals('ehough_iconic_Definition', get_class($services['foo']), '->load() converts <service> element to ehough_iconic_Definition instances');
         $this->assertEquals('FooClass', $services['foo']->getClass(), '->load() parses the class attribute');
         $this->assertEquals('container', $services['scope.container']->getScope());
         $this->assertEquals('custom', $services['scope.custom']->getScope());
