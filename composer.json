@@ -1,12 +1,8 @@
 {
     "name": "ehough/iconic",
-
-    "description": "PHP Dependency Injection (DI) container heavily based on Symfony's DI component, but more lightweight. Requires PHP 5.1.0 or higher.",
-
+    "description": "Fork of Symfony's Dependency Injection component compatible with PHP 5.2+.",
     "homepage": "https://github.com/ehough/iconic",
-
-    "license": "GPL-3.0+",
-
+    "license": "MIT",
     "authors": [
         {
             "name": "Eric Hough",
@@ -14,23 +10,22 @@
             "homepage": "http://ehough.com"
         }
     ],
-
     "require": {
-
-        "php": ">=5.1.0"
+        "php": ">=5.2.0"
     },
-
     "require-dev": {
-        
-	    "ehough/pulsar": "1.*"
+        "symfony/yaml": "~2.0",
+        "symfony/config": ">=2.2,<2.4-dev"
     },
 
     "autoload": {
 
         "psr-0": {
-
             "ehough_iconic": "src/main/php"
         }
+    },
+    "suggest": {
+        "symfony/yaml": "2.2.*",
+        "symfony/config": "2.2.*"
     }
-
 }
