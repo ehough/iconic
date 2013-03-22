@@ -120,7 +120,7 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
      * @param array  $service
      * @param string $file
      *
-     * @throws InvalidArgumentException When tags are invalid
+     * @throws ehough_iconic_exception_InvalidArgumentException When tags are invalid
      */
     private function parseDefinition($id, $service, $file)
     {
@@ -246,7 +246,7 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
      *
      * @return array
      *
-     * @throws InvalidArgumentException When service file is not valid
+     * @throws ehough_iconic_exception_InvalidArgumentException When service file is not valid
      */
     private function validate($content, $file)
     {

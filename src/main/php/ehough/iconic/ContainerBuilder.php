@@ -111,7 +111,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      *
      * @return ehough_iconic_extension_ExtensionInterface An extension instance
      *
-     * @throws LogicException if the extension is not registered
+     * @throws ehough_iconic_exception_LogicException if the extension is not registered
      *
      * @api
      */
@@ -125,7 +125,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
             return $this->extensionsByNs[$name];
         }
 
-        throw new LogicException(sprintf('Container extension "%s" is not registered', $name));
+        throw new ehough_iconic_exception_LogicException(sprintf('Container extension "%s" is not registered', $name));
     }
 
     /**
@@ -238,7 +238,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      * @return ehough_iconic_ContainerBuilder The current instance
      * @throws ehough_iconic_exception_BadMethodCallException When this ContainerBuilder is frozen
      *
-     * @throws LogicException if the container is frozen
+     * @throws ehough_iconic_exception_LogicException if the container is frozen
      *
      * @api
      */
@@ -341,7 +341,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      * @param object $service The service instance
      * @param string $scope   The scope
      *
-     * @throws BadMethodCallException When this ContainerBuilder is frozen
+     * @throws ehough_iconic_exception_BadMethodCallException When this ContainerBuilder is frozen
      *
      * @api
      */
@@ -603,7 +603,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      * Sets an alias for an existing service.
      *
      * @param string        $alias The alias to create
-     * @param string|Alias  $id    The service to alias
+     * @param string|ehough_iconic_Alias  $id    The service to alias
      *
      * @throws ehough_iconic_exception_InvalidArgumentException if the id is not a string or an ehough_iconic_Alias
      * @throws ehough_iconic_exception_InvalidArgumentException if the alias is for itself
@@ -674,7 +674,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      *
      * @return ehough_iconic_Alias An ehough_iconic_Alias instance
      *
-     * @throws InvalidArgumentException if the alias does not exist
+     * @throws ehough_iconic_exception_InvalidArgumentException if the alias does not exist
      *
      * @api
      */

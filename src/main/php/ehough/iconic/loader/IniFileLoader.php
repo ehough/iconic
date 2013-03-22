@@ -27,7 +27,7 @@ class ehough_iconic_loader_IniFileLoader extends ehough_iconic_loader_FileLoader
      * @param mixed  $file The resource
      * @param string $type The resource type
      *
-     * @throws InvalidArgumentException When ini file is not valid
+     * @throws ehough_iconic_exception_InvalidArgumentException When ini file is not valid
      */
     public function load($file, $type = null)
     {
@@ -37,7 +37,7 @@ class ehough_iconic_loader_IniFileLoader extends ehough_iconic_loader_FileLoader
 
         $result = parse_ini_file($path, true);
         if (false === $result || array() === $result) {
-            throw new InvalidArgumentException(sprintf('The "%s" file is not valid.', $file));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The "%s" file is not valid.', $file));
         }
 
         if (isset($result['parameters']) && is_array($result['parameters'])) {

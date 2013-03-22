@@ -54,7 +54,7 @@ interface ehough_iconic_parameterbag_ParameterBagInterface
      *
      * @return mixed  The parameter value
      *
-     * @throws ParameterNotFoundException if the parameter is not defined
+     * @throws ehough_iconic_exception_ParameterNotFoundException if the parameter is not defined
      *
      * @api
      */
@@ -91,7 +91,7 @@ interface ehough_iconic_parameterbag_ParameterBagInterface
      *
      * @param mixed $value A value
      *
-     * @throws ParameterNotFoundException if a placeholder references a parameter that does not exist
+     * @throws ehough_iconic_exception_ParameterNotFoundException if a placeholder references a parameter that does not exist
      */
     public function resolveValue($value);
 

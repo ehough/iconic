@@ -141,7 +141,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @return mixed  The parameter value
      *
-     * @throws InvalidArgumentException if the parameter is not defined
+     * @throws ehough_iconic_exception_InvalidArgumentException if the parameter is not defined
      *
      * @api
      */

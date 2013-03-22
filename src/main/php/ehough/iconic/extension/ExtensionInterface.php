@@ -28,7 +28,7 @@ interface ehough_iconic_extension_ExtensionInterface
      * @param array            $config    An array of configuration values
      * @param ehough_iconic_ContainerBuilder $container A ContainerBuilder instance
      *
-     * @throws InvalidArgumentException When provided tag is not defined in this extension
+     * @throws ehough_iconic_exception_InvalidArgumentException When provided tag is not defined in this extension
      *
      * @api
      */

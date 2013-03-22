@@ -47,7 +47,7 @@ class ehough_iconic_parameterbag_FrozenParameterBag extends ehough_iconic_parame
      */
     public function clear()
     {
-        throw new LogicException('Impossible to call clear() on a frozen ehough_iconic_parameterbag_ParameterBag.');
+        throw new ehough_iconic_exception_LogicException('Impossible to call clear() on a frozen ehough_iconic_parameterbag_ParameterBag.');
     }
 
     /**
@@ -57,7 +57,7 @@ class ehough_iconic_parameterbag_FrozenParameterBag extends ehough_iconic_parame
      */
     public function add(array $parameters)
     {
-        throw new LogicException('Impossible to call add() on a frozen ehough_iconic_parameterbag_ParameterBag.');
+        throw new ehough_iconic_exception_LogicException('Impossible to call add() on a frozen ehough_iconic_parameterbag_ParameterBag.');
     }
 
     /**
@@ -67,6 +67,6 @@ class ehough_iconic_parameterbag_FrozenParameterBag extends ehough_iconic_parame
      */
     public function set($name, $value)
     {
-        throw new LogicException('Impossible to call set() on a frozen ehough_iconic_parameterbag_ParameterBag.');
+        throw new ehough_iconic_exception_LogicException('Impossible to call set() on a frozen ehough_iconic_parameterbag_ParameterBag.');
     }
 }

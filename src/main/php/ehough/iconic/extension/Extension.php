@@ -64,13 +64,13 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
      *
      * @return string The alias
      *
-     * @throws BadMethodCallException When the extension name does not follow conventions
+     * @throws ehough_iconic_exception_BadMethodCallException When the extension name does not follow conventions
      */
     public function getAlias()
     {
         $className = get_class($this);
         if (substr($className, -9) != 'Extension') {
-            throw new BadMethodCallException('This extension does not follow the naming convention; you must overwrite the getAlias() method.');
+            throw new ehough_iconic_exception_BadMethodCallException('This extension does not follow the naming convention; you must overwrite the getAlias() method.');
         }
         $classBaseName = substr(strrchr($className, '\\'), 1, -9);
 
@@ -82,13 +82,13 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
      */
     public function getConfiguration(array $config, ehough_iconic_ContainerBuilder $container)
     {
-        $reflected = new \ReflectionClass($this);
+        $reflected = new ReflectionClass($this);
         $namespace = $reflected->getNamespaceName();
 
         $class = $namespace . '\\Configuration';
         if (class_exists($class)) {
-            $r = new \ReflectionClass($class);
-            $container->addResource(new FileResource($r->getFileName()));
+            $r = new ReflectionClass($class);
+            $container->addResource(new \Symfony\Component\Config\Resource\FileResource($r->getFileName()));
 
             if (!method_exists($class, '__construct')) {
                 $configuration = new $class();
@@ -100,9 +100,9 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
         return null;
     }
 
-    final protected function processConfiguration(ConfigurationInterface $configuration, array $configs)
+    final protected function processConfiguration(\Symfony\Component\Config\Definition\ConfigurationInterface $configuration, array $configs)
     {
-        $processor = new Processor();
+        $processor = new \Symfony\Component\Config\Definition\Processor();
 
         return $processor->processConfiguration($configuration, $configs);
     }

@@ -203,14 +203,14 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
      *
      * @return SimpleXMLElement
      *
-     * @throws InvalidArgumentException When loading of XML file returns error
+     * @throws ehough_iconic_exception_InvalidArgumentException When loading of XML file returns error
      */
     protected function parseFile($file)
     {
         try {
             $dom = \Symfony\Component\Config\Util\XmlUtils::loadFile($file, array($this, 'validateSchema'));
-        } catch (InvalidArgumentException $e) {
-            throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
+        } catch (\InvalidArgumentException $e) {
+            throw new ehough_iconic_exception_InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
         }
 
         $this->validateExtensions($dom, $file);
@@ -277,7 +277,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
      *
      * @return Boolean
      *
-     * @throws RuntimeException When extension references a non-existent XSD file
+     * @throws ehough_iconic_exception_RuntimeException When extension references a non-existent XSD file
      */
     public function validateSchema(\DOMDocument $dom)
     {
@@ -294,7 +294,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
                     $path = str_replace($extension->getNamespace(), str_replace('\\', '/', $extension->getXsdValidationBasePath()).'/', $items[$i + 1]);
 
                     if (!is_file($path)) {
-                        throw new RuntimeException(sprintf('Extension "%s" references a non-existent XSD file "%s"', get_class($extension), $path));
+                        throw new ehough_iconic_exception_RuntimeException(sprintf('Extension "%s" references a non-existent XSD file "%s"', get_class($extension), $path));
                     }
 
                     $schemaLocations[$items[$i]] = $path;
@@ -348,7 +348,7 @@ EOF
      * @param \DOMDocument $dom
      * @param string       $file
      *
-     * @throws InvalidArgumentException When no extension is found corresponding to a tag
+     * @throws ehough_iconic_exception_InvalidArgumentException When no extension is found corresponding to a tag
      */
     private function validateExtensions(\DOMDocument $dom, $file)
     {
@@ -360,7 +360,7 @@ EOF
             // can it be handled by an extension?
             if (!$this->container->hasExtension($node->namespaceURI)) {
                 $extensionNamespaces = array_filter(array_map(function ($ext) { return $ext->getNamespace(); }, $this->container->getExtensions()));
-                throw new InvalidArgumentException(sprintf(
+                throw new ehough_iconic_exception_InvalidArgumentException(sprintf(
                     'There is no extension able to load the configuration for "%s" (in %s). Looked for namespace "%s", found %s',
                     $node->tagName,
                     $file,

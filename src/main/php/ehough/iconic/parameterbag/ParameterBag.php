@@ -173,7 +173,7 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
      *
      * @throws ehough_iconic_exception_ParameterNotFoundException if a placeholder references a parameter that does not exist
      * @throws ehough_iconic_exception_ParameterCircularReferenceException if a circular reference if detected
-     * @throws RuntimeException when a given parameter has a type problem.
+     * @throws ehough_iconic_exception_RuntimeException when a given parameter has a type problem.
      */
     public function resolveValue($value, array $resolving = array())
     {
@@ -203,7 +203,7 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
      *
      * @throws ehough_iconic_exception_ParameterNotFoundException if a placeholder references a parameter that does not exist
      * @throws ehough_iconic_exception_ParameterCircularReferenceException if a circular reference if detected
-     * @throws RuntimeException when a given parameter has a type problem.
+     * @throws ehough_iconic_exception_RuntimeException when a given parameter has a type problem.
      */
     public function resolveString($value, array $resolving = array())
     {

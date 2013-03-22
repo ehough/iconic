@@ -78,7 +78,7 @@ interface ehough_iconic_ContainerInterface
      *
      * @return mixed  The parameter value
      *
-     * @throws InvalidArgumentException if the parameter is not defined
+     * @throws ehough_iconic_exception_InvalidArgumentException if the parameter is not defined
      *
      * @api
      */
