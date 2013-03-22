@@ -196,7 +196,7 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
      *
      * @return mixed
      *
-     * @throws RuntimeException When trying to dump object or resource
+     * @throws ehough_iconic_exception_RuntimeException When trying to dump object or resource
      */
     private function dumpValue($value)
     {
@@ -212,7 +212,7 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
         } elseif ($value instanceof ehough_iconic_Parameter) {
             return $this->getParameterCall((string) $value);
         } elseif (is_object($value) || is_resource($value)) {
-            throw new RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
+            throw new ehough_iconic_exception_RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
         }
 
         return $value;

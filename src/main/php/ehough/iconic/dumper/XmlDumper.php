@@ -28,7 +28,7 @@
 class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
 {
     /**
-     * @var \DOMDocument
+     * @var DOMDocument
      */
     private $document;
 
@@ -65,7 +65,7 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
      *
      * @param \DOMElement $parent
      */
-    private function addParameters(\DOMElement $parent)
+    private function addParameters(DOMElement $parent)
     {
         $data = $this->container->getParameterBag()->all();
         if (!$data) {
@@ -85,9 +85,9 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
      * Adds method calls.
      *
      * @param array       $methodcalls
-     * @param \DOMElement $parent
+     * @param DOMElement $parent
      */
-    private function addMethodCalls(array $methodcalls, \DOMElement $parent)
+    private function addMethodCalls(array $methodcalls, DOMElement $parent)
     {
         foreach ($methodcalls as $methodcall) {
             $call = $this->document->createElement('call');
@@ -106,7 +106,7 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
      * @param string      $id
      * @param \DOMElement $parent
      */
-    private function addService($definition, $id, \DOMElement $parent)
+    private function addService($definition, $id, DOMElement $parent)
     {
         $service = $this->document->createElement('service');
         if (null !== $id) {
@@ -174,9 +174,9 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
      *
      * @param string      $alias
      * @param string      $id
-     * @param \DOMElement $parent
+     * @param DOMElement $parent
      */
-    private function addServiceAlias($alias, $id, \DOMElement $parent)
+    private function addServiceAlias($alias, $id, DOMElement $parent)
     {
         $service = $this->document->createElement('service');
         $service->setAttribute('id', $alias);
@@ -190,9 +190,9 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
     /**
      * Adds services.
      *
-     * @param \DOMElement $parent
+     * @param DOMElement $parent
      */
-    private function addServices(\DOMElement $parent)
+    private function addServices(DOMElement $parent)
     {
         $definitions = $this->container->getDefinitions();
         if (!$definitions) {
@@ -215,10 +215,10 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
      *
      * @param array       $parameters
      * @param string      $type
-     * @param \DOMElement $parent
+     * @param DOMElement $parent
      * @param string      $keyAttribute
      */
-    private function convertParameters($parameters, $type, \DOMElement $parent, $keyAttribute = 'key')
+    private function convertParameters($parameters, $type, DOMElement $parent, $keyAttribute = 'key')
     {
         $withKeys = array_keys($parameters) !== range(0, count($parameters) - 1);
         foreach ($parameters as $key => $value) {
@@ -283,7 +283,7 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
      *
      * @return string
      *
-     * @throws RuntimeException When trying to dump object or resource
+     * @throws ehough_iconic_exception_RuntimeException When trying to dump object or resource
      */
     public static function phpToXml($value)
     {
@@ -297,7 +297,7 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
             case $value instanceof ehough_iconic_Parameter:
                 return '%'.$value.'%';
             case is_object($value) || is_resource($value):
-                throw new RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
+                throw new ehough_iconic_exception_RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');
             default:
                 return (string) $value;
         }
