@@ -10,8 +10,8 @@ with `ehough_iconic` and follow the [PEAR naming convention](http://pear.php.net
 
 A few examples of class naming conversions:
 
-    \Symfony\Component\DependencyInjection\ContainerBuilder                     ----->    ehough_iconic_ContainerBuilder
-    \Symfony\Component\DependencyInjection\Compiler\Compiler      ----->    ehough_iconic_compiler_Compiler
+    \Symfony\Component\DependencyInjection\ContainerBuilder           ----->    ehough_iconic_ContainerBuilder
+    \Symfony\Component\DependencyInjection\Compiler\Compiler          ----->    ehough_iconic_compiler_Compiler
     \Symfony\Component\DependencyInjection\ParameterBag\ParameterBag  ----->    ehough_iconic_parameterbag_ParameterBag
 
 Other gotchas when using iconic instead of Symfony's Dependency Injection component
@@ -26,7 +26,7 @@ Here is a simple example that shows how to register services and parameters:
 $sc = new ehough_iconic_ContainerBuilder();
 $sc
     ->register('foo', '%foo.class%')
-    ->addArgument(new Reference('bar'))
+    ->addArgument(new ehough_iconic_Reference('bar'))
 ;
 $sc->setParameter('foo.class', 'Foo');
 
@@ -40,7 +40,7 @@ $sc = new ehough_iconic_ContainerBuilder();
 
 $sc
     ->register('bar', '%bar.class%')
-    ->addMethodCall('setFoo', array(new Reference('foo')))
+    ->addMethodCall('setFoo', array(new ehough_iconic_Reference('foo')))
 ;
 $sc->setParameter('bar.class', 'Bar');
 
