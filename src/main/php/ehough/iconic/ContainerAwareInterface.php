@@ -23,7 +23,7 @@ interface ehough_iconic_ContainerAwareInterface
     /**
      * Sets the Container.
      *
-     * @param ehough_iconic_ContainerInterface $container A ehough_iconic_ContainerInterface instance
+     * @param ehough_iconic_ContainerInterface $container A ehough_iconic_ContainerInterface instance or null
      *
      * @api
      */

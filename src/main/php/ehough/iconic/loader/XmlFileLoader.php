@@ -209,8 +209,8 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
     {
         try {
             $dom = \Symfony\Component\Config\Util\XmlUtils::loadFile($file, array($this, 'validateSchema'));
-        } catch (\InvalidArgumentException $e) {
-            throw new ehough_iconic_exception_InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
+        } catch (InvalidArgumentException $e) {
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('Unable to parse file "%s".', $file), $e->getCode(), $e);
         }
 
         $this->validateExtensions($dom, $file);

@@ -347,14 +347,14 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function set($id, $service, $scope = self::SCOPE_CONTAINER)
     {
+        $id = strtolower($id);
+
         if ($this->isFrozen()) {
             // setting a synthetic service on a frozen container is alright
             if (!isset($this->definitions[$id]) || !$this->definitions[$id]->isSynthetic()) {
-                throw new ehough_iconic_exception_BadMethodCallException('Setting service on a frozen container is not allowed');
+                throw new ehough_iconic_exception_BadMethodCallException(sprintf('Setting %s on a frozen container is not allowed.', $id));
             }
         }
-
-        $id = strtolower($id);
 
         unset($this->definitions[$id], $this->aliases[$id]);
 
