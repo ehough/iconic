@@ -36,13 +36,13 @@ class ehough_iconic_compiler_RepeatedPass implements ehough_iconic_compiler_Comp
      *
      * @param ehough_iconic_compiler_RepeatablePassInterface[] $passes An array of RepeatablePassInterface objects
      *
-     * @throws InvalidArgumentException when the passes don't implement RepeatablePassInterface
+     * @throws ehough_iconic_exception_InvalidArgumentException when the passes don't implement RepeatablePassInterface
      */
     public function __construct(array $passes)
     {
         foreach ($passes as $pass) {
             if (!$pass instanceof ehough_iconic_compiler_RepeatablePassInterface) {
-                throw new InvalidArgumentException('$passes must be an array of RepeatablePassInterface.');
+                throw new ehough_iconic_exception_InvalidArgumentException('$passes must be an array of RepeatablePassInterface.');
             }
 
             $pass->setRepeatedPass($this);

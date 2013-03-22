@@ -35,14 +35,14 @@ class ehough_iconic_compiler_CheckDefinitionValidityPass implements ehough_iconi
      *
      * @param ehough_iconic_ContainerBuilder $container
      *
-     * @throws RuntimeException When the ehough_iconic_Definition is invalid
+     * @throws ehough_iconic_exception_RuntimeException When the ehough_iconic_Definition is invalid
      */
     public function process(ehough_iconic_ContainerBuilder $container)
     {
         foreach ($container->getDefinitions() as $id => $definition) {
             // synthetic service is public
             if ($definition->isSynthetic() && !$definition->isPublic()) {
-                throw new RuntimeException(sprintf(
+                throw new ehough_iconic_exception_RuntimeException(sprintf(
                     'A synthetic service ("%s") must be public.',
                     $id
                 ));
@@ -50,7 +50,7 @@ class ehough_iconic_compiler_CheckDefinitionValidityPass implements ehough_iconi
 
             // synthetic service has non-prototype scope
             if ($definition->isSynthetic() && ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE === $definition->getScope()) {
-                throw new RuntimeException(sprintf(
+                throw new ehough_iconic_exception_RuntimeException(sprintf(
                     'A synthetic service ("%s") cannot be of scope "prototype".',
                     $id
                 ));
@@ -59,14 +59,14 @@ class ehough_iconic_compiler_CheckDefinitionValidityPass implements ehough_iconi
             // non-synthetic, non-abstract service has class
             if (!$definition->isAbstract() && !$definition->isSynthetic() && !$definition->getClass()) {
                 if ($definition->getFactoryClass() || $definition->getFactoryService()) {
-                    throw new RuntimeException(sprintf(
+                    throw new ehough_iconic_exception_RuntimeException(sprintf(
                         'Please add the class to service "%s" even if it is constructed by a factory '
                        .'since we might need to add method calls based on compile-time checks.',
                        $id
                     ));
                 }
 
-                throw new RuntimeException(sprintf(
+                throw new ehough_iconic_exception_RuntimeException(sprintf(
                     'The definition for "%s" has no class. If you intend to inject '
                    .'this service dynamically at runtime, please mark it as synthetic=true. '
                    .'If this is an abstract definition solely used by child definitions, '

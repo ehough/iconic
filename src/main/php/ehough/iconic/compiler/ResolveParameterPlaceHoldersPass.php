@@ -26,7 +26,7 @@ class ehough_iconic_compiler_ResolveParameterPlaceHoldersPass implements ehough_
      *
      * @param ehough_iconic_ContainerBuilder $container
      *
-     * @throws ParameterNotFoundException
+     * @throws ehough_iconic_exception_ParameterNotFoundException
      */
     public function process(ehough_iconic_ContainerBuilder $container)
     {
@@ -45,7 +45,7 @@ class ehough_iconic_compiler_ResolveParameterPlaceHoldersPass implements ehough_
                 $definition->setMethodCalls($calls);
 
                 $definition->setProperties($parameterBag->resolveValue($definition->getProperties()));
-            } catch (ParameterNotFoundException $e) {
+            } catch (ehough_iconic_exception_ParameterNotFoundException $e) {
                 $e->setSourceId($id);
 
                 throw $e;

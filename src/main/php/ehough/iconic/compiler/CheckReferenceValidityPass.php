@@ -87,7 +87,7 @@ class ehough_iconic_compiler_CheckReferenceValidityPass implements ehough_iconic
      *
      * @param array $arguments An array of ehough_iconic_Reference objects
      *
-     * @throws RuntimeException when there is a reference to an abstract definition.
+     * @throws ehough_iconic_exception_RuntimeException when there is a reference to an abstract definition.
      */
     private function validateReferences(array $arguments)
     {
@@ -98,7 +98,7 @@ class ehough_iconic_compiler_CheckReferenceValidityPass implements ehough_iconic
                 $targetDefinition = $this->getDefinition((string) $argument);
 
                 if (null !== $targetDefinition && $targetDefinition->isAbstract()) {
-                    throw new RuntimeException(sprintf(
+                    throw new ehough_iconic_exception_RuntimeException(sprintf(
                         'The definition "%s" has a reference to an abstract definition "%s". '
                        .'Abstract definitions cannot be the target of references.',
                        $this->currentId,

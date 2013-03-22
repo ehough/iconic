@@ -98,7 +98,7 @@ class ehough_iconic_compiler_PassConfig
      * @param ehough_iconic_compiler_CompilerPassInterface $pass A ehough_iconic_compiler_Compiler pass
      * @param string                $type The pass type
      *
-     * @throws InvalidArgumentException when a pass type doesn't exist
+     * @throws ehough_iconic_exception_InvalidArgumentException when a pass type doesn't exist
      *
      * @api
      */
@@ -106,7 +106,7 @@ class ehough_iconic_compiler_PassConfig
     {
         $property = $type.'Passes';
         if (!isset($this->$property)) {
-            throw new InvalidArgumentException(sprintf('Invalid type "%s".', $type));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('Invalid type "%s".', $type));
         }
 
         $passes = &$this->$property;

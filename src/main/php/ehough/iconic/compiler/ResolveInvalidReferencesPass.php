@@ -47,7 +47,7 @@ class ehough_iconic_compiler_ResolveInvalidReferencesPass implements ehough_icon
             foreach ($definition->getMethodCalls() as $call) {
                 try {
                     $calls[] = array($call[0], $this->processArguments($call[1], true));
-                } catch (RuntimeException $ignore) {
+                } catch (ehough_iconic_exception_RuntimeException $ignore) {
                     // this call is simply removed
                 }
             }
@@ -58,7 +58,7 @@ class ehough_iconic_compiler_ResolveInvalidReferencesPass implements ehough_icon
                 try {
                     $value = $this->processArguments(array($value), true);
                     $properties[$name] = reset($value);
-                } catch (RuntimeException $ignore) {
+                } catch (ehough_iconic_exception_RuntimeException $ignore) {
                     // ignore property
                 }
             }
@@ -74,7 +74,7 @@ class ehough_iconic_compiler_ResolveInvalidReferencesPass implements ehough_icon
      *
      * @return array
      *
-     * @throws RuntimeException When the config is invalid
+     * @throws ehough_iconic_exception_RuntimeException When the config is invalid
      */
     private function processArguments(array $arguments, $inMethodCall = false)
     {
@@ -94,7 +94,7 @@ class ehough_iconic_compiler_ResolveInvalidReferencesPass implements ehough_icon
                     $arguments[$k] = null;
                 } elseif (!$exists && ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE === $invalidBehavior) {
                     if ($inMethodCall) {
-                        throw new RuntimeException('Method shouldn\'t be called.');
+                        throw new ehough_iconic_exception_RuntimeException('Method shouldn\'t be called.');
                     }
 
                     $arguments[$k] = null;

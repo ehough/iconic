@@ -55,12 +55,12 @@ class ehough_iconic_compiler_ServiceReferenceGraph
      *
      * @return ehough_iconic_compiler_ServiceReferenceGraphNode The node matching the supplied identifier
      *
-     * @throws InvalidArgumentException if no node matches the supplied identifier
+     * @throws ehough_iconic_exception_InvalidArgumentException if no node matches the supplied identifier
      */
     public function getNode($id)
     {
         if (!isset($this->nodes[$id])) {
-            throw new InvalidArgumentException(sprintf('There is no node with id "%s".', $id));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('There is no node with id "%s".', $id));
         }
 
         return $this->nodes[$id];

@@ -31,7 +31,7 @@ class ehough_iconic_compiler_MergeExtensionConfigurationPass implements ehough_i
         $aliases = $container->getAliases();
 
         foreach ($container->getExtensions() as $extension) {
-            if ($extension instanceof PrependExtensionInterface) {
+            if ($extension instanceof ehough_iconic_extension_PrependExtensionInterface) {
                 $extension->prepend($container);
             }
         }

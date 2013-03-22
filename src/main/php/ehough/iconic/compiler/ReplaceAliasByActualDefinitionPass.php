@@ -32,7 +32,7 @@ class ehough_iconic_compiler_ReplaceAliasByActualDefinitionPass implements ehoug
      *
      * @param ehough_iconic_ContainerBuilder $container
      *
-     * @throws InvalidArgumentException if the service definition does not exist
+     * @throws ehough_iconic_exception_InvalidArgumentException if the service definition does not exist
      */
     public function process(ehough_iconic_ContainerBuilder $container)
     {
@@ -44,7 +44,7 @@ class ehough_iconic_compiler_ReplaceAliasByActualDefinitionPass implements ehoug
 
             try {
                 $definition = $container->getDefinition($aliasId);
-            } catch (InvalidArgumentException $e) {
+            } catch (ehough_iconic_exception_InvalidArgumentException $e) {
                 throw new ehough_iconic_exception_InvalidArgumentException(sprintf('Unable to replace alias "%s" with "%s".', $alias, $id), null, $e);
             }
 
