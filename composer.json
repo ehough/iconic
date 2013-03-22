@@ -19,7 +19,6 @@
     },
 
     "autoload": {
-
         "psr-0": {
             "ehough_iconic": "src/main/php"
         }
