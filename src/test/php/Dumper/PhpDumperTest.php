@@ -9,13 +9,13 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Dumper;
+//namespace Symfony\Component\DependencyInjection\Tests\Dumper;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\Definition;
 
 class PhpDumperTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,24 +28,24 @@ class PhpDumperTest extends \PHPUnit_Framework_TestCase
 
     public function testDump()
     {
-        $dumper = new PhpDumper($container = new ContainerBuilder());
+        $dumper = new ehough_iconic_dumper_PhpDumper($container = new ehough_iconic_ContainerBuilder());
 
         $this->assertStringEqualsFile(self::$fixturesPath.'/php/services1.php', $dumper->dump(), '->dump() dumps an empty container as an empty PHP class');
         $this->assertStringEqualsFile(self::$fixturesPath.'/php/services1-1.php', $dumper->dump(array('class' => 'Container', 'base_class' => 'AbstractContainer')), '->dump() takes a class and a base_class options');
 
-        $container = new ContainerBuilder();
-        new PhpDumper($container);
+        $container = new ehough_iconic_ContainerBuilder();
+        new ehough_iconic_dumper_PhpDumper($container);
     }
 
     public function testDumpFrozenContainerWithNoParameter()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
         $container->register('foo', 'stdClass');
 
         $container->compile();
 
-        $dumper = new PhpDumper($container);
+        $dumper = new ehough_iconic_dumper_PhpDumper($container);
 
         $dumpedString = $dumper->dump();
         $this->assertStringEqualsFile(self::$fixturesPath.'/php/services11.php', $dumpedString, '->dump() does not add getDefaultParameters() method call if container have no parameters.');
@@ -54,7 +54,7 @@ class PhpDumperTest extends \PHPUnit_Framework_TestCase
 
     public function testDumpOptimizationString()
     {
-        $definition = new Definition();
+        $definition = new ehough_iconic_Definition();
         $definition->setClass('stdClass');
         $definition->addArgument(array(
             'only dot' => '.',
@@ -69,14 +69,14 @@ class PhpDumperTest extends \PHPUnit_Framework_TestCase
             'optimize concatenation at the end' => 'end%empty_value%',
         ));
 
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
         $container->setDefinition('test', $definition);
         $container->setParameter('empty_value', '');
         $container->setParameter('some_string', '-');
         $container->compile();
 
-        $dumper = new PhpDumper($container);
+        $dumper = new ehough_iconic_dumper_PhpDumper($container);
         $this->assertStringEqualsFile(self::$fixturesPath.'/php/services10.php', $dumper->dump(), '->dump() dumps an empty container as an empty PHP class');
     }
 
@@ -85,14 +85,14 @@ class PhpDumperTest extends \PHPUnit_Framework_TestCase
      */
     public function testExportParameters()
     {
-        $dumper = new PhpDumper(new ContainerBuilder(new ParameterBag(array('foo' => new Reference('foo')))));
+        $dumper = new ehough_iconic_dumper_PhpDumper(new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array('foo' => new ehough_iconic_Reference('foo')))));
         $dumper->dump();
     }
 
     public function testAddParameters()
     {
         $container = include self::$fixturesPath.'/containers/container8.php';
-        $dumper = new PhpDumper($container);
+        $dumper = new ehough_iconic_dumper_PhpDumper($container);
         $this->assertStringEqualsFile(self::$fixturesPath.'/php/services8.php', $dumper->dump(), '->dump() dumps parameters');
     }
 
@@ -100,22 +100,22 @@ class PhpDumperTest extends \PHPUnit_Framework_TestCase
     {
         // without compilation
         $container = include self::$fixturesPath.'/containers/container9.php';
-        $dumper = new PhpDumper($container);
+        $dumper = new ehough_iconic_dumper_PhpDumper($container);
         $this->assertEquals(str_replace('%path%', str_replace('\\','\\\\',self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), file_get_contents(self::$fixturesPath.'/php/services9.php')), $dumper->dump(), '->dump() dumps services');
 
         // with compilation
         $container = include self::$fixturesPath.'/containers/container9.php';
         $container->compile();
-        $dumper = new PhpDumper($container);
+        $dumper = new ehough_iconic_dumper_PhpDumper($container);
         $this->assertEquals(str_replace('%path%', str_replace('\\','\\\\',self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), file_get_contents(self::$fixturesPath.'/php/services9_compiled.php')), $dumper->dump(), '->dump() dumps services');
 
-        $dumper = new PhpDumper($container = new ContainerBuilder());
+        $dumper = new ehough_iconic_dumper_PhpDumper($container = new ehough_iconic_ContainerBuilder());
         $container->register('foo', 'FooClass')->addArgument(new \stdClass());
         try {
             $dumper->dump();
             $this->fail('->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
         } catch (\Exception $e) {
-            $this->assertInstanceOf('\Symfony\Component\DependencyInjection\Exception\RuntimeException', $e, '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
+            $this->assertInstanceOf('ehough_iconic_exception_RuntimeException', $e, '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
             $this->assertEquals('Unable to dump a service container if a parameter is an object or a resource.', $e->getMessage(), '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
         }
     }

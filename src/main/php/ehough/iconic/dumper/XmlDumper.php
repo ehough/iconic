@@ -25,7 +25,7 @@
  *
  * @api
  */
-class XmlDumper extends Dumper
+class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
 {
     /**
      * @var \DOMDocument
@@ -43,7 +43,7 @@ class XmlDumper extends Dumper
      */
     public function dump(array $options = array())
     {
-        $this->document = new \DOMDocument('1.0', 'utf-8');
+        $this->document = new DOMDocument('1.0', 'utf-8');
         $this->document->formatOutput = true;
 
         $container = $this->document->createElementNS('http://symfony.com/schema/dic/services', 'container');

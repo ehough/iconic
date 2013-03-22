@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\ReplaceAliasByActualDefinitionPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\Compiler\ReplaceAliasByActualDefinitionPass;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Definition;
 
 class ReplaceAliasByActualDefinitionPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container->register('a', '\stdClass');
 
-        $bDefinition = new Definition('\stdClass');
+        $bDefinition = new ehough_iconic_Definition('\stdClass');
         $bDefinition->setPublic(false);
         $container->setDefinition('b', $bDefinition);
 
@@ -42,18 +42,18 @@ class ReplaceAliasByActualDefinitionPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException ehough_iconic_exception_InvalidArgumentException
      */
     public function testProcessWithInvalidAlias()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setAlias('a_alias', 'a');
         $this->process($container);
     }
 
-    protected function process(ContainerBuilder $container)
+    protected function process(ehough_iconic_ContainerBuilder $container)
     {
-        $pass = new ReplaceAliasByActualDefinitionPass();
+        $pass = new ehough_iconic_compiler_ReplaceAliasByActualDefinitionPass();
         $pass->process($container);
     }
 }

@@ -16,7 +16,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ScopeCrossingInjectionException extends RuntimeException
+class ehough_iconic_exception_ScopeCrossingInjectionException extends ehough_iconic_exception_RuntimeException
 {
     private $sourceServiceId;
     private $sourceScope;

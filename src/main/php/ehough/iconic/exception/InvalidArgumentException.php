@@ -16,6 +16,6 @@
  *
  * @author Bulat Shakirzyanov <bulat@theopenskyproject.com>
  */
-class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
+class ehough_iconic_exception_InvalidArgumentException extends InvalidArgumentException implements ehough_iconic_exception_ExceptionInterface
 {
 }

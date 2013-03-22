@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\ParameterBag;
+//namespace Symfony\Component\DependencyInjection\Tests\ParameterBag;
 
-use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
+//use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
 
 class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +24,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
             'foo' => 'foo',
             'bar' => 'bar',
         );
-        $bag = new FrozenParameterBag($parameters);
+        $bag = new ehough_iconic_parameterbag_FrozenParameterBag($parameters);
         $this->assertEquals($parameters, $bag->all(), '__construct() takes an array of parameters as its first argument');
     }
 
@@ -34,7 +34,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
      */
     public function testClear()
     {
-        $bag = new FrozenParameterBag(array());
+        $bag = new ehough_iconic_parameterbag_FrozenParameterBag(array());
         $bag->clear();
     }
 
@@ -44,7 +44,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
      */
     public function testSet()
     {
-        $bag = new FrozenParameterBag(array());
+        $bag = new ehough_iconic_parameterbag_FrozenParameterBag(array());
         $bag->set('foo', 'bar');
     }
 
@@ -54,7 +54,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
      */
     public function testAdd()
     {
-        $bag = new FrozenParameterBag(array());
+        $bag = new ehough_iconic_parameterbag_FrozenParameterBag(array());
         $bag->add(array());
     }
 }

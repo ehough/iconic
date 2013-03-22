@@ -9,51 +9,51 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\Definition;
 
-use Symfony\Component\DependencyInjection\Compiler\CheckExceptionOnInvalidReferenceBehaviorPass;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Compiler\CheckExceptionOnInvalidReferenceBehaviorPass;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CheckExceptionOnInvalidReferenceBehaviorPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container
             ->register('a', '\stdClass')
-            ->addArgument(new Reference('b'))
+            ->addArgument(new ehough_iconic_Reference('b'))
         ;
         $container->register('b', '\stdClass');
     }
 
     /**
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     * @expectedException ehough_iconic_exception_ServiceNotFoundException
      */
     public function testProcessThrowsExceptionOnInvalidReference()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container
             ->register('a', '\stdClass')
-            ->addArgument(new Reference('b'))
+            ->addArgument(new ehough_iconic_Reference('b'))
         ;
 
         $this->process($container);
     }
 
     /**
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
+     * @expectedException ehough_iconic_exception_ServiceNotFoundException
      */
     public function testProcessThrowsExceptionOnInvalidReferenceFromInlinedDefinition()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
-        $def = new Definition();
-        $def->addArgument(new Reference('b'));
+        $def = new ehough_iconic_Definition();
+        $def->addArgument(new ehough_iconic_Reference('b'));
 
         $container
             ->register('a', '\stdClass')
@@ -63,9 +63,9 @@ class CheckExceptionOnInvalidReferenceBehaviorPassTest extends \PHPUnit_Framewor
         $this->process($container);
     }
 
-    private function process(ContainerBuilder $container)
+    private function process(ehough_iconic_ContainerBuilder $container)
     {
-        $pass = new CheckExceptionOnInvalidReferenceBehaviorPass();
+        $pass = new ehough_iconic_compiler_CheckExceptionOnInvalidReferenceBehaviorPass();
         $pass->process($container);
     }
 }

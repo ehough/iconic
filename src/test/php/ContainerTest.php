@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests;
+//namespace Symfony\Component\DependencyInjection\Tests;
 
-use Symfony\Component\DependencyInjection\Scope;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+//use Symfony\Component\DependencyInjection\Scope;
+//use Symfony\Component\DependencyInjection\Container;
+//use Symfony\Component\DependencyInjection\ContainerInterface;
+//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers Symfony\Component\DependencyInjection\Container::__construct
      */
     public function testConstructor()
     {
-        $sc = new Container();
+        $sc = new ehough_iconic_Container();
         $this->assertSame($sc, $sc->get('service_container'), '__construct() automatically registers itself as a service');
 
-        $sc = new Container(new ParameterBag(array('foo' => 'bar')));
+        $sc = new ehough_iconic_Container(new ehough_iconic_parameterbag_ParameterBag(array('foo' => 'bar')));
         $this->assertEquals(array('foo' => 'bar'), $sc->getParameterBag()->all(), '__construct() takes an array of parameters as its first argument');
     }
 
@@ -35,9 +35,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testCompile()
     {
-        $sc = new Container(new ParameterBag(array('foo' => 'bar')));
+        $sc = new ehough_iconic_Container(new ehough_iconic_parameterbag_ParameterBag(array('foo' => 'bar')));
         $sc->compile();
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag', $sc->getParameterBag(), '->compile() changes the parameter bag to a FrozenParameterBag instance');
+        $this->assertInstanceOf('ehough_iconic_parameterbag_FrozenParameterBag', $sc->getParameterBag(), '->compile() changes the parameter bag to a FrozenParameterBag instance');
         $this->assertEquals(array('foo' => 'bar'), $sc->getParameterBag()->all(), '->compile() copies the current parameters to the new parameter bag');
     }
 
@@ -46,7 +46,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsFrozen()
     {
-        $sc = new Container(new ParameterBag(array('foo' => 'bar')));
+        $sc = new ehough_iconic_Container(new ehough_iconic_parameterbag_ParameterBag(array('foo' => 'bar')));
         $this->assertFalse($sc->isFrozen(), '->isFrozen() returns false if the parameters are not frozen');
         $sc->compile();
         $this->assertTrue($sc->isFrozen(), '->isFrozen() returns true if the parameters are frozen');
@@ -57,7 +57,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetParameterBag()
     {
-        $sc = new Container();
+        $sc = new ehough_iconic_Container();
         $this->assertEquals(array(), $sc->getParameterBag()->all(), '->getParameterBag() returns an empty array if no parameter has been defined');
     }
 
@@ -67,7 +67,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSetParameter()
     {
-        $sc = new Container(new ParameterBag(array('foo' => 'bar')));
+        $sc = new ehough_iconic_Container(new ehough_iconic_parameterbag_ParameterBag(array('foo' => 'bar')));
         $sc->setParameter('bar', 'foo');
         $this->assertEquals('foo', $sc->getParameter('bar'), '->setParameter() sets the value of a new parameter');
 
@@ -92,12 +92,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetServiceIds()
     {
-        $sc = new Container();
+        $sc = new ehough_iconic_Container();
         $sc->set('foo', $obj = new \stdClass());
         $sc->set('bar', $obj = new \stdClass());
         $this->assertEquals(array('service_container', 'foo', 'bar'), $sc->getServiceIds(), '->getServiceIds() returns all defined service ids');
 
-        $sc = new ProjectServiceContainer();
+        $sc = new ehough_iconic_ProjectServiceContainer();
         $this->assertEquals(array('scoped', 'scoped_foo', 'bar', 'foo_bar', 'foo.baz', 'circular', 'throw_exception', 'throws_exception_on_service_configuration', 'service_container'), $sc->getServiceIds(), '->getServiceIds() returns defined service ids by getXXXService() methods');
     }
 
@@ -106,17 +106,17 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSet()
     {
-        $sc = new Container();
+        $sc = new ehough_iconic_Container();
         $sc->set('foo', $foo = new \stdClass());
         $this->assertEquals($foo, $sc->get('foo'), '->set() sets a service');
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function testSetDoesNotAllowPrototypeScope()
     {
-        $c = new Container();
+        $c = new ehough_iconic_Container();
         $c->set('foo', new \stdClass(), 'prototype');
     }
 
@@ -125,15 +125,15 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDoesNotAllowInactiveScope()
     {
-        $c = new Container();
-        $c->addScope(new Scope('foo'));
+        $c = new ehough_iconic_Container();
+        $c->addScope(new ehough_iconic_Scope('foo'));
         $c->set('foo', new \stdClass(), 'foo');
     }
 
     public function testSetAlsoSetsScopedService()
     {
-        $c = new Container();
-        $c->addScope(new Scope('foo'));
+        $c = new ehough_iconic_Container();
+        $c->addScope(new ehough_iconic_Scope('foo'));
         $c->enterScope('foo');
         $c->set('foo', $foo = new \stdClass(), 'foo');
 
@@ -147,7 +147,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $sc = new ProjectServiceContainer();
+        $sc = new ehough_iconic_ProjectServiceContainer();
         $sc->set('foo', $foo = new \stdClass());
         $this->assertEquals($foo, $sc->get('foo'), '->get() returns the service for the given id');
         $this->assertEquals($sc->__bar, $sc->get('bar'), '->get() returns the service for the given id');
@@ -161,20 +161,20 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $sc->get('');
             $this->fail('->get() throws a \InvalidArgumentException exception if the service is empty');
         } catch (\Exception $e) {
-            $this->assertInstanceOf('Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException', $e, '->get() throws a ServiceNotFoundException exception if the service is empty');
+            $this->assertInstanceOf('ehough_iconic_exception_ServiceNotFoundException', $e, '->get() throws a ehough_iconic_exception_ServiceNotFoundException exception if the service is empty');
         }
-        $this->assertNull($sc->get('', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+        $this->assertNull($sc->get('', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
     }
 
     public function testGetCircularReference()
     {
 
-        $sc = new ProjectServiceContainer();
+        $sc = new ehough_iconic_ProjectServiceContainer();
         try {
             $sc->get('circular');
             $this->fail('->get() throws a ServiceCircularReferenceException if it contains circular reference');
         } catch (\Exception $e) {
-            $this->assertInstanceOf('\Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException', $e, '->get() throws a ServiceCircularReferenceException if it contains circular reference');
+            $this->assertInstanceOf('ehough_iconic_exception_ServiceCircularReferenceException', $e, '->get() throws a ServiceCircularReferenceException if it contains circular reference');
             $this->assertStringStartsWith('Circular reference detected for service "circular"', $e->getMessage(), '->get() throws a \LogicException if it contains circular reference');
         }
     }
@@ -184,7 +184,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testHas()
     {
-        $sc = new ProjectServiceContainer();
+        $sc = new ehough_iconic_ProjectServiceContainer();
         $sc->set('foo', new \stdClass());
         $this->assertFalse($sc->has('foo1'), '->has() returns false if the service does not exist');
         $this->assertTrue($sc->has('foo'), '->has() returns true if the service exists');
@@ -198,7 +198,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     public function testInitialized()
     {
-        $sc = new ProjectServiceContainer();
+        $sc = new ehough_iconic_ProjectServiceContainer();
         $sc->set('foo', new \stdClass());
         $this->assertTrue($sc->initialized('foo'), '->initialized() returns true if service is loaded');
         $this->assertFalse($sc->initialized('foo1'), '->initialized() returns false if service is not loaded');
@@ -207,8 +207,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testEnterLeaveCurrentScope()
     {
-        $container = new ProjectServiceContainer();
-        $container->addScope(new Scope('foo'));
+        $container = new ehough_iconic_ProjectServiceContainer();
+        $container->addScope(new ehough_iconic_Scope('foo'));
 
         $container->enterScope('foo');
         $scoped1 = $container->get('scoped');
@@ -232,9 +232,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testEnterLeaveScopeWithChildScopes()
     {
-        $container = new Container();
-        $container->addScope(new Scope('foo'));
-        $container->addScope(new Scope('bar', 'foo'));
+        $container = new ehough_iconic_Container();
+        $container->addScope(new ehough_iconic_Scope('foo'));
+        $container->addScope(new ehough_iconic_Scope('bar', 'foo'));
 
         $this->assertFalse($container->isScopeActive('foo'));
 
@@ -263,9 +263,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testEnterScopeRecursivelyWithInactiveChildScopes()
     {
-        $container = new Container();
-        $container->addScope(new Scope('foo'));
-        $container->addScope(new Scope('bar', 'foo'));
+        $container = new ehough_iconic_Container();
+        $container->addScope(new ehough_iconic_Scope('foo'));
+        $container->addScope(new ehough_iconic_Scope('bar', 'foo'));
 
         $this->assertFalse($container->isScopeActive('foo'));
 
@@ -295,8 +295,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testLeaveScopeNotActive()
     {
-        $container = new Container();
-        $container->addScope(new Scope('foo'));
+        $container = new ehough_iconic_Container();
+        $container->addScope(new ehough_iconic_Scope('foo'));
 
         try {
             $container->leaveScope('foo');
@@ -316,40 +316,40 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @dataProvider getBuiltInScopes
      */
     public function testAddScopeDoesNotAllowBuiltInScopes($scope)
     {
-        $container = new Container();
-        $container->addScope(new Scope($scope));
+        $container = new ehough_iconic_Container();
+        $container->addScope(new ehough_iconic_Scope($scope));
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      */
     public function testAddScopeDoesNotAllowExistingScope()
     {
-        $container = new Container();
-        $container->addScope(new Scope('foo'));
-        $container->addScope(new Scope('foo'));
+        $container = new ehough_iconic_Container();
+        $container->addScope(new ehough_iconic_Scope('foo'));
+        $container->addScope(new ehough_iconic_Scope('foo'));
     }
 
     /**
-     * @expectedException \InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @dataProvider getInvalidParentScopes
      */
     public function testAddScopeDoesNotAllowInvalidParentScope($scope)
     {
-        $c = new Container();
-        $c->addScope(new Scope('foo', $scope));
+        $c = new ehough_iconic_Container();
+        $c->addScope(new ehough_iconic_Scope('foo', $scope));
     }
 
     public function testAddScope()
     {
-        $c = new Container();
-        $c->addScope(new Scope('foo'));
-        $c->addScope(new Scope('bar', 'foo'));
+        $c = new ehough_iconic_Container();
+        $c->addScope(new ehough_iconic_Scope('foo'));
+        $c->addScope(new ehough_iconic_Scope('bar', 'foo'));
 
         $this->assertSame(array('foo' => 'container', 'bar' => 'foo'), $this->getField($c, 'scopes'));
         $this->assertSame(array('foo' => array('bar'), 'bar' => array()), $this->getField($c, 'scopeChildren'));
@@ -357,19 +357,19 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testHasScope()
     {
-        $c = new Container();
+        $c = new ehough_iconic_Container();
 
         $this->assertFalse($c->hasScope('foo'));
-        $c->addScope(new Scope('foo'));
+        $c->addScope(new ehough_iconic_Scope('foo'));
         $this->assertTrue($c->hasScope('foo'));
     }
 
     public function testIsScopeActive()
     {
-        $c = new Container();
+        $c = new ehough_iconic_Container();
 
         $this->assertFalse($c->isScopeActive('foo'));
-        $c->addScope(new Scope('foo'));
+        $c->addScope(new ehough_iconic_Scope('foo'));
 
         $this->assertFalse($c->isScopeActive('foo'));
         $c->enterScope('foo');
@@ -382,7 +382,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetThrowsException()
     {
-        $c = new ProjectServiceContainer();
+        $c = new ehough_iconic_ProjectServiceContainer();
 
         try {
             $c->get('throw_exception');
@@ -401,7 +401,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     public function testGetThrowsExceptionOnServiceConfiguration()
     {
-        $c = new ProjectServiceContainer();
+        $c = new ehough_iconic_ProjectServiceContainer();
 
         try {
             $c->get('throws_exception_on_service_configuration');
@@ -423,7 +423,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function getInvalidParentScopes()
     {
         return array(
-            array(ContainerInterface::SCOPE_PROTOTYPE),
+            array(ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE),
             array('bar'),
         );
     }
@@ -431,8 +431,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function getBuiltInScopes()
     {
         return array(
-            array(ContainerInterface::SCOPE_CONTAINER),
-            array(ContainerInterface::SCOPE_PROTOTYPE),
+            array(ehough_iconic_ContainerInterface::SCOPE_CONTAINER),
+            array(ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE),
         );
     }
 
@@ -445,7 +445,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class ProjectServiceContainer extends Container
+class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
 {
     public $__bar, $__foo_bar, $__foo_baz;
 

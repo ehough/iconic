@@ -18,7 +18,7 @@
  *
  * @api
  */
-abstract class ehough_iconic_ContainerAware implements ContainerAwareInterface
+abstract class ehough_iconic_ContainerAware implements ehough_iconic_ContainerAwareInterface
 {
     /**
      * @var ehough_iconic_ContainerInterface

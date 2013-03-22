@@ -27,7 +27,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class GraphvizDumper extends Dumper
+class ehough_iconic_dumper_GraphvizDumper extends ehough_iconic_dumper_Dumper
 {
     private $nodes;
     private $edges;
@@ -132,7 +132,7 @@ class GraphvizDumper extends Dumper
     {
         $edges = array();
         foreach ($arguments as $argument) {
-            if ($argument instanceof Parameter) {
+            if ($argument instanceof ehough_iconic_Parameter) {
                 $argument = $this->container->hasParameter($argument) ? $this->container->getParameter($argument) : null;
             } elseif (is_string($argument) && preg_match('/^%([^%]+)%$/', $argument, $match)) {
                 $argument = $this->container->hasParameter($match[1]) ? $this->container->getParameter($match[1]) : null;
@@ -187,9 +187,9 @@ class GraphvizDumper extends Dumper
 
     private function cloneContainer()
     {
-        $parameterBag = new ParameterBag($this->container->getParameterBag()->all());
+        $parameterBag = new ehough_iconic_parameterbag_ParameterBag($this->container->getParameterBag()->all());
 
-        $container = new ContainerBuilder($parameterBag);
+        $container = new ehough_iconic_ContainerBuilder($parameterBag);
         $container->setDefinitions($this->container->getDefinitions());
         $container->setAliases($this->container->getAliases());
         $container->setResources($this->container->getResources());

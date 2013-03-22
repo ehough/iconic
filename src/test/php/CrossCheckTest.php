@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests;
+//namespace Symfony\Component\DependencyInjection\Tests;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\Config\FileLocator;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\Config\FileLocator;
 
 class CrossCheckTest extends \PHPUnit_Framework_TestCase
 {
@@ -38,22 +38,22 @@ class CrossCheckTest extends \PHPUnit_Framework_TestCase
      */
     public function testCrossCheck($fixture, $type)
     {
-        $loaderClass = 'Symfony\\Component\\DependencyInjection\\Loader\\'.ucfirst($type).'FileLoader';
-        $dumperClass = 'Symfony\\Component\\DependencyInjection\\Dumper\\'.ucfirst($type).'Dumper';
+        $loaderClass = 'ehough_iconic_loader_'.ucfirst($type).'FileLoader';
+        $dumperClass = 'ehough_iconic_dumper_'.ucfirst($type).'Dumper';
 
         $tmp = tempnam('sf_service_container', 'sf');
 
         file_put_contents($tmp, file_get_contents(self::$fixturesPath.'/'.$type.'/'.$fixture));
 
-        $container1 = new ContainerBuilder();
-        $loader1 = new $loaderClass($container1, new FileLocator());
+        $container1 = new ehough_iconic_ContainerBuilder();
+        $loader1 = new $loaderClass($container1, new \Symfony\Component\Config\FileLocator());
         $loader1->load($tmp);
 
         $dumper = new $dumperClass($container1);
         file_put_contents($tmp, $dumper->dump());
 
-        $container2 = new ContainerBuilder();
-        $loader2 = new $loaderClass($container2, new FileLocator());
+        $container2 = new ehough_iconic_ContainerBuilder();
+        $loader2 = new $loaderClass($container2, new \Symfony\Component\Config\FileLocator());
         $loader2->load($tmp);
 
         unlink($tmp);

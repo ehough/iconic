@@ -29,15 +29,15 @@
  *
  * @api
  */
-class ehough_iconic_ContainerBuilder extends Container implements TaggedContainerInterface
+class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements ehough_iconic_TaggedContainerInterface
 {
     /**
-     * @var ExtensionInterface[]
+     * @var ehough_iconic_extension_ExtensionInterface[]
      */
     private $extensions = array();
 
     /**
-     * @var ExtensionInterface[]
+     * @var ehough_iconic_extension_ExtensionInterface[]
      */
     private $extensionsByNs = array();
 
@@ -52,14 +52,14 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     private $aliases = array();
 
     /**
-     * @var ResourceInterface[]
+     * @var \Symfony\Component\Config\Resource\ResourceInterface[]
      */
     private $resources = array();
 
     private $extensionConfigs = array();
 
     /**
-     * @var Compiler
+     * @var ehough_iconic_compiler_Compiler
      */
     private $compiler;
 
@@ -91,11 +91,11 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Registers an extension.
      *
-     * @param ExtensionInterface $extension An extension instance
+     * @param ehough_iconic_extension_ExtensionInterface $extension An extension instance
      *
      * @api
      */
-    public function registerExtension(ExtensionInterface $extension)
+    public function registerExtension(ehough_iconic_extension_ExtensionInterface $extension)
     {
         $this->extensions[$extension->getAlias()] = $extension;
 
@@ -109,7 +109,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @param string $name An alias or a namespace
      *
-     * @return ExtensionInterface An extension instance
+     * @return ehough_iconic_extension_ExtensionInterface An extension instance
      *
      * @throws LogicException if the extension is not registered
      *
@@ -131,7 +131,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Returns all registered extensions.
      *
-     * @return ExtensionInterface[] An array of ExtensionInterface
+     * @return ehough_iconic_extension_ExtensionInterface[] An array of ExtensionInterface
      *
      * @api
      */
@@ -157,7 +157,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Returns an array of resources loaded to build this configuration.
      *
-     * @return ResourceInterface[] An array of resources
+     * @return \Symfony\Component\Config\Resource\ResourceInterface[] An array of resources
      *
      * @api
      */
@@ -169,13 +169,13 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Adds a resource for this configuration.
      *
-     * @param ResourceInterface $resource A resource instance
+     * @param \Symfony\Component\Config\Resource\ResourceInterface $resource A resource instance
      *
-     * @return ContainerBuilder The current instance
+     * @return ehough_iconic_ContainerBuilder The current instance
      *
      * @api
      */
-    public function addResource(ResourceInterface $resource)
+    public function addResource(\Symfony\Component\Config\Resource\ResourceInterface $resource)
     {
         if (!$this->trackResources) {
             return $this;
@@ -189,9 +189,9 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Sets the resources for this configuration.
      *
-     * @param ResourceInterface[] $resources An array of resources
+     * @param \Symfony\Component\Config\Resource\ResourceInterface[] $resources An array of resources
      *
-     * @return ContainerBuilder The current instance
+     * @return ehough_iconic_ContainerBuilder The current instance
      *
      * @api
      */
@@ -211,7 +211,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @param object $object An object instance
      *
-     * @return ContainerBuilder The current instance
+     * @return ehough_iconic_ContainerBuilder The current instance
      *
      * @api
      */
@@ -221,9 +221,9 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
             return $this;
         }
 
-        $parent = new \ReflectionObject($object);
+        $parent = new ReflectionObject($object);
         do {
-            $this->addResource(new FileResource($parent->getFileName()));
+            $this->addResource(new \Symfony\Component\Config\Resource\FileResource($parent->getFileName()));
         } while ($parent = $parent->getParentClass());
 
         return $this;
@@ -235,17 +235,17 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      * @param string $extension The extension alias or namespace
      * @param array  $values    An array of values that customizes the extension
      *
-     * @return ContainerBuilder The current instance
-     * @throws BadMethodCallException When this ContainerBuilder is frozen
+     * @return ehough_iconic_ContainerBuilder The current instance
+     * @throws ehough_iconic_exception_BadMethodCallException When this ContainerBuilder is frozen
      *
-     * @throws \LogicException if the container is frozen
+     * @throws LogicException if the container is frozen
      *
      * @api
      */
     public function loadFromExtension($extension, array $values = array())
     {
         if ($this->isFrozen()) {
-            throw new BadMethodCallException('Cannot load from an extension on a frozen container.');
+            throw new ehough_iconic_exception_BadMethodCallException('Cannot load from an extension on a frozen container.');
         }
 
         $namespace = $this->getExtension($extension)->getAlias();
@@ -258,17 +258,17 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Adds a compiler pass.
      *
-     * @param CompilerPassInterface $pass A compiler pass
+     * @param ehough_iconic_compiler_CompilerPassInterface $pass A compiler pass
      * @param string                $type The type of compiler pass
      *
-     * @return ContainerBuilder The current instance
+     * @return ehough_iconic_ContainerBuilder The current instance
      *
      * @api
      */
-    public function addCompilerPass(ehough_iconic_compiler_CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
+    public function addCompilerPass(ehough_iconic_compiler_CompilerPassInterface $pass, $type = ehough_iconic_compiler_PassConfig::TYPE_BEFORE_OPTIMIZATION)
     {
         if (null === $this->compiler) {
-            $this->compiler = new Compiler();
+            $this->compiler = new ehough_iconic_compiler_Compiler();
         }
 
         $this->compiler->addPass($pass, $type);
@@ -281,14 +281,14 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Returns the compiler pass config which can then be modified.
      *
-     * @return PassConfig The compiler pass config
+     * @return ehough_iconic_compiler_PassConfig The compiler pass config
      *
      * @api
      */
     public function getCompilerPassConfig()
     {
         if (null === $this->compiler) {
-            $this->compiler = new Compiler();
+            $this->compiler = new ehough_iconic_compiler_Compiler();
         }
 
         return $this->compiler->getPassConfig();
@@ -297,21 +297,21 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     /**
      * Returns the compiler.
      *
-     * @return Compiler The compiler
+     * @return ehough_iconic_compiler_Compiler The compiler
      *
      * @api
      */
     public function getCompiler()
     {
         if (null === $this->compiler) {
-            $this->compiler = new Compiler();
+            $this->compiler = new ehough_iconic_compiler_Compiler();
         }
 
         return $this->compiler;
     }
 
     /**
-     * Returns all Scopes.
+     * Returns all ehough_iconic_Scopes.
      *
      * @return array An array of scopes
      *
@@ -323,7 +323,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     }
 
     /**
-     * Returns all Scope children.
+     * Returns all ehough_iconic_Scope children.
      *
      * @return array An array of scope children.
      *
@@ -350,7 +350,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
         if ($this->isFrozen()) {
             // setting a synthetic service on a frozen container is alright
             if (!isset($this->definitions[$id]) || !$this->definitions[$id]->isSynthetic()) {
-                throw new BadMethodCallException('Setting service on a frozen container is not allowed');
+                throw new ehough_iconic_exception_BadMethodCallException('Setting service on a frozen container is not allowed');
             }
         }
 
@@ -397,8 +397,8 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @return object The associated service
      *
-     * @throws InvalidArgumentException if the service is not defined
-     * @throws LogicException if the service has a circular reference to itself
+     * @throws ehough_iconic_exception_InvalidArgumentException if the service is not defined
+     * @throws ehough_iconic_exception_LogicException if the service has a circular reference to itself
      *
      * @see ehough_iconic_Reference
      *
@@ -410,9 +410,9 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
 
         try {
             return parent::get($id, ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
-        } catch (InvalidArgumentException $e) {
+        } catch (ehough_iconic_exception_InvalidArgumentException $e) {
             if (isset($this->loading[$id])) {
-                throw new LogicException(sprintf('The service "%s" has a circular reference to itself.', $id), 0, $e);
+                throw new ehough_iconic_exception_LogicException(sprintf('The service "%s" has a circular reference to itself.', $id), 0, $e);
             }
 
             if (!$this->hasDefinition($id) && isset($this->aliases[$id])) {
@@ -421,7 +421,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
 
             try {
                 $definition = $this->getDefinition($id);
-            } catch (InvalidArgumentException $e) {
+            } catch (ehough_iconic_exception_InvalidArgumentException $e) {
                 if (ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
                     return null;
                 }
@@ -433,7 +433,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
 
             try {
                 $service = $this->createService($definition, $id);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 unset($this->loading[$id]);
                 throw $e;
             }
@@ -465,14 +465,14 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      * @param ehough_iconic_ContainerBuilder $container The ContainerBuilder instance to merge.
      *
      *
-     * @throws BadMethodCallException When this ContainerBuilder is frozen
+     * @throws ehough_iconic_exception_BadMethodCallException When this ContainerBuilder is frozen
      *
      * @api
      */
     public function merge(ehough_iconic_ContainerBuilder $container)
     {
         if ($this->isFrozen()) {
-            throw new BadMethodCallException('Cannot merge on a frozen container.');
+            throw new ehough_iconic_exception_BadMethodCallException('Cannot merge on a frozen container.');
         }
 
         $this->addDefinitions($container->getDefinitions());
@@ -546,7 +546,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
     public function compile()
     {
         if (null === $this->compiler) {
-            $this->compiler = new Compiler();
+            $this->compiler = new ehough_iconic_compiler_Compiler();
         }
 
         if ($this->trackResources) {
@@ -605,8 +605,8 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      * @param string        $alias The alias to create
      * @param string|Alias  $id    The service to alias
      *
-     * @throws InvalidArgumentException if the id is not a string or an ehough_iconic_Alias
-     * @throws InvalidArgumentException if the alias is for itself
+     * @throws ehough_iconic_exception_InvalidArgumentException if the id is not a string or an ehough_iconic_Alias
+     * @throws ehough_iconic_exception_InvalidArgumentException if the alias is for itself
      *
      * @api
      */
@@ -617,11 +617,11 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
         if (is_string($id)) {
             $id = new ehough_iconic_Alias($id);
         } elseif (!$id instanceof ehough_iconic_Alias) {
-            throw new InvalidArgumentException('$id must be a string, or an ehough_iconic_Alias object.');
+            throw new ehough_iconic_exception_InvalidArgumentException('$id must be a string, or an ehough_iconic_Alias object.');
         }
 
         if ($alias === strtolower($id)) {
-            throw new InvalidArgumentException('An alias can not reference itself, got a circular reference on "'.$alias.'".');
+            throw new ehough_iconic_exception_InvalidArgumentException('An alias can not reference itself, got a circular reference on "'.$alias.'".');
         }
 
         unset($this->definitions[$alias]);
@@ -683,7 +683,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
         $id = strtolower($id);
 
         if (!$this->hasAlias($id)) {
-            throw new InvalidArgumentException(sprintf('The service alias "%s" does not exist.', $id));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The service alias "%s" does not exist.', $id));
         }
 
         return $this->aliases[$id];
@@ -754,14 +754,14 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @return ehough_iconic_Definition the service definition
      *
-     * @throws BadMethodCallException When this ContainerBuilder is frozen
+     * @throws ehough_iconic_exception_BadMethodCallException When this ContainerBuilder is frozen
      *
      * @api
      */
     public function setDefinition($id, ehough_iconic_Definition $definition)
     {
         if ($this->isFrozen()) {
-            throw new BadMethodCallException('Adding definition to a frozen container is not allowed');
+            throw new ehough_iconic_exception_BadMethodCallException('Adding definition to a frozen container is not allowed');
         }
 
         $id = strtolower($id);
@@ -792,7 +792,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @return ehough_iconic_Definition A ehough_iconic_Definition instance
      *
-     * @throws InvalidArgumentException if the service definition does not exist
+     * @throws ehough_iconic_exception_InvalidArgumentException if the service definition does not exist
      *
      * @api
      */
@@ -801,7 +801,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
         $id = strtolower($id);
 
         if (!$this->hasDefinition($id)) {
-            throw new InvalidArgumentException(sprintf('The service definition "%s" does not exist.', $id));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The service definition "%s" does not exist.', $id));
         }
 
         return $this->definitions[$id];
@@ -816,7 +816,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @return ehough_iconic_Definition A ehough_iconic_Definition instance
      *
-     * @throws InvalidArgumentException if the service definition does not exist
+     * @throws ehough_iconic_exception_InvalidArgumentException if the service definition does not exist
      *
      * @api
      */
@@ -837,15 +837,15 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
      *
      * @return object The service described by the service definition
      *
-     * @throws RuntimeException When the scope is inactive
-     * @throws RuntimeException When the factory definition is incomplete
-     * @throws RuntimeException When the service is a synthetic service
-     * @throws InvalidArgumentException When configure callable is not callable
+     * @throws ehough_iconic_exception_RuntimeException When the scope is inactive
+     * @throws ehough_iconic_exception_RuntimeException When the factory definition is incomplete
+     * @throws ehough_iconic_exception_RuntimeException When the service is a synthetic service
+     * @throws ehough_iconic_exception_InvalidArgumentException When configure callable is not callable
      */
     private function createService(ehough_iconic_Definition $definition, $id)
     {
         if ($definition->isSynthetic()) {
-            throw new RuntimeException(sprintf('You have requested a synthetic service ("%s"). The DIC does not know how to construct this service.', $id));
+            throw new ehough_iconic_exception_RuntimeException(sprintf('You have requested a synthetic service ("%s"). The DIC does not know how to construct this service.', $id));
         }
 
         $parameterBag = $this->getParameterBag();
@@ -862,19 +862,19 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
             } elseif (null !== $definition->getFactoryService()) {
                 $factory = $this->get($parameterBag->resolveValue($definition->getFactoryService()));
             } else {
-                throw new RuntimeException(sprintf('Cannot create service "%s" from factory method without a factory service or factory class.', $id));
+                throw new ehough_iconic_exception_RuntimeException(sprintf('Cannot create service "%s" from factory method without a factory service or factory class.', $id));
             }
 
             $service = call_user_func_array(array($factory, $definition->getFactoryMethod()), $arguments);
         } else {
-            $r = new \ReflectionClass($parameterBag->resolveValue($definition->getClass()));
+            $r = new ReflectionClass($parameterBag->resolveValue($definition->getClass()));
 
             $service = null === $r->getConstructor() ? $r->newInstance() : $r->newInstanceArgs($arguments);
         }
 
         if (self::SCOPE_PROTOTYPE !== $scope = $definition->getScope()) {
             if (self::SCOPE_CONTAINER !== $scope && !isset($this->scopedServices[$scope])) {
-                throw new RuntimeException(sprintf('You tried to create the "%s" service of an inactive scope.', $id));
+                throw new ehough_iconic_exception_RuntimeException(sprintf('You tried to create the "%s" service of an inactive scope.', $id));
             }
 
             $this->services[$lowerId = strtolower($id)] = $service;
@@ -911,7 +911,7 @@ class ehough_iconic_ContainerBuilder extends Container implements TaggedContaine
             }
 
             if (!is_callable($callable)) {
-                throw new InvalidArgumentException(sprintf('The configure callable for class "%s" is not a callable.', get_class($service)));
+                throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The configure callable for class "%s" is not a callable.', get_class($service)));
             }
 
             call_user_func($callable, $service);

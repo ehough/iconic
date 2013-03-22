@@ -27,11 +27,11 @@ class ehough_iconic_compiler_ServiceReferenceGraphEdge
     /**
      * Constructor.
      *
-     * @param ServiceReferenceGraphNode $sourceNode
-     * @param ServiceReferenceGraphNode $destNode
+     * @param ehough_iconic_compiler_ServiceReferenceGraphNode $sourceNode
+     * @param ehough_iconic_compiler_ServiceReferenceGraphNode $destNode
      * @param string                    $value
      */
-    public function __construct(ServiceReferenceGraphNode $sourceNode, ServiceReferenceGraphNode $destNode, $value = null)
+    public function __construct(ehough_iconic_compiler_ServiceReferenceGraphNode $sourceNode, ehough_iconic_compiler_ServiceReferenceGraphNode $destNode, $value = null)
     {
         $this->sourceNode = $sourceNode;
         $this->destNode = $destNode;
@@ -41,7 +41,7 @@ class ehough_iconic_compiler_ServiceReferenceGraphEdge
     /**
      * Returns the value of the edge
      *
-     * @return ServiceReferenceGraphNode
+     * @return ehough_iconic_compiler_ServiceReferenceGraphNode
      */
     public function getValue()
     {
@@ -51,7 +51,7 @@ class ehough_iconic_compiler_ServiceReferenceGraphEdge
     /**
      * Returns the source node
      *
-     * @return ServiceReferenceGraphNode
+     * @return ehough_iconic_compiler_ServiceReferenceGraphNode
      */
     public function getSourceNode()
     {
@@ -61,7 +61,7 @@ class ehough_iconic_compiler_ServiceReferenceGraphEdge
     /**
      * Returns the destination node
      *
-     * @return ServiceReferenceGraphNode
+     * @return ehough_iconic_compiler_ServiceReferenceGraphNode
      */
     public function getDestNode()
     {

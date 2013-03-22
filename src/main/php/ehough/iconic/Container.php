@@ -62,7 +62,7 @@
 class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerInterface
 {
     /**
-     * @var ParameterBagInterface
+     * @var ehough_iconic_parameterbag_ParameterBagInterface
      */
     protected $parameterBag;
 
@@ -76,13 +76,13 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     /**
      * Constructor.
      *
-     * @param ParameterBagInterface $parameterBag A ParameterBagInterface instance
+     * @param ehough_iconic_parameterbag_ParameterBagInterface $parameterBag A ehough_iconic_parameterbag_ParameterBagInterface instance
      *
      * @api
      */
-    public function __construct(ParameterBagInterface $parameterBag = null)
+    public function __construct(ehough_iconic_parameterbag_ParameterBagInterface $parameterBag = null)
     {
-        $this->parameterBag = null === $parameterBag ? new ParameterBag() : $parameterBag;
+        $this->parameterBag = null === $parameterBag ? new ehough_iconic_parameterbag_ParameterBag() : $parameterBag;
 
         $this->services       = array();
         $this->scopes         = array();
@@ -107,7 +107,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     {
         $this->parameterBag->resolve();
 
-        $this->parameterBag = new FrozenParameterBag($this->parameterBag->all());
+        $this->parameterBag = new ehough_iconic_parameterbag_FrozenParameterBag($this->parameterBag->all());
     }
 
     /**
@@ -119,13 +119,13 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public function isFrozen()
     {
-        return $this->parameterBag instanceof FrozenParameterBag;
+        return $this->parameterBag instanceof ehough_iconic_parameterbag_FrozenParameterBag;
     }
 
     /**
      * Gets the service container parameter bag.
      *
-     * @return ParameterBagInterface A ParameterBagInterface instance
+     * @return ehough_iconic_parameterbag_ParameterBagInterface A ehough_iconic_parameterbag_ParameterBagInterface instance
      *
      * @api
      */
@@ -184,22 +184,22 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      * @param object $service The service instance
      * @param string $scope   The scope of the service
      *
-     * @throws RuntimeException When trying to set a service in an inactive scope
-     * @throws InvalidArgumentException When trying to set a service in the prototype scope
+     * @throws ehough_iconic_exception_RuntimeException When trying to set a service in an inactive scope
+     * @throws ehough_iconic_exception_InvalidArgumentException When trying to set a service in the prototype scope
      *
      * @api
      */
     public function set($id, $service, $scope = self::SCOPE_CONTAINER)
     {
         if (self::SCOPE_PROTOTYPE === $scope) {
-            throw new InvalidArgumentException(sprintf('You cannot set service "%s" of scope "prototype".', $id));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('You cannot set service "%s" of scope "prototype".', $id));
         }
 
         $id = strtolower($id);
 
         if (self::SCOPE_CONTAINER !== $scope) {
             if (!isset($this->scopedServices[$scope])) {
-                throw new RuntimeException(sprintf('You cannot set service "%s" of inactive scope.', $id));
+                throw new ehough_iconic_exception_RuntimeException(sprintf('You cannot set service "%s" of inactive scope.', $id));
             }
 
             $this->scopedServices[$scope][$id] = $service;
@@ -235,9 +235,9 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @return object The associated service
      *
-     * @throws InvalidArgumentException if the service is not defined
-     * @throws ServiceCircularReferenceException When a circular reference is detected
-     * @throws ServiceNotFoundException When the service is not defined
+     * @throws ehough_iconic_exception_InvalidArgumentException if the service is not defined
+     * @throws ehough_iconic_exception_ServiceCircularReferenceException When a circular reference is detected
+     * @throws ehough_iconic_exception_ServiceNotFoundException When the service is not defined
      *
      * @see ehough_iconic_Reference
      *
@@ -252,7 +252,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
         }
 
         if (isset($this->loading[$id])) {
-            throw new ServiceCircularReferenceException($id, array_keys($this->loading));
+            throw new ehough_iconic_exception_ServiceCircularReferenceException($id, array_keys($this->loading));
         }
 
         if (method_exists($this, $method = 'get'.strtr($id, array('_' => '', '.' => '_')).'Service')) {
@@ -260,7 +260,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
 
             try {
                 $service = $this->$method();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 unset($this->loading[$id]);
 
                 if (isset($this->services[$id])) {
@@ -276,7 +276,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
         }
 
         if (self::EXCEPTION_ON_INVALID_REFERENCE === $invalidBehavior) {
-            throw new ServiceNotFoundException($id);
+            throw new ehough_iconic_exception_ServiceNotFoundException($id);
         }
     }
 
@@ -300,7 +300,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     public function getServiceIds()
     {
         $ids = array();
-        $r = new \ReflectionClass($this);
+        $r = new ReflectionClass($this);
         foreach ($r->getMethods() as $method) {
             if (preg_match('/^get(.+)Service$/', $method->name, $match)) {
                 $ids[] = self::underscore($match[1]);
@@ -315,19 +315,19 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @param string $name
      *
-     * @throws RuntimeException         When the parent scope is inactive
-     * @throws InvalidArgumentException When the scope does not exist
+     * @throws ehough_iconic_exception_RuntimeException         When the parent scope is inactive
+     * @throws ehough_iconic_exception_InvalidArgumentException When the scope does not exist
      *
      * @api
      */
     public function enterScope($name)
     {
         if (!isset($this->scopes[$name])) {
-            throw new InvalidArgumentException(sprintf('The scope "%s" does not exist.', $name));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The scope "%s" does not exist.', $name));
         }
 
         if (self::SCOPE_CONTAINER !== $this->scopes[$name] && !isset($this->scopedServices[$this->scopes[$name]])) {
-            throw new RuntimeException(sprintf('The parent scope "%s" must be active when entering this scope.', $this->scopes[$name]));
+            throw new ehough_iconic_exception_RuntimeException(sprintf('The parent scope "%s" must be active when entering this scope.', $this->scopes[$name]));
         }
 
         // check if a scope of this name is already active, if so we need to
@@ -364,14 +364,14 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @param string $name The name of the scope to leave
      *
-     * @throws InvalidArgumentException if the scope is not active
+     * @throws ehough_iconic_exception_InvalidArgumentException if the scope is not active
      *
      * @api
      */
     public function leaveScope($name)
     {
         if (!isset($this->scopedServices[$name])) {
-            throw new InvalidArgumentException(sprintf('The scope "%s" is not active.', $name));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The scope "%s" is not active.', $name));
         }
 
         // remove all services of this scope, or any of its child scopes from
@@ -401,25 +401,25 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     /**
      * Adds a scope to the container.
      *
-     * @param ScopeInterface $scope
+     * @param ehough_iconic_ScopeInterface $scope
      *
-     * @throws InvalidArgumentException
+     * @throws ehough_iconic_exception_InvalidArgumentException
      *
      * @api
      */
-    public function addScope(ScopeInterface $scope)
+    public function addScope(ehough_iconic_ScopeInterface $scope)
     {
         $name = $scope->getName();
         $parentScope = $scope->getParentName();
 
         if (self::SCOPE_CONTAINER === $name || self::SCOPE_PROTOTYPE === $name) {
-            throw new InvalidArgumentException(sprintf('The scope "%s" is reserved.', $name));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The scope "%s" is reserved.', $name));
         }
         if (isset($this->scopes[$name])) {
-            throw new InvalidArgumentException(sprintf('A scope with name "%s" already exists.', $name));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('A scope with name "%s" already exists.', $name));
         }
         if (self::SCOPE_CONTAINER !== $parentScope && !isset($this->scopes[$parentScope])) {
-            throw new InvalidArgumentException(sprintf('The parent scope "%s" does not exist, or is invalid.', $parentScope));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The parent scope "%s" does not exist, or is invalid.', $parentScope));
         }
 
         $this->scopes[$name] = $parentScope;

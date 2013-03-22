@@ -27,7 +27,7 @@
  *
  * @api
  */
-class YamlDumper extends Dumper
+class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
 {
     private $dumper;
 
@@ -42,7 +42,7 @@ class YamlDumper extends Dumper
     {
         parent::__construct($container);
 
-        $this->dumper = new YmlDumper();
+        $this->dumper = new \Symfony\Component\Yaml\Dumper();
     }
 
     /**
@@ -209,7 +209,7 @@ class YamlDumper extends Dumper
             return $code;
         } elseif ($value instanceof ehough_iconic_Reference) {
             return $this->getServiceCall((string) $value, $value);
-        } elseif ($value instanceof Parameter) {
+        } elseif ($value instanceof ehough_iconic_Parameter) {
             return $this->getParameterCall((string) $value);
         } elseif (is_object($value) || is_resource($value)) {
             throw new RuntimeException('Unable to dump a service container if a parameter is an object or a resource.');

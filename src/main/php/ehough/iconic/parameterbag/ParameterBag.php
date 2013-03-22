@@ -22,7 +22,7 @@
  *
  * @api
  */
-class ParameterBag implements ParameterBagInterface
+class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameterbag_ParameterBagInterface
 {
     protected $parameters;
     protected $resolved;
@@ -84,7 +84,7 @@ class ParameterBag implements ParameterBagInterface
      *
      * @return mixed  The parameter value
      *
-     * @throws ParameterNotFoundException if the parameter is not defined
+     * @throws ehough_iconic_exception_ParameterNotFoundException if the parameter is not defined
      *
      * @api
      */
@@ -93,7 +93,7 @@ class ParameterBag implements ParameterBagInterface
         $name = strtolower($name);
 
         if (!array_key_exists($name, $this->parameters)) {
-            throw new ParameterNotFoundException($name);
+            throw new ehough_iconic_exception_ParameterNotFoundException($name);
         }
 
         return $this->parameters[$name];

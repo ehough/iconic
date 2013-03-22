@@ -19,7 +19,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class IniFileLoader extends FileLoader
+class ehough_iconic_loader_IniFileLoader extends ehough_iconic_loader_FileLoader
 {
     /**
      * Loads a resource.
@@ -33,7 +33,7 @@ class IniFileLoader extends FileLoader
     {
         $path = $this->locator->locate($file);
 
-        $this->container->addResource(new FileResource($path));
+        $this->container->addResource(new \Symfony\Component\Config\Resource\FileResource($path));
 
         $result = parse_ini_file($path, true);
         if (false === $result || array() === $result) {

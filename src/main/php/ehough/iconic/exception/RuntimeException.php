@@ -16,6 +16,6 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class RuntimeException extends \RuntimeException implements ExceptionInterface
+class ehough_iconic_exception_RuntimeException extends RuntimeException implements ehough_iconic_exception_ExceptionInterface
 {
 }

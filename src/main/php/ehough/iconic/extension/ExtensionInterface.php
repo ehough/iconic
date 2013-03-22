@@ -20,7 +20,7 @@
  *
  * @api
  */
-interface ExtensionInterface
+interface ehough_iconic_extension_ExtensionInterface
 {
     /**
      * Loads a specific configuration.
@@ -32,7 +32,7 @@ interface ExtensionInterface
      *
      * @api
      */
-    public function load(array $config, ContainerBuilder $container);
+    public function load(array $config, ehough_iconic_ContainerBuilder $container);
 
     /**
      * Returns the namespace to be used for this extension (XML namespace).

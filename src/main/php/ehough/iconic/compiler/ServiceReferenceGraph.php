@@ -24,7 +24,7 @@
 class ehough_iconic_compiler_ServiceReferenceGraph
 {
     /**
-     * @var ServiceReferenceGraphNode[]
+     * @var ehough_iconic_compiler_ServiceReferenceGraphNode[]
      */
     private $nodes;
 
@@ -53,7 +53,7 @@ class ehough_iconic_compiler_ServiceReferenceGraph
      *
      * @param string $id The id to retrieve
      *
-     * @return ServiceReferenceGraphNode The node matching the supplied identifier
+     * @return ehough_iconic_compiler_ServiceReferenceGraphNode The node matching the supplied identifier
      *
      * @throws InvalidArgumentException if no node matches the supplied identifier
      */
@@ -69,7 +69,7 @@ class ehough_iconic_compiler_ServiceReferenceGraph
     /**
      * Returns all nodes.
      *
-     * @return ServiceReferenceGraphNode[] An array of all ServiceReferenceGraphNode objects
+     * @return ehough_iconic_compiler_ServiceReferenceGraphNode[] An array of all ehough_iconic_compiler_ServiceReferenceGraphNode objects
      */
     public function getNodes()
     {
@@ -97,7 +97,7 @@ class ehough_iconic_compiler_ServiceReferenceGraph
     {
         $sourceNode = $this->createNode($sourceId, $sourceValue);
         $destNode = $this->createNode($destId, $destValue);
-        $edge = new ServiceReferenceGraphEdge($sourceNode, $destNode, $reference);
+        $edge = new ehough_iconic_compiler_ServiceReferenceGraphEdge($sourceNode, $destNode, $reference);
 
         $sourceNode->addOutEdge($edge);
         $destNode->addInEdge($edge);
@@ -109,7 +109,7 @@ class ehough_iconic_compiler_ServiceReferenceGraph
      * @param string $id
      * @param string $value
      *
-     * @return ServiceReferenceGraphNode
+     * @return ehough_iconic_compiler_ServiceReferenceGraphNode
      */
     private function createNode($id, $value)
     {
@@ -117,6 +117,6 @@ class ehough_iconic_compiler_ServiceReferenceGraph
             return $this->nodes[$id];
         }
 
-        return $this->nodes[$id] = new ServiceReferenceGraphNode($id, $value);
+        return $this->nodes[$id] = new ehough_iconic_compiler_ServiceReferenceGraphNode($id, $value);
     }
 }

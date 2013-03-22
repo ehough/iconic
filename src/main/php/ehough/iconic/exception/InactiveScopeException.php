@@ -16,7 +16,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class InactiveScopeException extends RuntimeException
+class ehough_iconic_exception_InactiveScopeException extends ehough_iconic_exception_RuntimeException
 {
     private $serviceId;
     private $scope;

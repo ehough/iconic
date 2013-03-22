@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Loader;
+//namespace Symfony\Component\DependencyInjection\Tests\Loader;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\ClosureLoader;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Loader\ClosureLoader;
 
 class ClosureLoaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,7 +28,7 @@ class ClosureLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSupports()
     {
-        $loader = new ClosureLoader(new ContainerBuilder());
+        $loader = new ehough_iconic_loader_ClosureLoader(new ehough_iconic_ContainerBuilder());
 
         $this->assertTrue($loader->supports(function ($container) {}), '->supports() returns true if the resource is loadable');
         $this->assertFalse($loader->supports('foo.foo'), '->supports() returns true if the resource is loadable');
@@ -39,7 +39,7 @@ class ClosureLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoad()
     {
-        $loader = new ClosureLoader($container = new ContainerBuilder());
+        $loader = new ehough_iconic_loader_ClosureLoader($container = new ehough_iconic_ContainerBuilder());
 
         $loader->load(function ($container) {
             $container->setParameter('foo', 'foo');

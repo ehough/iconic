@@ -1,9 +1,9 @@
 <?php
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
-$container = new ContainerBuilder(new ParameterBag(array(
+$container = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array(
     'FOO'    => '%baz%',
     'baz'    => 'bar',
     'bar'    => 'foo is %%foo bar',

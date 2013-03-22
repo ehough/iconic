@@ -14,6 +14,6 @@
 /**
  * Base BadMethodCallException for Dependency Injection component.
  */
-class BadMethodCallException extends \BadMethodCallException implements ExceptionInterface
+class ehough_iconic_exception_BadMethodCallException extends BadMethodCallException implements ehough_iconic_exception_ExceptionInterface
 {
 }

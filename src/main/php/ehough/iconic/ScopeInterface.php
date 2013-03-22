@@ -12,7 +12,7 @@
 //namespace Symfony\Component\DependencyInjection;
 
 /**
- * Scope Interface.
+ * ehough_iconic_Scope Interface.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  *

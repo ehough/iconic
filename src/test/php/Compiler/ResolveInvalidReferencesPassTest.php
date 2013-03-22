@@ -9,22 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Compiler\ResolveInvalidReferencesPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\ContainerInterface;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\Compiler\ResolveInvalidReferencesPass;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ResolveInvalidReferencesPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $def = $container
             ->register('foo')
-            ->setArguments(array(new Reference('bar', ContainerInterface::NULL_ON_INVALID_REFERENCE)))
-            ->addMethodCall('foo', array(new Reference('moo', ContainerInterface::IGNORE_ON_INVALID_REFERENCE)))
+            ->setArguments(array(new ehough_iconic_Reference('bar', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE)))
+            ->addMethodCall('foo', array(new ehough_iconic_Reference('moo', ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE)))
         ;
 
         $this->process($container);
@@ -36,10 +36,10 @@ class ResolveInvalidReferencesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessIgnoreNonExistentServices()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $def = $container
             ->register('foo')
-            ->setArguments(array(new Reference('bar')))
+            ->setArguments(array(new ehough_iconic_Reference('bar')))
         ;
 
         $this->process($container);
@@ -50,10 +50,10 @@ class ResolveInvalidReferencesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessRemovesPropertiesOnInvalid()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $def = $container
             ->register('foo')
-            ->setProperty('foo', new Reference('bar', ContainerInterface::IGNORE_ON_INVALID_REFERENCE))
+            ->setProperty('foo', new ehough_iconic_Reference('bar', ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE))
         ;
 
         $this->process($container);
@@ -63,11 +63,11 @@ class ResolveInvalidReferencesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testStrictFlagIsPreserved()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->register('bar');
         $def = $container
             ->register('foo')
-            ->addArgument(new Reference('bar', ContainerInterface::NULL_ON_INVALID_REFERENCE, false))
+            ->addArgument(new ehough_iconic_Reference('bar', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE, false))
         ;
 
         $this->process($container);
@@ -75,9 +75,9 @@ class ResolveInvalidReferencesPassTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($def->getArgument(0)->isStrict());
     }
 
-    protected function process(ContainerBuilder $container)
+    protected function process(ehough_iconic_ContainerBuilder $container)
     {
-        $pass = new ResolveInvalidReferencesPass();
+        $pass = new ehough_iconic_compiler_ResolveInvalidReferencesPass();
         $pass->process($container);
     }
 }

@@ -27,21 +27,21 @@ class ehough_iconic_compiler_RepeatedPass implements ehough_iconic_compiler_Comp
     private $repeat = false;
 
     /**
-     * @var RepeatablePassInterface[]
+     * @var ehough_iconic_compiler_RepeatablePassInterface[]
      */
     private $passes;
 
     /**
      * Constructor.
      *
-     * @param RepeatablePassInterface[] $passes An array of RepeatablePassInterface objects
+     * @param ehough_iconic_compiler_RepeatablePassInterface[] $passes An array of RepeatablePassInterface objects
      *
      * @throws InvalidArgumentException when the passes don't implement RepeatablePassInterface
      */
     public function __construct(array $passes)
     {
         foreach ($passes as $pass) {
-            if (!$pass instanceof RepeatablePassInterface) {
+            if (!$pass instanceof ehough_iconic_compiler_RepeatablePassInterface) {
                 throw new InvalidArgumentException('$passes must be an array of RepeatablePassInterface.');
             }
 
@@ -79,7 +79,7 @@ class ehough_iconic_compiler_RepeatedPass implements ehough_iconic_compiler_Comp
     /**
      * Returns the passes
      *
-     * @return RepeatablePassInterface[] An array of RepeatablePassInterface objects
+     * @return ehough_iconic_compiler_RepeatablePassInterface[] An array of ehough_iconic_compiler_RepeatablePassInterface objects
      */
     public function getPasses()
     {

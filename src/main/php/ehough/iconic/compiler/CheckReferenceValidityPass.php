@@ -117,8 +117,8 @@ class ehough_iconic_compiler_CheckReferenceValidityPass implements ehough_iconic
      * @param ehough_iconic_Reference  $reference
      * @param ehough_iconic_Definition $definition
      *
-     * @throws ScopeWideningInjectionException when the definition references a service of a narrower scope
-     * @throws ScopeCrossingInjectionException when the definition references a service of another scope hierarchy
+     * @throws ehough_iconic_exception_ScopeWideningInjectionException when the definition references a service of a narrower scope
+     * @throws ehough_iconic_exception_ScopeCrossingInjectionException when the definition references a service of another scope hierarchy
      */
     private function validateScope(ehough_iconic_Reference $reference, ehough_iconic_Definition $definition = null)
     {
@@ -141,11 +141,11 @@ class ehough_iconic_compiler_CheckReferenceValidityPass implements ehough_iconic
         $id = (string) $reference;
 
         if (in_array($scope, $this->currentScopeChildren, true)) {
-            throw new ScopeWideningInjectionException($this->currentId, $this->currentScope, $id, $scope);
+            throw new ehough_iconic_exception_ScopeWideningInjectionException($this->currentId, $this->currentScope, $id, $scope);
         }
 
         if (!in_array($scope, $this->currentScopeAncestors, true)) {
-            throw new ScopeCrossingInjectionException($this->currentId, $this->currentScope, $id, $scope);
+            throw new ehough_iconic_exception_ScopeCrossingInjectionException($this->currentId, $this->currentScope, $id, $scope);
         }
     }
 

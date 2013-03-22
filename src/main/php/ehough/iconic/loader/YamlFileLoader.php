@@ -27,7 +27,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class YamlFileLoader extends FileLoader
+class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoader
 {
     /**
      * Loads a Yaml file.
@@ -41,7 +41,7 @@ class YamlFileLoader extends FileLoader
 
         $content = $this->loadFile($path);
 
-        $this->container->addResource(new FileResource($path));
+        $this->container->addResource(new \Symfony\Component\Config\Resource\FileResource($path));
 
         // empty file
         if (null === $content) {
@@ -235,7 +235,7 @@ class YamlFileLoader extends FileLoader
      */
     protected function loadFile($file)
     {
-        return $this->validate(Yaml::parse($file), $file);
+        return $this->validate(\Symfony\Component\Yaml\Yaml::parse($file), $file);
     }
 
     /**

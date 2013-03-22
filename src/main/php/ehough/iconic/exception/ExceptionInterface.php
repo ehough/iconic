@@ -17,6 +17,6 @@
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Bulat Shakirzyanov <bulat@theopenskyproject.com>
  */
-interface ExceptionInterface
+interface ehough_iconic_exception_ExceptionInterface
 {
 }

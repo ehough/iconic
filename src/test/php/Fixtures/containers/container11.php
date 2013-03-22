@@ -1,12 +1,12 @@
 <?php
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Definition;
 
-$container = new ContainerBuilder();
+$container = new ehough_iconic_ContainerBuilder();
 $container->
     register('foo', 'FooClass')->
-    addArgument(new Definition('BarClass', array(new Definition('BazClass'))))
+    addArgument(new ehough_iconic_Definition('BarClass', array(new ehough_iconic_Definition('BazClass'))))
 ;
 
 return $container;

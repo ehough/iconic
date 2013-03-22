@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Loader;
+//namespace Symfony\Component\DependencyInjection\Tests\Loader;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
-use Symfony\Component\Config\FileLocator;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
+//use Symfony\Component\Config\FileLocator;
 
 class IniFileLoaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -33,8 +33,8 @@ class IniFileLoaderTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('The "Config" component is not available');
         }
 
-        $this->container = new ContainerBuilder();
-        $this->loader    = new IniFileLoader($this->container, new FileLocator(self::$fixturesPath.'/ini'));
+        $this->container = new ehough_iconic_ContainerBuilder();
+        $this->loader    = new ehough_iconic_loader_IniFileLoader($this->container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/ini'));
     }
 
     /**
@@ -82,7 +82,7 @@ class IniFileLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSupports()
     {
-        $loader = new IniFileLoader(new ContainerBuilder(), new FileLocator());
+        $loader = new ehough_iconic_loader_IniFileLoader(new ehough_iconic_ContainerBuilder(), new \Symfony\Component\Config\FileLocator());
 
         $this->assertTrue($loader->supports('foo.ini'), '->supports() returns true if the resource is loadable');
         $this->assertFalse($loader->supports('foo.foo'), '->supports() returns true if the resource is loadable');

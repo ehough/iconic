@@ -43,7 +43,7 @@ class ehough_iconic_compiler_MergeExtensionConfigurationPass implements ehough_i
             }
             $config = $container->getParameterBag()->resolveValue($config);
 
-            $tmpContainer = new ContainerBuilder($container->getParameterBag());
+            $tmpContainer = new ehough_iconic_ContainerBuilder($container->getParameterBag());
             $tmpContainer->setResourceTracking($container->isTrackingResources());
             $tmpContainer->addObjectResource($extension);
 

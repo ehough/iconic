@@ -25,7 +25,7 @@ class ehough_iconic_compiler_RemoveUnusedDefinitionsPass implements ehough_iconi
     /**
      * {@inheritDoc}
      */
-    public function setRepeatedPass(RepeatedPass $repeatedPass)
+    public function setRepeatedPass(ehough_iconic_compiler_RepeatedPass $repeatedPass)
     {
         $this->repeatedPass = $repeatedPass;
     }

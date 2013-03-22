@@ -1,13 +1,13 @@
 <?php
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Definition;
 
-$container = new ContainerBuilder();
+$container = new ehough_iconic_ContainerBuilder();
 $container->setParameter('cla', 'Fo');
 $container->setParameter('ss', 'Class');
 
-$definition = new Definition('%cla%o%ss%');
+$definition = new ehough_iconic_Definition('%cla%o%ss%');
 $container->setDefinition('foo', $definition);
 
 return $container;

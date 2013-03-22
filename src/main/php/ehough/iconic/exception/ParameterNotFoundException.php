@@ -16,7 +16,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ParameterNotFoundException extends InvalidArgumentException
+class ehough_iconic_exception_ParameterNotFoundException extends ehough_iconic_exception_InvalidArgumentException
 {
     private $key;
     private $sourceId;

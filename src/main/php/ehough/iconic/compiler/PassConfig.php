@@ -42,34 +42,34 @@ class ehough_iconic_compiler_PassConfig
      */
     public function __construct()
     {
-        $this->mergePass = new MergeExtensionConfigurationPass();
+        $this->mergePass = new ehough_iconic_compiler_MergeExtensionConfigurationPass();
 
         $this->afterRemovingPasses = array();
         $this->beforeOptimizationPasses = array();
         $this->beforeRemovingPasses = array();
 
         $this->optimizationPasses = array(
-            new ResolveDefinitionTemplatesPass(),
-            new ResolveParameterPlaceHoldersPass(),
-            new CheckDefinitionValidityPass(),
-            new ResolveReferencesToAliasesPass(),
-            new ResolveInvalidReferencesPass(),
-            new AnalyzeServiceReferencesPass(true),
-            new CheckCircularReferencesPass(),
-            new CheckReferenceValidityPass(),
+            new ehough_iconic_compiler_ResolveDefinitionTemplatesPass(),
+            new ehough_iconic_compiler_ResolveParameterPlaceHoldersPass(),
+            new ehough_iconic_compiler_CheckDefinitionValidityPass(),
+            new ehough_iconic_compiler_ResolveReferencesToAliasesPass(),
+            new ehough_iconic_compiler_ResolveInvalidReferencesPass(),
+            new ehough_iconic_compiler_AnalyzeServiceReferencesPass(true),
+            new ehough_iconic_compiler_CheckCircularReferencesPass(),
+            new ehough_iconic_compiler_CheckReferenceValidityPass(),
         );
 
         $this->removingPasses = array(
-            new RemovePrivateAliasesPass(),
-            new RemoveAbstractDefinitionsPass(),
-            new ReplaceAliasByActualDefinitionPass(),
-            new RepeatedPass(array(
-                new AnalyzeServiceReferencesPass(),
-                new InlineServiceDefinitionsPass(),
-                new AnalyzeServiceReferencesPass(),
-                new RemoveUnusedDefinitionsPass(),
+            new ehough_iconic_compiler_RemovePrivateAliasesPass(),
+            new ehough_iconic_compiler_RemoveAbstractDefinitionsPass(),
+            new ehough_iconic_compiler_ReplaceAliasByActualDefinitionPass(),
+            new ehough_iconic_compiler_RepeatedPass(array(
+                new ehough_iconic_compiler_AnalyzeServiceReferencesPass(),
+                new ehough_iconic_compiler_InlineServiceDefinitionsPass(),
+                new ehough_iconic_compiler_AnalyzeServiceReferencesPass(),
+                new ehough_iconic_compiler_RemoveUnusedDefinitionsPass(),
             )),
-            new CheckExceptionOnInvalidReferenceBehaviorPass(),
+            new ehough_iconic_compiler_CheckExceptionOnInvalidReferenceBehaviorPass(),
         );
     }
 
@@ -95,7 +95,7 @@ class ehough_iconic_compiler_PassConfig
     /**
      * Adds a pass.
      *
-     * @param CompilerPassInterface $pass A Compiler pass
+     * @param ehough_iconic_compiler_CompilerPassInterface $pass A ehough_iconic_compiler_Compiler pass
      * @param string                $type The pass type
      *
      * @throws InvalidArgumentException when a pass type doesn't exist
@@ -188,7 +188,7 @@ class ehough_iconic_compiler_PassConfig
     /**
      * Sets the Merge Pass.
      *
-     * @param CompilerPassInterface $pass The merge pass
+     * @param ehough_iconic_compiler_CompilerPassInterface $pass The merge pass
      *
      * @api
      */

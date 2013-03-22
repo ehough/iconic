@@ -14,13 +14,13 @@
 //use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
 
 /**
- * ParameterBagInterface.
+ * ehough_iconic_parameterbag_ParameterBagInterface.
  *
  * @author Fabien Potencier <fabien@symfony.com>
  *
  * @api
  */
-interface ParameterBagInterface
+interface ehough_iconic_parameterbag_ParameterBagInterface
 {
     /**
      * Clears all parameters.

@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Compiler\ResolveReferencesToAliasesPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\Compiler\ResolveReferencesToAliasesPass;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ResolveReferencesToAliasesPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setAlias('bar', 'foo');
         $def = $container
             ->register('moo')
-            ->setArguments(array(new Reference('bar')))
+            ->setArguments(array(new ehough_iconic_Reference('bar')))
         ;
 
         $this->process($container);
@@ -34,12 +34,12 @@ class ResolveReferencesToAliasesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessRecursively()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setAlias('bar', 'foo');
         $container->setAlias('moo', 'bar');
         $def = $container
             ->register('foobar')
-            ->setArguments(array(new Reference('moo')))
+            ->setArguments(array(new ehough_iconic_Reference('moo')))
         ;
 
         $this->process($container);
@@ -48,9 +48,9 @@ class ResolveReferencesToAliasesPassTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', (string) $arguments[0]);
     }
 
-    protected function process(ContainerBuilder $container)
+    protected function process(ehough_iconic_ContainerBuilder $container)
     {
-        $pass = new ResolveReferencesToAliasesPass();
+        $pass = new ehough_iconic_compiler_ResolveReferencesToAliasesPass();
         $pass->process($container);
     }
 }

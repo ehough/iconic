@@ -9,24 +9,24 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests;
+//namespace Symfony\Component\DependencyInjection\Tests;
 
-use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\Reference;
 
-class ReferenceTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_ReferenceTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers Symfony\Component\DependencyInjection\Reference::__construct
      */
     public function testConstructor()
     {
-        $ref = new Reference('foo');
+        $ref = new ehough_iconic_Reference('foo');
         $this->assertEquals('foo', (string) $ref, '__construct() sets the id of the reference, which is used for the __toString() method');
     }
 
     public function testCaseInsensitive()
     {
-        $ref = new Reference('FooBar');
+        $ref = new ehough_iconic_Reference('FooBar');
         $this->assertEquals('foobar', (string) $ref, 'the id is lowercased as the container is case insensitive');
     }
 }

@@ -27,7 +27,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class XmlFileLoader extends FileLoader
+class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
 {
     /**
      * Loads an XML file.
@@ -42,7 +42,7 @@ class XmlFileLoader extends FileLoader
         $xml = $this->parseFile($path);
         $xml->registerXPathNamespace('container', 'http://symfony.com/schema/dic/services');
 
-        $this->container->addResource(new FileResource($path));
+        $this->container->addResource(new \Symfony\Component\Config\Resource\FileResource($path));
 
         // anonymous services
         $this->processAnonymousServices($xml, $path);
@@ -187,7 +187,7 @@ class XmlFileLoader extends FileLoader
                     continue;
                 }
 
-                $parameters[$name] = SimpleXMLElement::phpize($value);
+                $parameters[$name] = ehough_iconic_SimpleXMLElement::phpize($value);
             }
 
             $definition->addTag((string) $tag['name'], $parameters);
@@ -208,14 +208,14 @@ class XmlFileLoader extends FileLoader
     protected function parseFile($file)
     {
         try {
-            $dom = XmlUtils::loadFile($file, array($this, 'validateSchema'));
-        } catch (\InvalidArgumentException $e) {
+            $dom = \Symfony\Component\Config\Util\XmlUtils::loadFile($file, array($this, 'validateSchema'));
+        } catch (InvalidArgumentException $e) {
             throw new InvalidArgumentException($e->getMessage(), $e->getCode(), $e);
         }
 
         $this->validateExtensions($dom, $file);
 
-        return simplexml_import_dom($dom, 'Symfony\\Component\\DependencyInjection\\SimpleXMLElement');
+        return simplexml_import_dom($dom, 'ehough_iconic_SimpleXMLElement');
     }
 
     /**
@@ -413,6 +413,6 @@ EOF
      */
     public static function convertDomElementToArray(\DomElement $element)
     {
-        return XmlUtils::convertDomElementToArray($element);
+        return \Symfony\Component\Config\Util\XmlUtils::convertDomElementToArray($element);
     }
 }

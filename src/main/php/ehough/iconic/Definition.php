@@ -241,14 +241,14 @@ class ehough_iconic_Definition
      *
      * @return ehough_iconic_Definition The current instance
      *
-     * @throws OutOfBoundsException When the replaced argument does not exist
+     * @throws ehough_iconic_exception_OutOfBoundsException When the replaced argument does not exist
      *
      * @api
      */
     public function replaceArgument($index, $argument)
     {
         if ($index < 0 || $index > count($this->arguments) - 1) {
-            throw new OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, count($this->arguments) - 1));
+            throw new ehough_iconic_exception_OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, count($this->arguments) - 1));
         }
 
         $this->arguments[$index] = $argument;
@@ -275,14 +275,14 @@ class ehough_iconic_Definition
      *
      * @return mixed The argument value
      *
-     * @throws OutOfBoundsException When the argument does not exist
+     * @throws ehough_iconic_exception_OutOfBoundsException When the argument does not exist
      *
      * @api
      */
     public function getArgument($index)
     {
         if ($index < 0 || $index > count($this->arguments) - 1) {
-            throw new OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, count($this->arguments) - 1));
+            throw new ehough_iconic_exception_OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, count($this->arguments) - 1));
         }
 
         return $this->arguments[$index];
@@ -315,14 +315,14 @@ class ehough_iconic_Definition
      *
      * @return ehough_iconic_Definition The current instance
      *
-     * @throws InvalidArgumentException on empty $method param
+     * @throws ehough_iconic_exception_InvalidArgumentException on empty $method param
      *
      * @api
      */
     public function addMethodCall($method, array $arguments = array())
     {
         if (empty($method)) {
-            throw new InvalidArgumentException(sprintf('Method name cannot be empty.'));
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('Method name cannot be empty.'));
         }
         $this->calls[] = array($method, $arguments);
 

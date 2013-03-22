@@ -1,14 +1,14 @@
 <?php
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Definition;
 
-$container = new ContainerBuilder();
+$container = new ehough_iconic_ContainerBuilder();
 
-$factoryDefinition = new Definition('BarClassFactory');
+$factoryDefinition = new ehough_iconic_Definition('BarClassFactory');
 $container->setDefinition('barFactory', $factoryDefinition);
 
-$definition = new Definition();
+$definition = new ehough_iconic_Definition();
 $definition->setFactoryService('barFactory');
 $definition->setFactoryMethod('createBarClass');
 $container->setDefinition('bar', $definition);

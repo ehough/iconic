@@ -1,14 +1,14 @@
 <?php
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-use Symfony\Component\DependencyInjection\Exception\LogicException;
-use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Parameter;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+//use Symfony\Component\DependencyInjection\ContainerInterface;
+//use Symfony\Component\DependencyInjection\Container;
+//use Symfony\Component\DependencyInjection\Exception\InactiveScopeException;
+//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
+//use Symfony\Component\DependencyInjection\Exception\LogicException;
+//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\Parameter;
+//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 
 /**
  * ProjectServiceContainer
@@ -16,14 +16,14 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
  * This class has been auto-generated
  * by the Symfony Dependency Injection Component.
  */
-class ProjectServiceContainer extends Container
+class ProjectServiceContainer extends ehough_iconic_Container
 {
     /**
      * Constructor.
      */
     public function __construct()
     {
-        parent::__construct(new ParameterBag($this->getDefaultParameters()));
+        parent::__construct(new ehough_iconic_parameterbag_ParameterBag($this->getDefaultParameters()));
     }
 
     /**
@@ -157,12 +157,12 @@ class ProjectServiceContainer extends Container
         $this->services['method_call1'] = $instance = new \FooClass();
 
         $instance->setBar($this->get('foo'));
-        $instance->setBar($this->get('foo2', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+        $instance->setBar($this->get('foo2', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
         if ($this->has('foo3')) {
-            $instance->setBar($this->get('foo3', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+            $instance->setBar($this->get('foo3', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
         }
         if ($this->has('foobaz')) {
-            $instance->setBar($this->get('foobaz', ContainerInterface::NULL_ON_INVALID_REFERENCE));
+            $instance->setBar($this->get('foobaz', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
         }
 
         return $instance;

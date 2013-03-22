@@ -16,7 +16,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ServiceNotFoundException extends InvalidArgumentException
+class ehough_iconic_exception_ServiceNotFoundException extends ehough_iconic_exception_InvalidArgumentException
 {
     private $id;
     private $sourceId;

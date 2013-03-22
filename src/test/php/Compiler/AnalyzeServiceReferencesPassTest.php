@@ -9,45 +9,45 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Compiler\Compiler;
-use Symfony\Component\DependencyInjection\Compiler\AnalyzeServiceReferencesPass;
-use Symfony\Component\DependencyInjection\Compiler\RepeatedPass;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\Compiler\Compiler;
+//use Symfony\Component\DependencyInjection\Compiler\AnalyzeServiceReferencesPass;
+//use Symfony\Component\DependencyInjection\Compiler\RepeatedPass;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AnalyzeServiceReferencesPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $a = $container
             ->register('a')
-            ->addArgument($ref1 = new Reference('b'))
+            ->addArgument($ref1 = new ehough_iconic_Reference('b'))
         ;
 
         $b = $container
             ->register('b')
-            ->addMethodCall('setA', array($ref2 = new Reference('a')))
+            ->addMethodCall('setA', array($ref2 = new ehough_iconic_Reference('a')))
         ;
 
         $c = $container
             ->register('c')
-            ->addArgument($ref3 = new Reference('a'))
-            ->addArgument($ref4 = new Reference('b'))
+            ->addArgument($ref3 = new ehough_iconic_Reference('a'))
+            ->addArgument($ref4 = new ehough_iconic_Reference('b'))
         ;
 
         $d = $container
             ->register('d')
-            ->setProperty('foo', $ref5 = new Reference('b'))
+            ->setProperty('foo', $ref5 = new ehough_iconic_Reference('b'))
         ;
 
         $e = $container
             ->register('e')
-            ->setConfigurator(array($ref6 = new Reference('b'), 'methodName'))
+            ->setConfigurator(array($ref6 = new ehough_iconic_Reference('b'), 'methodName'))
         ;
 
         $graph = $this->process($container);
@@ -62,7 +62,7 @@ class AnalyzeServiceReferencesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessDetectsReferencesFromInlinedDefinitions()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container
             ->register('a')
@@ -70,7 +70,7 @@ class AnalyzeServiceReferencesPassTest extends \PHPUnit_Framework_TestCase
 
         $container
             ->register('b')
-            ->addArgument(new Definition(null, array($ref = new Reference('a'))))
+            ->addArgument(new ehough_iconic_Definition(null, array($ref = new ehough_iconic_Reference('a'))))
         ;
 
         $graph = $this->process($container);
@@ -81,15 +81,15 @@ class AnalyzeServiceReferencesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessDoesNotSaveDuplicateReferences()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container
             ->register('a')
         ;
         $container
             ->register('b')
-            ->addArgument(new Definition(null, array($ref1 = new Reference('a'))))
-            ->addArgument(new Definition(null, array($ref2 = new Reference('a'))))
+            ->addArgument(new ehough_iconic_Definition(null, array($ref1 = new ehough_iconic_Reference('a'))))
+            ->addArgument(new ehough_iconic_Definition(null, array($ref2 = new ehough_iconic_Reference('a'))))
         ;
 
         $graph = $this->process($container);
@@ -97,9 +97,9 @@ class AnalyzeServiceReferencesPassTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $graph->getNode('a')->getInEdges());
     }
 
-    protected function process(ContainerBuilder $container)
+    protected function process(ehough_iconic_ContainerBuilder $container)
     {
-        $pass = new RepeatedPass(array(new AnalyzeServiceReferencesPass()));
+        $pass = new ehough_iconic_compiler_RepeatedPass(array(new ehough_iconic_compiler_AnalyzeServiceReferencesPass()));
         $pass->process($container);
 
         return $container->getCompiler()->getServiceReferenceGraph();

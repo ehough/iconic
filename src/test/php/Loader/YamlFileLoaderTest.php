@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Loader;
+//namespace Symfony\Component\DependencyInjection\Tests\Loader;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\Config\Loader\Loader;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
-use Symfony\Component\Config\Loader\LoaderResolver;
-use Symfony\Component\Config\FileLocator;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\Config\Loader\Loader;
+//use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+//use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+//use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
+//use Symfony\Component\Config\Loader\LoaderResolver;
+//use Symfony\Component\Config\FileLocator;
 
 class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 {
@@ -45,7 +45,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadFile()
     {
-        $loader = new YamlFileLoader(new ContainerBuilder(), new FileLocator(self::$fixturesPath.'/ini'));
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/ini'));
         $r = new \ReflectionObject($loader);
         $m = $r->getMethod('loadFile');
         $m->setAccessible(true);
@@ -66,7 +66,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('The service file "parameters.ini" is not valid.', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file is not a valid YAML file');
         }
 
-        $loader = new YamlFileLoader(new ContainerBuilder(), new FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
 
         foreach (array('nonvalid1', 'nonvalid2') as $fixture) {
             try {
@@ -81,25 +81,25 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadParameters()
     {
-        $container = new ContainerBuilder();
-        $loader = new YamlFileLoader($container, new FileLocator(self::$fixturesPath.'/yaml'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $loader = new ehough_iconic_loader_YamlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
         $loader->load('services2.yml');
-        $this->assertEquals(array('foo' => 'bar', 'mixedcase' => array('MixedCaseKey' => 'value'), 'values' => array(true, false, 0, 1000.3), 'bar' => 'foo', 'foo_bar' => new Reference('foo_bar')), $container->getParameterBag()->all(), '->load() converts YAML keys to lowercase');
+        $this->assertEquals(array('foo' => 'bar', 'mixedcase' => array('MixedCaseKey' => 'value'), 'values' => array(true, false, 0, 1000.3), 'bar' => 'foo', 'foo_bar' => new ehough_iconic_Reference('foo_bar')), $container->getParameterBag()->all(), '->load() converts YAML keys to lowercase');
     }
 
     public function testLoadImports()
     {
-        $container = new ContainerBuilder();
-        $resolver = new LoaderResolver(array(
-            new IniFileLoader($container, new FileLocator(self::$fixturesPath.'/yaml')),
-            new XmlFileLoader($container, new FileLocator(self::$fixturesPath.'/yaml')),
-            $loader = new YamlFileLoader($container, new FileLocator(self::$fixturesPath.'/yaml')),
+        $container = new ehough_iconic_ContainerBuilder();
+        $resolver = new \Symfony\Component\Config\Loader\LoaderResolver(array(
+            new ehough_iconic_loader_IniFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml')),
+            new ehough_iconic_loader_XmlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml')),
+            $loader = new ehough_iconic_loader_YamlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml')),
         ));
         $loader->setResolver($resolver);
         $loader->load('services4.yml');
 
         $actual = $container->getParameterBag()->all();
-        $expected = array('foo' => 'bar', 'values' => array(true, false), 'bar' => '%foo%', 'foo_bar' => new Reference('foo_bar'), 'mixedcase' => array('MixedCaseKey' => 'value'), 'imported_from_ini' => true, 'imported_from_xml' => true);
+        $expected = array('foo' => 'bar', 'values' => array(true, false), 'bar' => '%foo%', 'foo_bar' => new ehough_iconic_Reference('foo_bar'), 'mixedcase' => array('MixedCaseKey' => 'value'), 'imported_from_ini' => true, 'imported_from_xml' => true);
         $this->assertEquals(array_keys($expected), array_keys($actual), '->load() imports and merges imported files');
 
         // Bad import throws no exception due to ignore_errors value.
@@ -108,24 +108,24 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadServices()
     {
-        $container = new ContainerBuilder();
-        $loader = new YamlFileLoader($container, new FileLocator(self::$fixturesPath.'/yaml'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $loader = new ehough_iconic_loader_YamlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
         $loader->load('services6.yml');
         $services = $container->getDefinitions();
         $this->assertTrue(isset($services['foo']), '->load() parses service elements');
-        $this->assertEquals('Symfony\\Component\\DependencyInjection\\Definition', get_class($services['foo']), '->load() converts service element to Definition instances');
+        $this->assertEquals('Symfony\\Component\\DependencyInjection\\Definition', get_class($services['foo']), '->load() converts service element to ehough_iconic_Definition instances');
         $this->assertEquals('FooClass', $services['foo']->getClass(), '->load() parses the class attribute');
         $this->assertEquals('container', $services['scope.container']->getScope());
         $this->assertEquals('custom', $services['scope.custom']->getScope());
         $this->assertEquals('prototype', $services['scope.prototype']->getScope());
         $this->assertEquals('getInstance', $services['constructor']->getFactoryMethod(), '->load() parses the factory_method attribute');
         $this->assertEquals('%path%/foo.php', $services['file']->getFile(), '->load() parses the file tag');
-        $this->assertEquals(array('foo', new Reference('foo'), array(true, false)), $services['arguments']->getArguments(), '->load() parses the argument tags');
+        $this->assertEquals(array('foo', new ehough_iconic_Reference('foo'), array(true, false)), $services['arguments']->getArguments(), '->load() parses the argument tags');
         $this->assertEquals('sc_configure', $services['configurator1']->getConfigurator(), '->load() parses the configurator tag');
-        $this->assertEquals(array(new Reference('baz'), 'configure'), $services['configurator2']->getConfigurator(), '->load() parses the configurator tag');
+        $this->assertEquals(array(new ehough_iconic_Reference('baz'), 'configure'), $services['configurator2']->getConfigurator(), '->load() parses the configurator tag');
         $this->assertEquals(array('BazClass', 'configureStatic'), $services['configurator3']->getConfigurator(), '->load() parses the configurator tag');
         $this->assertEquals(array(array('setBar', array()), array('setBar', array())), $services['method_call1']->getMethodCalls(), '->load() parses the method_call tag');
-        $this->assertEquals(array(array('setBar', array('foo', new Reference('foo'), array(true, false)))), $services['method_call2']->getMethodCalls(), '->load() parses the method_call tag');
+        $this->assertEquals(array(array('setBar', array('foo', new ehough_iconic_Reference('foo'), array(true, false)))), $services['method_call2']->getMethodCalls(), '->load() parses the method_call tag');
         $this->assertEquals('baz_factory', $services['factory_service']->getFactoryService());
 
         $aliases = $container->getAliases();
@@ -139,9 +139,9 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testExtensions()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->registerExtension(new \ProjectExtension());
-        $loader = new YamlFileLoader($container, new FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
         $loader->load('services10.yml');
         $container->compile();
         $services = $container->getDefinitions();
@@ -167,7 +167,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSupports()
     {
-        $loader = new YamlFileLoader(new ContainerBuilder(), new FileLocator());
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator());
 
         $this->assertTrue($loader->supports('foo.yml'), '->supports() returns true if the resource is loadable');
         $this->assertFalse($loader->supports('foo.foo'), '->supports() returns true if the resource is loadable');
@@ -175,7 +175,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testNonArrayTagThrowsException()
     {
-        $loader = new YamlFileLoader(new ContainerBuilder(), new FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
         try {
             $loader->load('badtag1.yml');
             $this->fail('->load() should throw an exception when the tags key of a service is not an array');
@@ -187,7 +187,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testTagWithoutNameThrowsException()
     {
-        $loader = new YamlFileLoader(new ContainerBuilder(), new FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
         try {
             $loader->load('badtag2.yml');
             $this->fail('->load() should throw an exception when a tag is missing the name key');
@@ -199,7 +199,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testTagWithAttributeArrayThrowsException()
     {
-        $loader = new YamlFileLoader(new ContainerBuilder(), new FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
         try {
             $loader->load('badtag3.yml');
             $this->fail('->load() should throw an exception when a tag-attribute is not a scalar');

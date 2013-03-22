@@ -18,7 +18,7 @@
  *
  * @api
  */
-interface ContainerAwareInterface
+interface ehough_iconic_ContainerAwareInterface
 {
     /**
      * Sets the Container.

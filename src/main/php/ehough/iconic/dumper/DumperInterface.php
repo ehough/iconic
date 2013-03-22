@@ -18,7 +18,7 @@
  *
  * @api
  */
-interface DumperInterface
+interface ehough_iconic_dumper_DumperInterface
 {
     /**
      * Dumps the service container.

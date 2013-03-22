@@ -20,7 +20,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-abstract class FileLoader extends BaseFileLoader
+abstract class ehough_iconic_loader_FileLoader extends \Symfony\Component\Config\Loader\FileLoader
 {
     protected $container;
 
@@ -28,9 +28,9 @@ abstract class FileLoader extends BaseFileLoader
      * Constructor.
      *
      * @param ehough_iconic_ContainerBuilder $container A ContainerBuilder instance
-     * @param FileLocatorInterface      $locator   A FileLocator instance
+     * @param \Symfony\Component\Config\FileLocatorInterface      $locator   A FileLocator instance
      */
-    public function __construct(ehough_iconic_ContainerBuilder $container, FileLocatorInterface $locator)
+    public function __construct(\ehough_iconic_ContainerBuilder $container, \Symfony\Component\Config\FileLocatorInterface $locator)
     {
         $this->container = $container;
 

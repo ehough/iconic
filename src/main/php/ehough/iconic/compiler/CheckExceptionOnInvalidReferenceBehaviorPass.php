@@ -56,7 +56,7 @@ class ehough_iconic_compiler_CheckExceptionOnInvalidReferenceBehaviorPass implem
                 $destId = (string) $argument;
 
                 if (!$this->container->has($destId)) {
-                    throw new ServiceNotFoundException($destId, $this->sourceId);
+                    throw new ehough_iconic_exception_ServiceNotFoundException($destId, $this->sourceId);
                 }
             }
         }

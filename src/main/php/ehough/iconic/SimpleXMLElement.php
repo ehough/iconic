@@ -103,6 +103,6 @@ class ehough_iconic_SimpleXMLElement extends SimpleXMLElement
      */
     public static function phpize($value)
     {
-        return XmlUtils::phpize($value);
+        return \Symfony\Component\Config\Util\XmlUtils::phpize($value);
     }
 }

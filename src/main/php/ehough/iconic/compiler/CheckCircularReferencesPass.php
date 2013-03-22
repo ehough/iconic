@@ -49,9 +49,9 @@ class ehough_iconic_compiler_CheckCircularReferencesPass implements ehough_iconi
     /**
      * Checks for circular references.
      *
-     * @param ServiceReferenceGraphEdge[] $edges An array of Edges
+     * @param ehough_iconic_compiler_ServiceReferenceGraphEdge[] $edges An array of Edges
      *
-     * @throws ServiceCircularReferenceException When a circular reference is found.
+     * @throws ehough_iconic_exception_ServiceCircularReferenceException When a circular reference is found.
      */
     private function checkOutEdges(array $edges)
     {
@@ -60,7 +60,7 @@ class ehough_iconic_compiler_CheckCircularReferencesPass implements ehough_iconi
             $this->currentPath[] = $id = $node->getId();
 
             if ($this->currentId === $id) {
-                throw new ServiceCircularReferenceException($this->currentId, $this->currentPath);
+                throw new ehough_iconic_exception_ServiceCircularReferenceException($this->currentId, $this->currentPath);
             }
 
             $this->checkOutEdges($node->getOutEdges());

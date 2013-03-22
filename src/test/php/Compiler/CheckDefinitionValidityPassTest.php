@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\Compiler\CheckDefinitionValidityPass;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Compiler\CheckDefinitionValidityPass;
+//use Symfony\Component\DependencyInjection\ContainerInterface;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CheckDefinitionValidityPassTest extends \PHPUnit_Framework_TestCase
 {
@@ -22,7 +22,7 @@ class CheckDefinitionValidityPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessDetectsSyntheticNonPublicDefinitions()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->register('a')->setSynthetic(true)->setPublic(false);
 
         $this->process($container);
@@ -33,8 +33,8 @@ class CheckDefinitionValidityPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessDetectsSyntheticPrototypeDefinitions()
     {
-        $container = new ContainerBuilder();
-        $container->register('a')->setSynthetic(true)->setScope(ContainerInterface::SCOPE_PROTOTYPE);
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('a')->setSynthetic(true)->setScope(ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE);
 
         $this->process($container);
     }
@@ -44,7 +44,7 @@ class CheckDefinitionValidityPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessDetectsNonSyntheticNonAbstractDefinitionWithoutClass()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->register('a')->setSynthetic(false)->setAbstract(false);
 
         $this->process($container);
@@ -52,7 +52,7 @@ class CheckDefinitionValidityPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcess()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->register('a', 'class');
         $container->register('b', 'class')->setSynthetic(true)->setPublic(true);
         $container->register('c', 'class')->setAbstract(true);
@@ -61,9 +61,9 @@ class CheckDefinitionValidityPassTest extends \PHPUnit_Framework_TestCase
         $this->process($container);
     }
 
-    protected function process(ContainerBuilder $container)
+    protected function process(ehough_iconic_ContainerBuilder $container)
     {
-        $pass = new CheckDefinitionValidityPass();
+        $pass = new ehough_iconic_compiler_CheckDefinitionValidityPass();
         $pass->process($container);
     }
 }

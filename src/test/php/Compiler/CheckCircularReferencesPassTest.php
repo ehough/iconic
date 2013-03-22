@@ -9,17 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\Reference;
 
-use Symfony\Component\DependencyInjection\Compiler\CheckCircularReferencesPass;
+//use Symfony\Component\DependencyInjection\Compiler\CheckCircularReferencesPass;
 
-use Symfony\Component\DependencyInjection\Compiler\AnalyzeServiceReferencesPass;
+//use Symfony\Component\DependencyInjection\Compiler\AnalyzeServiceReferencesPass;
 
-use Symfony\Component\DependencyInjection\Compiler\Compiler;
+//use Symfony\Component\DependencyInjection\Compiler\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CheckCircularReferencesPassTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,9 +28,9 @@ class CheckCircularReferencesPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcess()
     {
-        $container = new ContainerBuilder();
-        $container->register('a')->addArgument(new Reference('b'));
-        $container->register('b')->addArgument(new Reference('a'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('a')->addArgument(new ehough_iconic_Reference('b'));
+        $container->register('b')->addArgument(new ehough_iconic_Reference('a'));
 
         $this->process($container);
     }
@@ -40,8 +40,8 @@ class CheckCircularReferencesPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessWithAliases()
     {
-        $container = new ContainerBuilder();
-        $container->register('a')->addArgument(new Reference('b'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('a')->addArgument(new ehough_iconic_Reference('b'));
         $container->setAlias('b', 'c');
         $container->setAlias('c', 'a');
 
@@ -53,30 +53,30 @@ class CheckCircularReferencesPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessDetectsIndirectCircularReference()
     {
-        $container = new ContainerBuilder();
-        $container->register('a')->addArgument(new Reference('b'));
-        $container->register('b')->addArgument(new Reference('c'));
-        $container->register('c')->addArgument(new Reference('a'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('a')->addArgument(new ehough_iconic_Reference('b'));
+        $container->register('b')->addArgument(new ehough_iconic_Reference('c'));
+        $container->register('c')->addArgument(new ehough_iconic_Reference('a'));
 
         $this->process($container);
     }
 
     public function testProcessIgnoresMethodCalls()
     {
-        $container = new ContainerBuilder();
-        $container->register('a')->addArgument(new Reference('b'));
-        $container->register('b')->addMethodCall('setA', array(new Reference('a')));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('a')->addArgument(new ehough_iconic_Reference('b'));
+        $container->register('b')->addMethodCall('setA', array(new ehough_iconic_Reference('a')));
 
         $this->process($container);
     }
 
-    protected function process(ContainerBuilder $container)
+    protected function process(ehough_iconic_ContainerBuilder $container)
     {
-        $compiler = new Compiler();
+        $compiler = new ehough_iconic_compiler_Compiler();
         $passConfig = $compiler->getPassConfig();
         $passConfig->setOptimizationPasses(array(
-            new AnalyzeServiceReferencesPass(true),
-            new CheckCircularReferencesPass(),
+            new ehough_iconic_compiler_AnalyzeServiceReferencesPass(true),
+            new ehough_iconic_compiler_CheckCircularReferencesPass(),
         ));
         $passConfig->setRemovingPasses(array());
 

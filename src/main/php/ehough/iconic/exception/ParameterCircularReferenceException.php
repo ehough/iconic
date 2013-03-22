@@ -16,7 +16,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ParameterCircularReferenceException extends RuntimeException
+class ehough_iconic_exception_ParameterCircularReferenceException extends ehough_iconic_exception_RuntimeException
 {
     private $parameters;
 

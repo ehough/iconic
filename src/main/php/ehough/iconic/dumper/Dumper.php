@@ -20,7 +20,7 @@
  *
  * @api
  */
-abstract class Dumper implements DumperInterface
+abstract class ehough_iconic_dumper_Dumper implements ehough_iconic_dumper_DumperInterface
 {
     protected $container;
 

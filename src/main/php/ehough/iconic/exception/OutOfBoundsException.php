@@ -14,6 +14,6 @@
 /**
  * Base OutOfBoundsException for Dependency Injection component.
  */
-class OutOfBoundsException extends \OutOfBoundsException implements ExceptionInterface
+class ehough_iconic_exception_OutOfBoundsException extends OutOfBoundsException implements ehough_iconic_exception_ExceptionInterface
 {
 }

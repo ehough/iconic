@@ -19,7 +19,7 @@
  * Run this pass before passes that need to know more about the relation of
  * your services.
  *
- * This class will populate the ServiceReferenceGraph with information. You can
+ * This class will populate the ehough_iconic_compiler_ServiceReferenceGraph with information. You can
  * retrieve the graph in other passes from the compiler.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>

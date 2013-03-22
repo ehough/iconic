@@ -14,6 +14,6 @@
 /**
  * Base LogicException for Dependency Injection component.
  */
-class LogicException extends \LogicException implements ExceptionInterface
+class ehough_iconic_exception_LogicException extends LogicException implements ehough_iconic_exception_ExceptionInterface
 {
 }

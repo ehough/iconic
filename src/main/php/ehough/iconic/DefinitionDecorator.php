@@ -159,7 +159,7 @@ class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
      *
      * @return mixed The argument value
      *
-     * @throws OutOfBoundsException When the argument does not exist
+     * @throws ehough_iconic_exception_OutOfBoundsException When the argument does not exist
      *
      * @api
      */
@@ -172,7 +172,7 @@ class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
         $lastIndex = count(array_filter(array_keys($this->arguments), 'is_int')) - 1;
 
         if ($index < 0 || $index > $lastIndex) {
-            throw new OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, $lastIndex));
+            throw new ehough_iconic_exception_OutOfBoundsException(sprintf('The index "%d" is not in the range [0, %d].', $index, $lastIndex));
         }
 
         return $this->arguments[$index];
@@ -190,14 +190,14 @@ class ehough_iconic_DefinitionDecorator extends ehough_iconic_Definition
      * @param mixed   $value
      *
      * @return ehough_iconic_DefinitionDecorator the current instance
-     * @throws InvalidArgumentException when $index isn't an integer
+     * @throws ehough_iconic_exception_InvalidArgumentException when $index isn't an integer
      *
      * @api
      */
     public function replaceArgument($index, $value)
     {
         if (!is_int($index)) {
-            throw new InvalidArgumentException('$index must be an integer.');
+            throw new ehough_iconic_exception_InvalidArgumentException('$index must be an integer.');
         }
 
         $this->arguments['index_'.$index] = $value;

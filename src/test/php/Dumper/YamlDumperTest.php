@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Dumper;
+//namespace Symfony\Component\DependencyInjection\Tests\Dumper;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
 
 class YamlDumperTest extends \PHPUnit_Framework_TestCase
 {
@@ -32,28 +32,28 @@ class YamlDumperTest extends \PHPUnit_Framework_TestCase
 
     public function testDump()
     {
-        $dumper = new YamlDumper($container = new ContainerBuilder());
+        $dumper = new ehough_iconic_dumper_YamlDumper($container = new ehough_iconic_ContainerBuilder());
 
         $this->assertStringEqualsFile(self::$fixturesPath.'/yaml/services1.yml', $dumper->dump(), '->dump() dumps an empty container as an empty YAML file');
 
-        $container = new ContainerBuilder();
-        $dumper = new YamlDumper($container);
+        $container = new ehough_iconic_ContainerBuilder();
+        $dumper = new ehough_iconic_dumper_YamlDumper($container);
     }
 
     public function testAddParameters()
     {
         $container = include self::$fixturesPath.'/containers/container8.php';
-        $dumper = new YamlDumper($container);
+        $dumper = new ehough_iconic_dumper_YamlDumper($container);
         $this->assertStringEqualsFile(self::$fixturesPath.'/yaml/services8.yml', $dumper->dump(), '->dump() dumps parameters');
     }
 
     public function testAddService()
     {
         $container = include self::$fixturesPath.'/containers/container9.php';
-        $dumper = new YamlDumper($container);
+        $dumper = new ehough_iconic_dumper_YamlDumper($container);
         $this->assertEquals(str_replace('%path%', self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR, file_get_contents(self::$fixturesPath.'/yaml/services9.yml')), $dumper->dump(), '->dump() dumps services');
 
-        $dumper = new YamlDumper($container = new ContainerBuilder());
+        $dumper = new ehough_iconic_dumper_YamlDumper($container = new ehough_iconic_ContainerBuilder());
         $container->register('foo', 'FooClass')->addArgument(new \stdClass());
         try {
             $dumper->dump();

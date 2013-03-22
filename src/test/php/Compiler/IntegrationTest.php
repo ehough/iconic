@@ -9,11 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Alias;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * This class tests the integration of the different compiler passes
@@ -29,17 +29,17 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessRemovesAndInlinesRecursively()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
 
         $a = $container
             ->register('a', '\stdClass')
-            ->addArgument(new Reference('c'))
+            ->addArgument(new ehough_iconic_Reference('c'))
         ;
 
         $b = $container
             ->register('b', '\stdClass')
-            ->addArgument(new Reference('c'))
+            ->addArgument(new ehough_iconic_Reference('c'))
             ->setPublic(false)
         ;
 
@@ -59,15 +59,15 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessInlinesReferencesToAliases()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
 
         $a = $container
             ->register('a', '\stdClass')
-            ->addArgument(new Reference('b'))
+            ->addArgument(new ehough_iconic_Reference('b'))
         ;
 
-        $container->setAlias('b', new Alias('c', false));
+        $container->setAlias('b', new ehough_iconic_Alias('c', false));
 
         $c = $container
             ->register('c', '\stdClass')
@@ -85,18 +85,18 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessInlinesWhenThereAreMultipleReferencesButFromTheSameDefinition()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
 
         $container
             ->register('a', '\stdClass')
-            ->addArgument(new Reference('b'))
-            ->addMethodCall('setC', array(new Reference('c')))
+            ->addArgument(new ehough_iconic_Reference('b'))
+            ->addMethodCall('setC', array(new ehough_iconic_Reference('c')))
         ;
 
         $container
             ->register('b', '\stdClass')
-            ->addArgument(new Reference('c'))
+            ->addArgument(new ehough_iconic_Reference('c'))
             ->setPublic(false)
         ;
 

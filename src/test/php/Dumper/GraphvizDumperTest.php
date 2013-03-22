@@ -9,12 +9,12 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Dumper;
+//namespace Symfony\Component\DependencyInjection\Tests\Dumper;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\GraphvizDumper;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Dumper\GraphvizDumper;
 
-class GraphvizDumperTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_dumper_GraphvizDumperTest extends \PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 
@@ -25,20 +25,20 @@ class GraphvizDumperTest extends \PHPUnit_Framework_TestCase
 
     public function testDump()
     {
-        $dumper = new GraphvizDumper($container = new ContainerBuilder());
+        $dumper = new ehough_iconic_dumper_GraphvizDumper($container = new ehough_iconic_ContainerBuilder());
 
         $this->assertStringEqualsFile(self::$fixturesPath.'/graphviz/services1.dot', $dumper->dump(), '->dump() dumps an empty container as an empty dot file');
 
         $container = include self::$fixturesPath.'/containers/container9.php';
-        $dumper = new GraphvizDumper($container);
+        $dumper = new ehough_iconic_dumper_GraphvizDumper($container);
         $this->assertEquals(str_replace('%path%', __DIR__, file_get_contents(self::$fixturesPath.'/graphviz/services9.dot')), $dumper->dump(), '->dump() dumps services');
 
         $container = include self::$fixturesPath.'/containers/container10.php';
-        $dumper = new GraphvizDumper($container);
+        $dumper = new ehough_iconic_dumper_GraphvizDumper($container);
         $this->assertEquals(str_replace('%path%', __DIR__, file_get_contents(self::$fixturesPath.'/graphviz/services10.dot')), $dumper->dump(), '->dump() dumps services');
 
         $container = include self::$fixturesPath.'/containers/container10.php';
-        $dumper = new GraphvizDumper($container);
+        $dumper = new ehough_iconic_dumper_GraphvizDumper($container);
         $this->assertEquals($dumper->dump(array(
             'graph' => array('ratio' => 'normal'),
             'node'  => array('fontsize' => 13, 'fontname' => 'Verdana', 'shape' => 'square'),
@@ -52,14 +52,14 @@ class GraphvizDumperTest extends \PHPUnit_Framework_TestCase
     public function testDumpWithFrozenContainer()
     {
         $container = include self::$fixturesPath.'/containers/container13.php';
-        $dumper = new GraphvizDumper($container);
+        $dumper = new ehough_iconic_dumper_GraphvizDumper($container);
         $this->assertEquals(str_replace('%path%', __DIR__, file_get_contents(self::$fixturesPath.'/graphviz/services13.dot')), $dumper->dump(), '->dump() dumps services');
     }
 
     public function testDumpWithFrozenCustomClassContainer()
     {
         $container = include self::$fixturesPath.'/containers/container14.php';
-        $dumper = new GraphvizDumper($container);
+        $dumper = new ehough_iconic_dumper_GraphvizDumper($container);
         $this->assertEquals(str_replace('%path%', __DIR__, file_get_contents(self::$fixturesPath.'/graphviz/services14.dot')), $dumper->dump(), '->dump() dumps services');
     }
 }

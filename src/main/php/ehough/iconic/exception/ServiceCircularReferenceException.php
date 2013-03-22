@@ -16,7 +16,7 @@
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  */
-class ServiceCircularReferenceException extends RuntimeException
+class ehough_iconic_exception_ServiceCircularReferenceException extends ehough_iconic_exception_RuntimeException
 {
     private $serviceId;
     private $path;

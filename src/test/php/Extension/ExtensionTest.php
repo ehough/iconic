@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Extension;
+//namespace Symfony\Component\DependencyInjection\Tests\Extension;
 
 class ExtensionTest extends \PHPUnit_Framework_TestCase
 {
@@ -59,7 +59,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \Symfony\Component\DependencyInjection\Exception\InvalidArgumentException
+     * @expectedException ehough_iconic_exception_InvalidArgumentException
      * @expectedExceptionMessage The config array has no 'enabled' key.
      */
     public function testIsConfigEnabledOnNonEnableableConfig()

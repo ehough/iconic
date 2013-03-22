@@ -50,9 +50,9 @@ interface ehough_iconic_ContainerInterface
      *
      * @return object The associated service
      *
-     * @throws InvalidArgumentException if the service is not defined
-     * @throws ServiceCircularReferenceException When a circular reference is detected
-     * @throws ServiceNotFoundException When the service is not defined
+     * @throws ehough_iconic_exception_InvalidArgumentException if the service is not defined
+     * @throws ehough_iconic_exception_ServiceCircularReferenceException When a circular reference is detected
+     * @throws ehough_iconic_exception_ServiceNotFoundException When the service is not defined
      *
      * @see ehough_iconic_Reference
      *
@@ -126,11 +126,11 @@ interface ehough_iconic_ContainerInterface
     /**
      * Adds a scope to the container
      *
-     * @param ScopeInterface $scope
+     * @param ehough_iconic_ScopeInterface $scope
      *
      * @api
      */
-    public function addScope(ScopeInterface $scope);
+    public function addScope(ehough_iconic_ScopeInterface $scope);
 
     /**
      * Whether this container has the given scope

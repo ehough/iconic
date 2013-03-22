@@ -45,9 +45,9 @@ class ehough_iconic_compiler_ServiceReferenceGraphNode
     /**
      * Adds an in edge to this node.
      *
-     * @param ServiceReferenceGraphEdge $edge
+     * @param ehough_iconic_compiler_ServiceReferenceGraphEdge $edge
      */
-    public function addInEdge(ServiceReferenceGraphEdge $edge)
+    public function addInEdge(ehough_iconic_compiler_ServiceReferenceGraphEdge $edge)
     {
         $this->inEdges[] = $edge;
     }
@@ -55,9 +55,9 @@ class ehough_iconic_compiler_ServiceReferenceGraphNode
     /**
      * Adds an out edge to this node.
      *
-     * @param ServiceReferenceGraphEdge $edge
+     * @param ehough_iconic_compiler_ServiceReferenceGraphEdge $edge
      */
-    public function addOutEdge(ServiceReferenceGraphEdge $edge)
+    public function addOutEdge(ehough_iconic_compiler_ServiceReferenceGraphEdge $edge)
     {
         $this->outEdges[] = $edge;
     }
@@ -95,7 +95,7 @@ class ehough_iconic_compiler_ServiceReferenceGraphNode
     /**
      * Returns the in edges.
      *
-     * @return array The in ServiceReferenceGraphEdge array
+     * @return array The in ehough_iconic_compiler_ServiceReferenceGraphEdge array
      */
     public function getInEdges()
     {
@@ -105,7 +105,7 @@ class ehough_iconic_compiler_ServiceReferenceGraphNode
     /**
      * Returns the out edges.
      *
-     * @return array The out ServiceReferenceGraphEdge array
+     * @return array The out ehough_iconic_compiler_ServiceReferenceGraphEdge array
      */
     public function getOutEdges()
     {

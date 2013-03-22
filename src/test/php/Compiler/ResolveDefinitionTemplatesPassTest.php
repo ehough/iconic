@@ -9,20 +9,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
-use Symfony\Component\DependencyInjection\Compiler\ResolveDefinitionTemplatesPass;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\ContainerInterface;
+//use Symfony\Component\DependencyInjection\DefinitionDecorator;
+//use Symfony\Component\DependencyInjection\Compiler\ResolveDefinitionTemplatesPass;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->register('parent', 'foo')->setArguments(array('moo', 'b'))->setProperty('foo', 'moo');
-        $container->setDefinition('child', new DefinitionDecorator('parent'))
+        $container->setDefinition('child', new ehough_iconic_DefinitionDecorator('parent'))
             ->replaceArgument(0, 'a')
             ->setProperty('foo', 'bar')
             ->setClass('bar')
@@ -31,7 +31,7 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
         $this->process($container);
 
         $def = $container->getDefinition('child');
-        $this->assertNotInstanceOf('Symfony\Component\DependencyInjection\DefinitionDecorator', $def);
+        $this->assertNotInstanceOf('ehough_iconic_DefinitionDecorator', $def);
         $this->assertEquals('bar', $def->getClass());
         $this->assertEquals(array('a', 'b'), $def->getArguments());
         $this->assertEquals(array('foo' => 'bar'), $def->getProperties());
@@ -39,7 +39,7 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessAppendsMethodCallsAlways()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container
             ->register('parent')
@@ -47,7 +47,7 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
         ;
 
         $container
-            ->setDefinition('child', new DefinitionDecorator('parent'))
+            ->setDefinition('child', new ehough_iconic_DefinitionDecorator('parent'))
             ->addMethodCall('bar', array('foo'))
         ;
 
@@ -62,7 +62,7 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessDoesNotCopyAbstract()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container
             ->register('parent')
@@ -70,7 +70,7 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
         ;
 
         $container
-            ->setDefinition('child', new DefinitionDecorator('parent'))
+            ->setDefinition('child', new ehough_iconic_DefinitionDecorator('parent'))
         ;
 
         $this->process($container);
@@ -81,7 +81,7 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessDoesNotCopyScope()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container
             ->register('parent')
@@ -89,18 +89,18 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
         ;
 
         $container
-            ->setDefinition('child', new DefinitionDecorator('parent'))
+            ->setDefinition('child', new ehough_iconic_DefinitionDecorator('parent'))
         ;
 
         $this->process($container);
 
         $def = $container->getDefinition('child');
-        $this->assertEquals(ContainerInterface::SCOPE_CONTAINER, $def->getScope());
+        $this->assertEquals(ehough_iconic_ContainerInterface::SCOPE_CONTAINER, $def->getScope());
     }
 
     public function testProcessDoesNotCopyTags()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container
             ->register('parent')
@@ -108,7 +108,7 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
         ;
 
         $container
-            ->setDefinition('child', new DefinitionDecorator('parent'))
+            ->setDefinition('child', new ehough_iconic_DefinitionDecorator('parent'))
         ;
 
         $this->process($container);
@@ -119,7 +119,7 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessHandlesMultipleInheritance()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container
             ->register('parent', 'foo')
@@ -127,12 +127,12 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
         ;
 
         $container
-            ->setDefinition('child2', new DefinitionDecorator('child1'))
+            ->setDefinition('child2', new ehough_iconic_DefinitionDecorator('child1'))
             ->replaceArgument(1, 'b')
         ;
 
         $container
-            ->setDefinition('child1', new DefinitionDecorator('parent'))
+            ->setDefinition('child1', new ehough_iconic_DefinitionDecorator('parent'))
             ->replaceArgument(0, 'a')
         ;
 
@@ -143,9 +143,9 @@ class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $def->getClass());
     }
 
-    protected function process(ContainerBuilder $container)
+    protected function process(ehough_iconic_ContainerBuilder $container)
     {
-        $pass = new ResolveDefinitionTemplatesPass();
+        $pass = new ehough_iconic_compiler_ResolveDefinitionTemplatesPass();
         $pass->process($container);
     }
 }

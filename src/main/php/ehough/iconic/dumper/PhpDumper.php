@@ -30,7 +30,7 @@
  *
  * @api
  */
-class PhpDumper extends Dumper
+class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
 {
     /**
      * Characters that might appear in the generated variable name as first character
@@ -132,7 +132,7 @@ class PhpDumper extends Dumper
 
             if ($callCount > 1) {
                 $name = $this->getNextVariableName();
-                $this->referenceVariables[$id] = new Variable($name);
+                $this->referenceVariables[$id] = new ehough_iconic_Variable($name);
 
                 if (ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE === $behavior[$id]) {
                     $code .= sprintf($template, $name, $this->getServiceCall($id));
@@ -188,7 +188,7 @@ class PhpDumper extends Dumper
      * @return string
      *
      * @throws RuntimeException When the factory definition is incomplete
-     * @throws ServiceCircularReferenceException When a circular reference is detected
+     * @throws ehough_iconic_exception_ServiceCircularReferenceException When a circular reference is detected
      */
     private function addServiceInlinedDefinitions($id, $definition)
     {
@@ -216,7 +216,7 @@ class PhpDumper extends Dumper
             $class = $this->dumpValue($sDefinition->getClass());
             if ($nbOccurrences->offsetGet($sDefinition) > 1 || $sDefinition->getMethodCalls() || $sDefinition->getProperties() || null !== $sDefinition->getConfigurator() || false !== strpos($class, '$')) {
                 $name = $this->getNextVariableName();
-                $variableMap->offsetSet($sDefinition, new Variable($name));
+                $variableMap->offsetSet($sDefinition, new ehough_iconic_Variable($name));
 
                 // a construct like:
                 // $a = new ServiceA(ServiceB $b); $b = new ServiceB(ServiceA $a);
@@ -226,7 +226,7 @@ class PhpDumper extends Dumper
                 // $a = new ServiceA(ServiceB $b);
                 // $b->setServiceA(ServiceA $a);
                 if ($this->hasReference($id, $sDefinition->getArguments())) {
-                    throw new ServiceCircularReferenceException($id, array($id));
+                    throw new ehough_iconic_exception_ServiceCircularReferenceException($id, array($id));
                 }
 
                 $code .= $this->addNewInstance($id, $sDefinition, '$'.$name, ' = ');
@@ -373,7 +373,7 @@ class PhpDumper extends Dumper
      */
     private function addServiceInlinedDefinitionsSetup($id, $definition)
     {
-        $this->referenceVariables[$id] = new Variable('instance');
+        $this->referenceVariables[$id] = new ehough_iconic_Variable('instance');
 
         $code = '';
         $processed = new \SplObjectStorage();
@@ -436,7 +436,7 @@ class PhpDumper extends Dumper
      */
     private function addService($id, $definition)
     {
-        $name = Container::camelize($id);
+        $name = ehough_iconic_Container::camelize($id);
         $this->definitionVariables = new \SplObjectStorage();
         $this->referenceVariables = array();
         $this->variableCount = 0;
@@ -537,7 +537,7 @@ EOF;
      */
     private function addServiceAlias($alias, $id)
     {
-        $name = Container::camelize($alias);
+        $name = ehough_iconic_Container::camelize($alias);
         $type = 'Object';
 
         if ($this->container->hasDefinition($id)) {
@@ -658,7 +658,7 @@ EOF;
      */
     private function addConstructor()
     {
-        $arguments = $this->container->getParameterBag()->all() ? 'new ParameterBag($this->getDefaultParameters())' : null;
+        $arguments = $this->container->getParameterBag()->all() ? 'new ehough_iconic_parameterbag_ParameterBag($this->getDefaultParameters())' : null;
 
         $code = <<<EOF
 
@@ -778,7 +778,7 @@ EOF;
      */
     public function setParameter(\$name, \$value)
     {
-        throw new LogicException('Impossible to call set() on a frozen ParameterBag.');
+        throw new LogicException('Impossible to call set() on a frozen ehough_iconic_parameterbag_ParameterBag.');
     }
 
     /**
@@ -829,7 +829,7 @@ EOF;
         foreach ($parameters as $key => $value) {
             if (is_array($value)) {
                 $value = $this->exportParameters($value, $path.'/'.$key, $indent + 4);
-            } elseif ($value instanceof Variable) {
+            } elseif ($value instanceof ehough_iconic_Variable) {
                 throw new InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain variable references. Variable "%s" found in "%s".', $value, $path.'/'.$key));
             } elseif ($value instanceof ehough_iconic_Definition) {
                 throw new InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain service definitions. Definition for "%s" found in "%s".', $value->getClass(), $path.'/'.$key));
@@ -868,7 +868,7 @@ EOF;
      */
     private function wrapServiceConditionals($value, $code)
     {
-        if (!$services = ContainerBuilder::getServiceConditionals($value)) {
+        if (!$services = ehough_iconic_ContainerBuilder::getServiceConditionals($value)) {
             return $code;
         }
 
@@ -1049,7 +1049,7 @@ EOF;
             }
 
             return sprintf("new \\%s(%s)", substr(str_replace('\\\\', '\\', $class), 1, -1), implode(', ', $arguments));
-        } elseif ($value instanceof Variable) {
+        } elseif ($value instanceof ehough_iconic_Variable) {
             return '$'.$value;
         } elseif ($value instanceof ehough_iconic_Reference) {
             if (null !== $this->referenceVariables && isset($this->referenceVariables[$id = (string) $value])) {
@@ -1057,7 +1057,7 @@ EOF;
             }
 
             return $this->getServiceCall((string) $value, $value);
-        } elseif ($value instanceof Parameter) {
+        } elseif ($value instanceof ehough_iconic_Parameter) {
             return $this->dumpParameter($value);
         } elseif (true === $interpolate && is_string($value)) {
             if (preg_match('/^%([^%]+)%$/', $value, $match)) {

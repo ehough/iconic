@@ -21,16 +21,16 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class ClosureLoader extends Loader
+class ehough_iconic_loader_ClosureLoader extends \Symfony\Component\Config\Loader\Loader
 {
     private $container;
 
     /**
      * Constructor.
      *
-     * @param ehough_iconic_ContainerBuilder $container A ContainerBuilder instance
+     * @param \ehough_iconic_ContainerBuilder $container A ContainerBuilder instance
      */
-    public function __construct(ehough_iconic_ContainerBuilder $container)
+    public function __construct(\ehough_iconic_ContainerBuilder $container)
     {
         $this->container = $container;
     }

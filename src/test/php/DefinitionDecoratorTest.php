@@ -9,15 +9,15 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests;
+//namespace Symfony\Component\DependencyInjection\Tests;
 
-use Symfony\Component\DependencyInjection\DefinitionDecorator;
+//use Symfony\Component\DependencyInjection\DefinitionDecorator;
 
-class DefinitionDecoratorTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_DefinitionDecoratorTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {
-        $def = new DefinitionDecorator('foo');
+        $def = new ehough_iconic_DefinitionDecorator('foo');
 
         $this->assertEquals('foo', $def->getParent());
         $this->assertEquals(array(), $def->getChanges());
@@ -28,7 +28,7 @@ class DefinitionDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetProperty($property, $changeKey)
     {
-        $def = new DefinitionDecorator('foo');
+        $def = new ehough_iconic_DefinitionDecorator('foo');
 
         $getter = 'get'.ucfirst($property);
         $setter = 'set'.ucfirst($property);
@@ -53,7 +53,7 @@ class DefinitionDecoratorTest extends \PHPUnit_Framework_TestCase
 
     public function testSetPublic()
     {
-        $def = new DefinitionDecorator('foo');
+        $def = new ehough_iconic_DefinitionDecorator('foo');
 
         $this->assertTrue($def->isPublic());
         $this->assertSame($def, $def->setPublic(false));
@@ -63,7 +63,7 @@ class DefinitionDecoratorTest extends \PHPUnit_Framework_TestCase
 
     public function testSetArgument()
     {
-        $def = new DefinitionDecorator('foo');
+        $def = new ehough_iconic_DefinitionDecorator('foo');
 
         $this->assertEquals(array(), $def->getArguments());
         $this->assertSame($def, $def->replaceArgument(0, 'foo'));
@@ -75,14 +75,14 @@ class DefinitionDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testReplaceArgumentShouldRequireIntegerIndex()
     {
-        $def = new DefinitionDecorator('foo');
+        $def = new ehough_iconic_DefinitionDecorator('foo');
 
         $def->replaceArgument('0', 'foo');
     }
 
     public function testReplaceArgument()
     {
-        $def = new DefinitionDecorator('foo');
+        $def = new ehough_iconic_DefinitionDecorator('foo');
 
         $def->setArguments(array(0 => 'foo', 1 => 'bar'));
         $this->assertEquals('foo', $def->getArgument(0));
@@ -100,7 +100,7 @@ class DefinitionDecoratorTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetArgumentShouldCheckBounds()
     {
-        $def = new DefinitionDecorator('foo');
+        $def = new ehough_iconic_DefinitionDecorator('foo');
 
         $def->setArguments(array(0 => 'foo'));
         $def->replaceArgument(0, 'foo');

@@ -21,7 +21,7 @@
  *
  * @author Fabien Potencier <fabien@symfony.com>
  */
-class PhpFileLoader extends FileLoader
+class ehough_iconic_loader_PhpFileLoader extends ehough_iconic_loader_FileLoader
 {
     /**
      * Loads a PHP file.
@@ -37,7 +37,7 @@ class PhpFileLoader extends FileLoader
 
         $path = $this->locator->locate($file);
         $this->setCurrentDir(dirname($path));
-        $this->container->addResource(new FileResource($path));
+        $this->container->addResource(new \Symfony\Component\Config\Resource\FileResource($path));
 
         include $path;
     }

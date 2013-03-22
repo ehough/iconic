@@ -9,21 +9,21 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\Scope;
+//use Symfony\Component\DependencyInjection\Scope;
 
-use Symfony\Component\DependencyInjection\Compiler\CheckReferenceValidityPass;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Compiler\CheckReferenceValidityPass;
+//use Symfony\Component\DependencyInjection\ContainerInterface;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class CheckReferenceValidityPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcessIgnoresScopeWideningIfNonStrictReference()
     {
-        $container = new ContainerBuilder();
-        $container->register('a')->addArgument(new Reference('b', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, false));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('a')->addArgument(new ehough_iconic_Reference('b', ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, false));
         $container->register('b')->setScope('prototype');
 
         $this->process($container);
@@ -34,8 +34,8 @@ class CheckReferenceValidityPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessDetectsScopeWidening()
     {
-        $container = new ContainerBuilder();
-        $container->register('a')->addArgument(new Reference('b'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('a')->addArgument(new ehough_iconic_Reference('b'));
         $container->register('b')->setScope('prototype');
 
         $this->process($container);
@@ -43,11 +43,11 @@ class CheckReferenceValidityPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessIgnoresCrossScopeHierarchyReferenceIfNotStrict()
     {
-        $container = new ContainerBuilder();
-        $container->addScope(new Scope('a'));
-        $container->addScope(new Scope('b'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->addScope(new ehough_iconic_Scope('a'));
+        $container->addScope(new ehough_iconic_Scope('b'));
 
-        $container->register('a')->setScope('a')->addArgument(new Reference('b', ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, false));
+        $container->register('a')->setScope('a')->addArgument(new ehough_iconic_Reference('b', ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, false));
         $container->register('b')->setScope('b');
 
         $this->process($container);
@@ -58,11 +58,11 @@ class CheckReferenceValidityPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessDetectsCrossScopeHierarchyReference()
     {
-        $container = new ContainerBuilder();
-        $container->addScope(new Scope('a'));
-        $container->addScope(new Scope('b'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->addScope(new ehough_iconic_Scope('a'));
+        $container->addScope(new ehough_iconic_Scope('b'));
 
-        $container->register('a')->setScope('a')->addArgument(new Reference('b'));
+        $container->register('a')->setScope('a')->addArgument(new ehough_iconic_Reference('b'));
         $container->register('b')->setScope('b');
 
         $this->process($container);
@@ -73,26 +73,26 @@ class CheckReferenceValidityPassTest extends \PHPUnit_Framework_TestCase
      */
     public function testProcessDetectsReferenceToAbstractDefinition()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $container->register('a')->setAbstract(true);
-        $container->register('b')->addArgument(new Reference('a'));
+        $container->register('b')->addArgument(new ehough_iconic_Reference('a'));
 
         $this->process($container);
     }
 
     public function testProcess()
     {
-        $container = new ContainerBuilder();
-        $container->register('a')->addArgument(new Reference('b'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('a')->addArgument(new ehough_iconic_Reference('b'));
         $container->register('b');
 
         $this->process($container);
     }
 
-    protected function process(ContainerBuilder $container)
+    protected function process(ehough_iconic_ContainerBuilder $container)
     {
-        $pass = new CheckReferenceValidityPass();
+        $pass = new ehough_iconic_compiler_CheckReferenceValidityPass();
         $pass->process($container);
     }
 }

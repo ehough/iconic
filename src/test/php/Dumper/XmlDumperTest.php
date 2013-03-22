@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Dumper;
+//namespace Symfony\Component\DependencyInjection\Tests\Dumper;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Dumper\XmlDumper;
 
 class XmlDumperTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,35 +25,35 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
 
     public function testDump()
     {
-        $dumper = new XmlDumper($container = new ContainerBuilder());
+        $dumper = new ehough_iconic_dumper_XmlDumper($container = new ehough_iconic_ContainerBuilder());
 
         $this->assertXmlStringEqualsXmlFile(self::$fixturesPath.'/xml/services1.xml', $dumper->dump(), '->dump() dumps an empty container as an empty XML file');
 
-        $container = new ContainerBuilder();
-        $dumper = new XmlDumper($container);
+        $container = new ehough_iconic_ContainerBuilder();
+        $dumper = new ehough_iconic_dumper_XmlDumper($container);
     }
 
     public function testExportParameters()
     {
         $container = include self::$fixturesPath.'//containers/container8.php';
-        $dumper = new XmlDumper($container);
+        $dumper = new ehough_iconic_dumper_XmlDumper($container);
         $this->assertXmlStringEqualsXmlFile(self::$fixturesPath.'/xml/services8.xml', $dumper->dump(), '->dump() dumps parameters');
     }
 
     public function testAddParameters()
     {
         $container = include self::$fixturesPath.'//containers/container8.php';
-        $dumper = new XmlDumper($container);
+        $dumper = new ehough_iconic_dumper_XmlDumper($container);
         $this->assertXmlStringEqualsXmlFile(self::$fixturesPath.'/xml/services8.xml', $dumper->dump(), '->dump() dumps parameters');
     }
 
     public function testAddService()
     {
         $container = include self::$fixturesPath.'/containers/container9.php';
-        $dumper = new XmlDumper($container);
+        $dumper = new ehough_iconic_dumper_XmlDumper($container);
         $this->assertEquals(str_replace('%path%', self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR, file_get_contents(self::$fixturesPath.'/xml/services9.xml')), $dumper->dump(), '->dump() dumps services');
 
-        $dumper = new XmlDumper($container = new ContainerBuilder());
+        $dumper = new ehough_iconic_dumper_XmlDumper($container = new ehough_iconic_ContainerBuilder());
         $container->register('foo', 'FooClass')->addArgument(new \stdClass());
         try {
             $dumper->dump();
@@ -67,7 +67,7 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
     public function testDumpAnonymousServices()
     {
         include self::$fixturesPath.'/containers/container11.php';
-        $dumper = new XmlDumper($container);
+        $dumper = new ehough_iconic_dumper_XmlDumper($container);
         $this->assertEquals("<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <container xmlns=\"http://symfony.com/schema/dic/services\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd\">
   <services>
@@ -88,7 +88,7 @@ class XmlDumperTest extends \PHPUnit_Framework_TestCase
     public function testDumpEntities()
     {
         include self::$fixturesPath.'/containers/container12.php';
-        $dumper = new XmlDumper($container);
+        $dumper = new ehough_iconic_dumper_XmlDumper($container);
         $this->assertEquals("<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <container xmlns=\"http://symfony.com/schema/dic/services\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd\">
   <services>

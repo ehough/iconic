@@ -9,23 +9,23 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests\Compiler;
+//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
 
-use Symfony\Component\DependencyInjection\Scope;
+//use Symfony\Component\DependencyInjection\Scope;
 
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Compiler\AnalyzeServiceReferencesPass;
-use Symfony\Component\DependencyInjection\Compiler\Compiler;
-use Symfony\Component\DependencyInjection\Compiler\RepeatedPass;
-use Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\Compiler\AnalyzeServiceReferencesPass;
+//use Symfony\Component\DependencyInjection\Compiler\Compiler;
+//use Symfony\Component\DependencyInjection\Compiler\RepeatedPass;
+//use Symfony\Component\DependencyInjection\Compiler\InlineServiceDefinitionsPass;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class InlineServiceDefinitionsPassTest extends \PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container
             ->register('inlinable.service')
             ->setPublic(false)
@@ -33,19 +33,19 @@ class InlineServiceDefinitionsPassTest extends \PHPUnit_Framework_TestCase
 
         $container
             ->register('service')
-            ->setArguments(array(new Reference('inlinable.service')))
+            ->setArguments(array(new ehough_iconic_Reference('inlinable.service')))
         ;
 
         $this->process($container);
 
         $arguments = $container->getDefinition('service')->getArguments();
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Definition', $arguments[0]);
+        $this->assertInstanceOf('ehough_iconic_Definition', $arguments[0]);
         $this->assertSame($container->getDefinition('inlinable.service'), $arguments[0]);
     }
 
     public function testProcessDoesNotInlineWhenAliasedServiceIsNotOfPrototypeScope()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container
             ->register('foo')
             ->setPublic(false)
@@ -54,7 +54,7 @@ class InlineServiceDefinitionsPassTest extends \PHPUnit_Framework_TestCase
 
         $container
             ->register('service')
-            ->setArguments(array($ref = new Reference('foo')))
+            ->setArguments(array($ref = new ehough_iconic_Reference('foo')))
         ;
 
         $this->process($container);
@@ -65,7 +65,7 @@ class InlineServiceDefinitionsPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessDoesInlineServiceOfPrototypeScope()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container
             ->register('foo')
             ->setScope('prototype')
@@ -79,7 +79,7 @@ class InlineServiceDefinitionsPassTest extends \PHPUnit_Framework_TestCase
 
         $container
             ->register('service')
-            ->setArguments(array(new Reference('foo'), $ref = new Reference('moo'), new Reference('bar')))
+            ->setArguments(array(new ehough_iconic_Reference('foo'), $ref = new ehough_iconic_Reference('moo'), new ehough_iconic_Reference('bar')))
         ;
 
         $this->process($container);
@@ -94,13 +94,13 @@ class InlineServiceDefinitionsPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessInlinesIfMultipleReferencesButAllFromTheSameDefinition()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $a = $container->register('a')->setPublic(false);
         $b = $container
             ->register('b')
-            ->addArgument(new Reference('a'))
-            ->addArgument(new Definition(null, array(new Reference('a'))))
+            ->addArgument(new ehough_iconic_Reference('a'))
+            ->addArgument(new ehough_iconic_Definition(null, array(new ehough_iconic_Reference('a'))))
         ;
 
         $this->process($container);
@@ -114,21 +114,21 @@ class InlineServiceDefinitionsPassTest extends \PHPUnit_Framework_TestCase
 
     public function testProcessInlinesOnlyIfSameScope()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
-        $container->addScope(new Scope('foo'));
+        $container->addScope(new ehough_iconic_Scope('foo'));
         $a = $container->register('a')->setPublic(false)->setScope('foo');
-        $b = $container->register('b')->addArgument(new Reference('a'));
+        $b = $container->register('b')->addArgument(new ehough_iconic_Reference('a'));
 
         $this->process($container);
         $arguments = $b->getArguments();
-        $this->assertEquals(new Reference('a'), $arguments[0]);
+        $this->assertEquals(new ehough_iconic_Reference('a'), $arguments[0]);
         $this->assertTrue($container->hasDefinition('a'));
     }
 
-    protected function process(ContainerBuilder $container)
+    protected function process(ehough_iconic_ContainerBuilder $container)
     {
-        $repeatedPass = new RepeatedPass(array(new AnalyzeServiceReferencesPass(), new InlineServiceDefinitionsPass()));
+        $repeatedPass = new ehough_iconic_compiler_RepeatedPass(array(new ehough_iconic_compiler_AnalyzeServiceReferencesPass(), new ehough_iconic_compiler_InlineServiceDefinitionsPass()));
         $repeatedPass->process($container);
     }
 }

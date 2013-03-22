@@ -1,12 +1,12 @@
 <?php
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\Reference;
 
-$container = new ContainerBuilder();
+$container = new ehough_iconic_ContainerBuilder();
 $container->
     register('foo', 'FooClass')->
-    addArgument(new Reference('bar'))
+    addArgument(new ehough_iconic_Reference('bar'))
 ;
 $container->
     register('bar', 'BarClass')

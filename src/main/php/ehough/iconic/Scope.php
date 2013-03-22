@@ -12,7 +12,7 @@
 //namespace Symfony\Component\DependencyInjection;
 
 /**
- * Scope class.
+ * ehough_iconic_Scope class.
  *
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  *

@@ -1,11 +1,11 @@
 <?php
 
-namespace Container14;
+//namespace ehough_iconic_Container14;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class ProjectServiceContainer extends ContainerBuilder
+class ehough_iconic_Container14_ProjectServiceContainer extends ehough_iconic_ContainerBuilder
 {
 }
 
-return new ProjectServiceContainer();
+return new ehough_iconic_Container14_ProjectServiceContainer();

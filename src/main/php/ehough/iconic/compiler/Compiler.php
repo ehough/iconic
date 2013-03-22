@@ -33,16 +33,16 @@ class ehough_iconic_compiler_Compiler
      */
     public function __construct()
     {
-        $this->passConfig = new PassConfig();
-        $this->serviceReferenceGraph = new ServiceReferenceGraph();
-        $this->loggingFormatter = new LoggingFormatter();
+        $this->passConfig = new ehough_iconic_compiler_PassConfig();
+        $this->serviceReferenceGraph = new ehough_iconic_compiler_ServiceReferenceGraph();
+        $this->loggingFormatter = new ehough_iconic_compiler_LoggingFormatter();
         $this->log = array();
     }
 
     /**
-     * Returns the PassConfig.
+     * Returns the ehough_iconic_compiler_PassConfig.
      *
-     * @return PassConfig The PassConfig instance
+     * @return ehough_iconic_compiler_PassConfig The ehough_iconic_compiler_PassConfig instance
      *
      * @api
      */
@@ -52,9 +52,9 @@ class ehough_iconic_compiler_Compiler
     }
 
     /**
-     * Returns the ServiceReferenceGraph.
+     * Returns the ehough_iconic_compiler_ServiceReferenceGraph.
      *
-     * @return ServiceReferenceGraph The ServiceReferenceGraph instance
+     * @return ehough_iconic_compiler_ServiceReferenceGraph The ehough_iconic_compiler_ServiceReferenceGraph instance
      *
      * @api
      */
@@ -66,7 +66,7 @@ class ehough_iconic_compiler_Compiler
     /**
      * Returns the logging formatter which can be used by compilation passes.
      *
-     * @return LoggingFormatter
+     * @return ehough_iconic_compiler_LoggingFormatter
      */
     public function getLoggingFormatter()
     {
@@ -74,14 +74,14 @@ class ehough_iconic_compiler_Compiler
     }
 
     /**
-     * Adds a pass to the PassConfig.
+     * Adds a pass to the ehough_iconic_compiler_PassConfig.
      *
-     * @param CompilerPassInterface $pass A compiler pass
+     * @param ehough_iconic_compiler_CompilerPassInterface $pass A compiler pass
      * @param string                $type The type of the pass
      *
      * @api
      */
-    public function addPass(ehough_iconic_compiler_CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION)
+    public function addPass(ehough_iconic_compiler_CompilerPassInterface $pass, $type = ehough_iconic_compiler_PassConfig::TYPE_BEFORE_OPTIMIZATION)
     {
         $this->passConfig->addPass($pass, $type);
     }
@@ -107,7 +107,7 @@ class ehough_iconic_compiler_Compiler
     }
 
     /**
-     * Run the Compiler and process all Passes.
+     * Run the ehough_iconic_compiler_Compiler and process all Passes.
      *
      * @param ehough_iconic_ContainerBuilder $container
      *

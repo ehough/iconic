@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests;
+//namespace Symfony\Component\DependencyInjection\Tests;
 
-use Symfony\Component\DependencyInjection\Parameter;
+//use Symfony\Component\DependencyInjection\Parameter;
 
 class ParameterTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,7 +20,7 @@ class ParameterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructor()
     {
-        $ref = new Parameter('foo');
+        $ref = new ehough_iconic_Parameter('foo');
         $this->assertEquals('foo', (string) $ref, '__construct() sets the id of the parameter, which is used for the __toString() method');
     }
 }

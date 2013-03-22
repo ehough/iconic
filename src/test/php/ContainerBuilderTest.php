@@ -9,22 +9,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Tests;
+//namespace Symfony\Component\DependencyInjection\Tests;
 
 require_once __DIR__.'/Fixtures/includes/classes.php';
 require_once __DIR__.'/Fixtures/includes/ProjectExtension.php';
 
-use Symfony\Component\DependencyInjection\Alias;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\DependencyInjection\Definition;
-use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-use Symfony\Component\Config\Resource\FileResource;
+//use Symfony\Component\DependencyInjection\Alias;
+//use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
+//use Symfony\Component\DependencyInjection\ContainerBuilder;
+//use Symfony\Component\DependencyInjection\ContainerInterface;
+//use Symfony\Component\DependencyInjection\Definition;
+//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
+//use Symfony\Component\DependencyInjection\Reference;
+//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+//use Symfony\Component\Config\Resource\FileResource;
 
-class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers Symfony\Component\DependencyInjection\ContainerBuilder::setDefinitions
@@ -34,27 +34,27 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefinitions()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $definitions = array(
-            'foo' => new Definition('FooClass'),
-            'bar' => new Definition('BarClass'),
+            'foo' => new ehough_iconic_Definition('FooClass'),
+            'bar' => new ehough_iconic_Definition('BarClass'),
         );
         $builder->setDefinitions($definitions);
         $this->assertEquals($definitions, $builder->getDefinitions(), '->setDefinitions() sets the service definitions');
         $this->assertTrue($builder->hasDefinition('foo'), '->hasDefinition() returns true if a service definition exists');
         $this->assertFalse($builder->hasDefinition('foobar'), '->hasDefinition() returns false if a service definition does not exist');
 
-        $builder->setDefinition('foobar', $foo = new Definition('FooBarClass'));
+        $builder->setDefinition('foobar', $foo = new ehough_iconic_Definition('FooBarClass'));
         $this->assertEquals($foo, $builder->getDefinition('foobar'), '->getDefinition() returns a service definition if defined');
-        $this->assertTrue($builder->setDefinition('foobar', $foo = new Definition('FooBarClass')) === $foo, '->setDefinition() implements a fluid interface by returning the service reference');
+        $this->assertTrue($builder->setDefinition('foobar', $foo = new ehough_iconic_Definition('FooBarClass')) === $foo, '->setDefinition() implements a fluid interface by returning the service reference');
 
-        $builder->addDefinitions($defs = array('foobar' => new Definition('FooBarClass')));
+        $builder->addDefinitions($defs = array('foobar' => new ehough_iconic_Definition('FooBarClass')));
         $this->assertEquals(array_merge($definitions, $defs), $builder->getDefinitions(), '->addDefinitions() adds the service definitions');
 
         try {
             $builder->getDefinition('baz');
             $this->fail('->getDefinition() throws an InvalidArgumentException if the service definition does not exist');
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->assertEquals('The service definition "baz" does not exist.', $e->getMessage(), '->getDefinition() throws an InvalidArgumentException if the service definition does not exist');
         }
     }
@@ -64,10 +64,10 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegister()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo', 'FooClass');
         $this->assertTrue($builder->hasDefinition('foo'), '->register() registers a new service definition');
-        $this->assertInstanceOf('Symfony\Component\DependencyInjection\Definition', $builder->getDefinition('foo'), '->register() returns the newly created Definition instance');
+        $this->assertInstanceOf('ehough_iconic_Definition', $builder->getDefinition('foo'), '->register() returns the newly created ehough_iconic_Definition instance');
     }
 
     /**
@@ -75,7 +75,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testHas()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $this->assertFalse($builder->has('foo'), '->has() returns false if the service does not exist');
         $builder->register('foo', 'FooClass');
         $this->assertTrue($builder->has('foo'), '->has() returns true if a service definition exists');
@@ -88,15 +88,15 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         try {
             $builder->get('foo');
             $this->fail('->get() throws an InvalidArgumentException if the service does not exist');
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->assertEquals('The service definition "foo" does not exist.', $e->getMessage(), '->get() throws an InvalidArgumentException if the service does not exist');
         }
 
-        $this->assertNull($builder->get('foo', ContainerInterface::NULL_ON_INVALID_REFERENCE), '->get() returns null if the service does not exist and NULL_ON_INVALID_REFERENCE is passed as a second argument');
+        $this->assertNull($builder->get('foo', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE), '->get() returns null if the service does not exist and NULL_ON_INVALID_REFERENCE is passed as a second argument');
 
         $builder->register('foo', 'stdClass');
         $this->assertInternalType('object', $builder->get('foo'), '->get() returns the service definition associated with the id');
@@ -105,11 +105,11 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $builder->register('bar', 'stdClass');
         $this->assertEquals($bar, $builder->get('bar'), '->get() returns the service associated with the id even if a definition has been defined');
 
-        $builder->register('baz', 'stdClass')->setArguments(array(new Reference('baz')));
+        $builder->register('baz', 'stdClass')->setArguments(array(new ehough_iconic_Reference('baz')));
         try {
             @$builder->get('baz');
             $this->fail('->get() throws a ServiceCircularReferenceException if the service has a circular reference to itself');
-        } catch (\Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException $e) {
+        } catch (ehough_iconic_exception_ServiceCircularReferenceException $e) {
             $this->assertEquals('Circular reference detected for service "baz", path: "baz".', $e->getMessage(), '->get() throws a LogicException if the service has a circular reference to itself');
         }
 
@@ -119,12 +119,12 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers                   \Symfony\Component\DependencyInjection\ContainerBuilder::get
-     * @expectedException        \Symfony\Component\DependencyInjection\Exception\RuntimeException
+     * @expectedException        ehough_iconic_exception_RuntimeException
      * @expectedExceptionMessage You have requested a synthetic service ("foo"). The DIC does not know how to construct this service.
      */
     public function testGetUnsetLoadingServiceWhenCreateServiceThrowsAnException()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo', 'stdClass')->setSynthetic(true);
 
         // we expect a RuntimeException here as foo is synthetic
@@ -142,7 +142,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetServiceIds()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo', 'stdClass');
         $builder->bar = $bar = new \stdClass();
         $builder->register('bar', 'stdClass');
@@ -156,7 +156,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testAliases()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo', 'stdClass');
         $builder->setAlias('bar', 'foo');
         $this->assertTrue($builder->hasAlias('bar'), '->hasAlias() returns true if the alias exists');
@@ -168,7 +168,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         try {
             $builder->getAlias('foobar');
             $this->fail('->getAlias() throws an InvalidArgumentException if the alias does not exist');
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->assertEquals('The service alias "foobar" does not exist.', $e->getMessage(), '->getAlias() throws an InvalidArgumentException if the alias does not exist');
         }
     }
@@ -178,10 +178,10 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAliases()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->setAlias('bar', 'foo');
         $builder->setAlias('foobar', 'foo');
-        $builder->setAlias('moo', new Alias('foo', false));
+        $builder->setAlias('moo', new ehough_iconic_Alias('foo', false));
 
         $aliases = $builder->getAliases();
         $this->assertEquals('foo', (string) $aliases['bar']);
@@ -203,7 +203,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAliases()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->setAliases(array('bar' => 'foo', 'foobar' => 'foo'));
 
         $aliases = $builder->getAliases();
@@ -216,7 +216,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddAliases()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->setAliases(array('bar' => 'foo'));
         $builder->addAliases(array('foobar' => 'foo'));
 
@@ -231,10 +231,10 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddGetCompilerPass()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->setResourceTracking(false);
         $builderCompilerPasses = $builder->getCompiler()->getPassConfig()->getPasses();
-        $builder->addCompilerPass($this->getMock('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface'));
+        $builder->addCompilerPass($this->getMock('ehough_iconic_compiler_CompilerPassInterface'));
         $this->assertEquals(sizeof($builderCompilerPasses) + 1, sizeof($builder->getCompiler()->getPassConfig()->getPasses()));
     }
 
@@ -243,7 +243,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateService()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo1', 'FooClass')->setFile(__DIR__.'/Fixtures/includes/foo.php');
         $this->assertInstanceOf('\FooClass', $builder->get('foo1'), '->createService() requires the file defined by the service definition');
         $builder->register('foo2', 'FooClass')->setFile(__DIR__.'/Fixtures/includes/%file%.php');
@@ -256,7 +256,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateServiceClass()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo1', '%class%');
         $builder->setParameter('class', 'stdClass');
         $this->assertInstanceOf('\stdClass', $builder->get('foo1'), '->createService() replaces parameters in the class provided by the service definition');
@@ -267,9 +267,9 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateServiceArguments()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('bar', 'stdClass');
-        $builder->register('foo1', 'FooClass')->addArgument(array('foo' => '%value%', '%value%' => 'foo', new Reference('bar'), '%%unescape_it%%'));
+        $builder->register('foo1', 'FooClass')->addArgument(array('foo' => '%value%', '%value%' => 'foo', new ehough_iconic_Reference('bar'), '%%unescape_it%%'));
         $builder->setParameter('value', 'bar');
         $this->assertEquals(array('foo' => 'bar', 'bar' => 'foo', $builder->get('bar'), '%unescape_it%'), $builder->get('foo1')->arguments, '->createService() replaces parameters and service references in the arguments provided by the service definition');
     }
@@ -279,9 +279,9 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateServiceFactoryMethod()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('bar', 'stdClass');
-        $builder->register('foo1', 'FooClass')->setFactoryClass('FooClass')->setFactoryMethod('getInstance')->addArgument(array('foo' => '%value%', '%value%' => 'foo', new Reference('bar')));
+        $builder->register('foo1', 'FooClass')->setFactoryClass('FooClass')->setFactoryMethod('getInstance')->addArgument(array('foo' => '%value%', '%value%' => 'foo', new ehough_iconic_Reference('bar')));
         $builder->setParameter('value', 'bar');
         $this->assertTrue($builder->get('foo1')->called, '->createService() calls the factory method to create the service instance');
         $this->assertEquals(array('foo' => 'bar', 'bar' => 'foo', $builder->get('bar')), $builder->get('foo1')->arguments, '->createService() passes the arguments to the factory method');
@@ -292,7 +292,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateServiceFactoryService()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('baz_service')->setFactoryService('baz_factory')->setFactoryMethod('getInstance');
         $builder->register('baz_factory', 'BazClass');
 
@@ -304,9 +304,9 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateServiceMethodCalls()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('bar', 'stdClass');
-        $builder->register('foo1', 'FooClass')->addMethodCall('setBar', array(array('%value%', new Reference('bar'))));
+        $builder->register('foo1', 'FooClass')->addMethodCall('setBar', array(array('%value%', new ehough_iconic_Reference('bar'))));
         $builder->setParameter('value', 'bar');
         $this->assertEquals(array('bar', $builder->get('bar')), $builder->get('foo1')->bar, '->createService() replaces the values in the method calls arguments');
     }
@@ -316,7 +316,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateServiceConfigurator()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo1', 'FooClass')->setConfigurator('sc_configure');
         $this->assertTrue($builder->get('foo1')->configured, '->createService() calls the configurator');
 
@@ -325,14 +325,14 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($builder->get('foo2')->configured, '->createService() calls the configurator');
 
         $builder->register('baz', 'BazClass');
-        $builder->register('foo3', 'FooClass')->setConfigurator(array(new Reference('baz'), 'configure'));
+        $builder->register('foo3', 'FooClass')->setConfigurator(array(new ehough_iconic_Reference('baz'), 'configure'));
         $this->assertTrue($builder->get('foo3')->configured, '->createService() calls the configurator');
 
         $builder->register('foo4', 'FooClass')->setConfigurator('foo');
         try {
             $builder->get('foo4');
             $this->fail('->createService() throws an InvalidArgumentException if the configure callable is not a valid callable');
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->assertEquals('The configure callable for class "FooClass" is not a callable.', $e->getMessage(), '->createService() throws an InvalidArgumentException if the configure callable is not a valid callable');
         }
     }
@@ -343,7 +343,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateSyntheticService()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo', 'FooClass')->setSynthetic(true);
         $builder->get('foo');
     }
@@ -353,10 +353,10 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testResolveServices()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo', 'FooClass');
-        $this->assertEquals($builder->get('foo'), $builder->resolveServices(new Reference('foo')), '->resolveServices() resolves service references to service instances');
-        $this->assertEquals(array('foo' => array('foo', $builder->get('foo'))), $builder->resolveServices(array('foo' => array('foo', new Reference('foo')))), '->resolveServices() resolves service references to service instances in nested arrays');
+        $this->assertEquals($builder->get('foo'), $builder->resolveServices(new ehough_iconic_Reference('foo')), '->resolveServices() resolves service references to service instances');
+        $this->assertEquals(array('foo' => array('foo', $builder->get('foo'))), $builder->resolveServices(array('foo' => array('foo', new ehough_iconic_Reference('foo')))), '->resolveServices() resolves service references to service instances in nested arrays');
     }
 
     /**
@@ -364,34 +364,34 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testMerge()
     {
-        $container = new ContainerBuilder(new ParameterBag(array('bar' => 'foo')));
+        $container = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array('bar' => 'foo')));
         $container->setResourceTracking(false);
-        $config = new ContainerBuilder(new ParameterBag(array('foo' => 'bar')));
+        $config = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array('foo' => 'bar')));
         $container->merge($config);
         $this->assertEquals(array('bar' => 'foo', 'foo' => 'bar'), $container->getParameterBag()->all(), '->merge() merges current parameters with the loaded ones');
 
-        $container = new ContainerBuilder(new ParameterBag(array('bar' => 'foo')));
+        $container = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array('bar' => 'foo')));
         $container->setResourceTracking(false);
-        $config = new ContainerBuilder(new ParameterBag(array('foo' => '%bar%')));
+        $config = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array('foo' => '%bar%')));
         $container->merge($config);
 ////// FIXME
         $container->compile();
         $this->assertEquals(array('bar' => 'foo', 'foo' => 'foo'), $container->getParameterBag()->all(), '->merge() evaluates the values of the parameters towards already defined ones');
 
-        $container = new ContainerBuilder(new ParameterBag(array('bar' => 'foo')));
+        $container = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array('bar' => 'foo')));
         $container->setResourceTracking(false);
-        $config = new ContainerBuilder(new ParameterBag(array('foo' => '%bar%', 'baz' => '%foo%')));
+        $config = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array('foo' => '%bar%', 'baz' => '%foo%')));
         $container->merge($config);
 ////// FIXME
         $container->compile();
         $this->assertEquals(array('bar' => 'foo', 'foo' => 'foo', 'baz' => 'foo'), $container->getParameterBag()->all(), '->merge() evaluates the values of the parameters towards already defined ones');
 
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
         $container->register('foo', 'FooClass');
         $container->register('bar', 'BarClass');
-        $config = new ContainerBuilder();
-        $config->setDefinition('baz', new Definition('BazClass'));
+        $config = new ehough_iconic_ContainerBuilder();
+        $config->setDefinition('baz', new ehough_iconic_Definition('BazClass'));
         $config->setAlias('alias_for_foo', 'foo');
         $container->merge($config);
         $this->assertEquals(array('foo', 'bar', 'baz'), array_keys($container->getDefinitions()), '->merge() merges definitions already defined ones');
@@ -400,10 +400,10 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(isset($aliases['alias_for_foo']));
         $this->assertEquals('foo', (string) $aliases['alias_for_foo']);
 
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
         $container->register('foo', 'FooClass');
-        $config->setDefinition('foo', new Definition('BazClass'));
+        $config->setDefinition('foo', new ehough_iconic_Definition('BazClass'));
         $container->merge($config);
         $this->assertEquals('BazClass', $container->getDefinition('foo')->getClass(), '->merge() overrides already defined services');
     }
@@ -414,10 +414,10 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testMergeLogicException()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
         $container->compile();
-        $container->merge(new ContainerBuilder());
+        $container->merge(new ehough_iconic_ContainerBuilder());
     }
 
     /**
@@ -425,7 +425,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testfindTaggedServiceIds()
     {
-        $builder = new ContainerBuilder();
+        $builder = new ehough_iconic_ContainerBuilder();
         $builder
             ->register('foo', 'FooClass')
             ->addTag('foo', array('foo' => 'foo'))
@@ -446,11 +446,11 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testFindDefinition()
     {
-        $container = new ContainerBuilder();
-        $container->setDefinition('foo', $definition = new Definition('FooClass'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->setDefinition('foo', $definition = new ehough_iconic_Definition('FooClass'));
         $container->setAlias('bar', 'foo');
         $container->setAlias('foobar', 'bar');
-        $this->assertEquals($definition, $container->findDefinition('foobar'), '->findDefinition() returns a Definition');
+        $this->assertEquals($definition, $container->findDefinition('foobar'), '->findDefinition() returns a ehough_iconic_Definition');
     }
 
     /**
@@ -463,9 +463,9 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('The "Config" component is not available');
         }
 
-        $container = new ContainerBuilder();
-        $container->addResource($a = new FileResource(__DIR__.'/Fixtures/xml/services1.xml'));
-        $container->addResource($b = new FileResource(__DIR__.'/Fixtures/xml/services2.xml'));
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->addResource($a = new \Symfony\Component\Config\Resource\FileResource(__DIR__.'/Fixtures/xml/services1.xml'));
+        $container->addResource($b = new \Symfony\Component\Config\Resource\FileResource(__DIR__.'/Fixtures/xml/services2.xml'));
         $resources = array();
         foreach ($container->getResources() as $resource) {
             if (false === strpos($resource, '.php')) {
@@ -483,7 +483,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtension()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
 
         $container->registerExtension($extension = new \ProjectExtension());
@@ -495,11 +495,11 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisteredButNotLoadedExtension()
     {
-        $extension = $this->getMock('Symfony\\Component\\DependencyInjection\\Extension\\ExtensionInterface');
+        $extension = $this->getMock('ehough_iconic_extension_ExtensionInterface');
         $extension->expects($this->once())->method('getAlias')->will($this->returnValue('project'));
         $extension->expects($this->never())->method('load');
 
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
         $container->registerExtension($extension);
         $container->compile();
@@ -507,11 +507,11 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testRegisteredAndLoadedExtension()
     {
-        $extension = $this->getMock('Symfony\\Component\\DependencyInjection\\Extension\\ExtensionInterface');
+        $extension = $this->getMock('ehough_iconic_extension_ExtensionInterface');
         $extension->expects($this->exactly(2))->method('getAlias')->will($this->returnValue('project'));
         $extension->expects($this->once())->method('load')->with(array(array('foo' => 'bar')));
 
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
         $container->registerExtension($extension);
         $container->loadFromExtension('project', array('foo' => 'bar'));
@@ -520,9 +520,9 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
     public function testPrivateServiceUser()
     {
-        $fooDefinition     = new Definition('BarClass');
-        $fooUserDefinition = new Definition('BarUserClass', array(new Reference('bar')));
-        $container         = new ContainerBuilder();
+        $fooDefinition     = new ehough_iconic_Definition('BarClass');
+        $fooUserDefinition = new ehough_iconic_Definition('BarUserClass', array(new ehough_iconic_Reference('bar')));
+        $container         = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
 
         $fooDefinition->setPublic(false);
@@ -541,9 +541,9 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowsExceptionWhenSetServiceOnAFrozenContainer()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
-        $container->setDefinition('a', new Definition('stdClass'));
+        $container->setDefinition('a', new ehough_iconic_Definition('stdClass'));
         $container->compile();
         $container->set('a', new \stdClass());
     }
@@ -557,7 +557,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('The "Config" component is not available');
         }
 
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->compile();
         $container->set('a', new \stdClass());
     }
@@ -568,8 +568,8 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
             $this->markTestSkipped('The "Config" component is not available');
         }
 
-        $container = new ContainerBuilder();
-        $def = new Definition('stdClass');
+        $container = new ehough_iconic_ContainerBuilder();
+        $def = new ehough_iconic_Definition('stdClass');
         $def->setSynthetic(true);
         $container->setDefinition('a', $def);
         $container->compile();
@@ -578,14 +578,14 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException BadMethodCallException
+     * @expectedException ehough_iconic_exception_BadMethodCallException
      */
     public function testThrowsExceptionWhenSetDefinitionOnAFrozenContainer()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
         $container->compile();
-        $container->setDefinition('a', new Definition());
+        $container->setDefinition('a', new ehough_iconic_Definition());
     }
 
     /**
@@ -594,7 +594,7 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtensionConfig()
     {
-        $container = new ContainerBuilder();
+        $container = new ehough_iconic_ContainerBuilder();
 
         $configs = $container->getExtensionConfig('foo');
         $this->assertEmpty($configs);
@@ -611,4 +611,4 @@ class ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 }
 
-class FooClass {}
+class ehough_iconic_FooClass {}
