@@ -19,7 +19,7 @@
 class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::__construct
+     * @covers ehough_iconic_Container::__construct
      */
     public function testConstructor()
     {
@@ -31,7 +31,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::compile
+     * @covers ehough_iconic_Container::compile
      */
     public function testCompile()
     {
@@ -42,7 +42,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::isFrozen
+     * @covers ehough_iconic_Container::isFrozen
      */
     public function testIsFrozen()
     {
@@ -53,7 +53,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::getParameterBag
+     * @covers ehough_iconic_Container::getParameterBag
      */
     public function testGetParameterBag()
     {
@@ -62,8 +62,8 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::setParameter
-     * @covers Symfony\Component\DependencyInjection\Container::getParameter
+     * @covers ehough_iconic_Container::setParameter
+     * @covers ehough_iconic_Container::getParameter
      */
     public function testGetSetParameter()
     {
@@ -88,7 +88,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::getServiceIds
+     * @covers ehough_iconic_Container::getServiceIds
      */
     public function testGetServiceIds()
     {
@@ -102,7 +102,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::set
+     * @covers ehough_iconic_Container::set
      */
     public function testSet()
     {
@@ -143,7 +143,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::get
+     * @covers ehough_iconic_Container::get
      */
     public function testGet()
     {
@@ -180,7 +180,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::has
+     * @covers ehough_iconic_Container::has
      */
     public function testHas()
     {
@@ -194,7 +194,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Container::initialized
+     * @covers ehough_iconic_Container::initialized
      */
     public function testInitialized()
     {

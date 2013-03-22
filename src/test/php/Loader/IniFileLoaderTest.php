@@ -38,8 +38,8 @@ class IniFileLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\IniFileLoader::__construct
-     * @covers Symfony\Component\DependencyInjection\Loader\IniFileLoader::load
+     * @covers ehough_iconic_loader_IniFileLoader::__construct
+     * @covers ehough_iconic_loader_IniFileLoader::load
      */
     public function testIniFileCanBeLoaded()
     {
@@ -48,8 +48,8 @@ class IniFileLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\IniFileLoader::__construct
-     * @covers Symfony\Component\DependencyInjection\Loader\IniFileLoader::load
+     * @covers ehough_iconic_loader_IniFileLoader::__construct
+     * @covers ehough_iconic_loader_IniFileLoader::load
      */
     public function testExceptionIsRaisedWhenIniFileDoesNotExist()
     {
@@ -63,8 +63,8 @@ class IniFileLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\IniFileLoader::__construct
-     * @covers Symfony\Component\DependencyInjection\Loader\IniFileLoader::load
+     * @covers ehough_iconic_loader_IniFileLoader::__construct
+     * @covers ehough_iconic_loader_IniFileLoader::load
      */
     public function testExceptionIsRaisedWhenIniFileCannotBeParsed()
     {
@@ -78,7 +78,7 @@ class IniFileLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\IniFileLoader::supports
+     * @covers ehough_iconic_loader_IniFileLoader::supports
      */
     public function testSupports()
     {

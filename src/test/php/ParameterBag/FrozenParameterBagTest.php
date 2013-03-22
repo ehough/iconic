@@ -16,7 +16,7 @@
 class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag::__construct
+     * @covers ehough_iconic_parameterbag_FrozenParameterBag::__construct
      */
     public function testConstructor()
     {
@@ -29,7 +29,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag::clear
+     * @covers ehough_iconic_parameterbag_FrozenParameterBag::clear
      * @expectedException \LogicException
      */
     public function testClear()
@@ -39,7 +39,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag::set
+     * @covers ehough_iconic_parameterbag_FrozenParameterBag::set
      * @expectedException \LogicException
      */
     public function testSet()
@@ -49,7 +49,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag::add
+     * @covers ehough_iconic_parameterbag_FrozenParameterBag::add
      * @expectedException \LogicException
      */
     public function testAdd()

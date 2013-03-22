@@ -301,7 +301,7 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\XmlFileLoader::supports
+     * @covers ehough_iconic_loader_XmlFileLoader::supports
      */
     public function testSupports()
     {

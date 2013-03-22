@@ -19,7 +19,7 @@
 class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::__construct
+     * @covers ehough_iconic_parameterbag_ParameterBag::__construct
      */
     public function testConstructor()
     {
@@ -31,7 +31,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::clear
+     * @covers ehough_iconic_parameterbag_ParameterBag::clear
      */
     public function testClear()
     {
@@ -44,7 +44,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::remove
+     * @covers ehough_iconic_parameterbag_ParameterBag::remove
      */
     public function testRemove()
     {
@@ -59,8 +59,8 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::get
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::set
+     * @covers ehough_iconic_parameterbag_ParameterBag::get
+     * @covers ehough_iconic_parameterbag_ParameterBag::set
      */
     public function testGetSet()
     {
@@ -85,7 +85,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::has
+     * @covers ehough_iconic_parameterbag_ParameterBag::has
      */
     public function testHas()
     {
@@ -96,7 +96,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::resolveValue
+     * @covers ehough_iconic_parameterbag_ParameterBag::resolveValue
      */
     public function testResolveValue()
     {
@@ -166,7 +166,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::resolve
+     * @covers ehough_iconic_parameterbag_ParameterBag::resolve
      */
     public function testResolveIndicatesWhyAParameterIsNeeded()
     {
@@ -188,7 +188,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::resolve
+     * @covers ehough_iconic_parameterbag_ParameterBag::resolve
      */
     public function testResolveUnescapesValue()
     {
@@ -204,7 +204,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::escapeValue
+     * @covers ehough_iconic_parameterbag_ParameterBag::escapeValue
      */
     public function testEscapeValue()
     {
@@ -220,7 +220,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends \PHPUnit_Framework_Tes
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ParameterBag\ParameterBag::resolve
+     * @covers ehough_iconic_parameterbag_ParameterBag::resolve
      * @dataProvider stringsWithSpacesProvider
      */
     public function testResolveStringWithSpacesReturnsString($expected, $test, $description)

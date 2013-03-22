@@ -26,7 +26,7 @@ class PhpFileLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\PhpFileLoader::supports
+     * @covers ehough_iconic_loader_PhpFileLoader::supports
      */
     public function testSupports()
     {
@@ -37,7 +37,7 @@ class PhpFileLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\PhpFileLoader::load
+     * @covers ehough_iconic_loader_PhpFileLoader::load
      */
     public function testLoad()
     {

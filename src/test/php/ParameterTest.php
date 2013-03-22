@@ -16,7 +16,7 @@
 class ParameterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\Component\DependencyInjection\Parameter::__construct
+     * @covers ehough_iconic_Parameter::__construct
      */
     public function testConstructor()
     {

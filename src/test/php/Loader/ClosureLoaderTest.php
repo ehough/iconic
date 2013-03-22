@@ -24,7 +24,7 @@ class ClosureLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\ClosureLoader::supports
+     * @covers ehough_iconic_loader_ClosureLoader::supports
      */
     public function testSupports()
     {
@@ -35,7 +35,7 @@ class ClosureLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\ClosureLoader::load
+     * @covers ehough_iconic_loader_ClosureLoader::load
      */
     public function testLoad()
     {

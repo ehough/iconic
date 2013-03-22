@@ -27,10 +27,10 @@ require_once __DIR__.'/Fixtures/includes/ProjectExtension.php';
 class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::setDefinitions
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::getDefinitions
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::setDefinition
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::getDefinition
+     * @covers ehough_iconic_ContainerBuilder::setDefinitions
+     * @covers ehough_iconic_ContainerBuilder::getDefinitions
+     * @covers ehough_iconic_ContainerBuilder::setDefinition
+     * @covers ehough_iconic_ContainerBuilder::getDefinition
      */
     public function testDefinitions()
     {
@@ -60,7 +60,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::register
+     * @covers ehough_iconic_ContainerBuilder::register
      */
     public function testRegister()
     {
@@ -71,7 +71,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::has
+     * @covers ehough_iconic_ContainerBuilder::has
      */
     public function testHas()
     {
@@ -84,7 +84,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::get
+     * @covers ehough_iconic_ContainerBuilder::get
      */
     public function testGet()
     {
@@ -118,7 +118,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers                   \Symfony\Component\DependencyInjection\ContainerBuilder::get
+     * @covers                   ehough_iconic_ContainerBuilder::get
      * @expectedException        ehough_iconic_exception_RuntimeException
      * @expectedExceptionMessage You have requested a synthetic service ("foo"). The DIC does not know how to construct this service.
      */
@@ -138,7 +138,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::getServiceIds
+     * @covers ehough_iconic_ContainerBuilder::getServiceIds
      */
     public function testGetServiceIds()
     {
@@ -150,9 +150,9 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::setAlias
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::hasAlias
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::getAlias
+     * @covers ehough_iconic_ContainerBuilder::setAlias
+     * @covers ehough_iconic_ContainerBuilder::hasAlias
+     * @covers ehough_iconic_ContainerBuilder::getAlias
      */
     public function testAliases()
     {
@@ -174,7 +174,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::getAliases
+     * @covers ehough_iconic_ContainerBuilder::getAliases
      */
     public function testGetAliases()
     {
@@ -199,7 +199,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::setAliases
+     * @covers ehough_iconic_ContainerBuilder::setAliases
      */
     public function testSetAliases()
     {
@@ -212,7 +212,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::addAliases
+     * @covers ehough_iconic_ContainerBuilder::addAliases
      */
     public function testAddAliases()
     {
@@ -226,8 +226,8 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::addCompilerPass
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::getCompilerPassConfig
+     * @covers ehough_iconic_ContainerBuilder::addCompilerPass
+     * @covers ehough_iconic_ContainerBuilder::getCompilerPassConfig
      */
     public function testAddGetCompilerPass()
     {
@@ -239,7 +239,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::createService
+     * @covers ehough_iconic_ContainerBuilder::createService
      */
     public function testCreateService()
     {
@@ -252,7 +252,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::createService
+     * @covers ehough_iconic_ContainerBuilder::createService
      */
     public function testCreateServiceClass()
     {
@@ -263,7 +263,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::createService
+     * @covers ehough_iconic_ContainerBuilder::createService
      */
     public function testCreateServiceArguments()
     {
@@ -275,7 +275,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::createService
+     * @covers ehough_iconic_ContainerBuilder::createService
      */
     public function testCreateServiceFactoryMethod()
     {
@@ -288,7 +288,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::createService
+     * @covers ehough_iconic_ContainerBuilder::createService
      */
     public function testCreateServiceFactoryService()
     {
@@ -300,7 +300,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::createService
+     * @covers ehough_iconic_ContainerBuilder::createService
      */
     public function testCreateServiceMethodCalls()
     {
@@ -312,7 +312,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::createService
+     * @covers ehough_iconic_ContainerBuilder::createService
      */
     public function testCreateServiceConfigurator()
     {
@@ -338,7 +338,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::createService
+     * @covers ehough_iconic_ContainerBuilder::createService
      * @expectedException \RuntimeException
      */
     public function testCreateSyntheticService()
@@ -349,7 +349,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::resolveServices
+     * @covers ehough_iconic_ContainerBuilder::resolveServices
      */
     public function testResolveServices()
     {
@@ -360,7 +360,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::merge
+     * @covers ehough_iconic_ContainerBuilder::merge
      */
     public function testMerge()
     {
@@ -409,7 +409,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::merge
+     * @covers ehough_iconic_ContainerBuilder::merge
      * @expectedException LogicException
      */
     public function testMergeLogicException()
@@ -421,7 +421,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::findTaggedServiceIds
+     * @covers ehough_iconic_ContainerBuilder::findTaggedServiceIds
      */
     public function testfindTaggedServiceIds()
     {
@@ -442,7 +442,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::findDefinition
+     * @covers ehough_iconic_ContainerBuilder::findDefinition
      */
     public function testFindDefinition()
     {
@@ -454,8 +454,8 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::getResources
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::addResource
+     * @covers ehough_iconic_ContainerBuilder::getResources
+     * @covers ehough_iconic_ContainerBuilder::addResource
      */
     public function testResources()
     {
@@ -478,8 +478,8 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::registerExtension
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::getExtension
+     * @covers ehough_iconic_ContainerBuilder::registerExtension
+     * @covers ehough_iconic_ContainerBuilder::getExtension
      */
     public function testExtension()
     {
@@ -589,8 +589,8 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::getExtensionConfig
-     * @covers Symfony\Component\DependencyInjection\ContainerBuilder::prependExtensionConfig
+     * @covers ehough_iconic_ContainerBuilder::getExtensionConfig
+     * @covers ehough_iconic_ContainerBuilder::prependExtensionConfig
      */
     public function testExtensionConfig()
     {

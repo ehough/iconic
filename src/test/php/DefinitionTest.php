@@ -16,7 +16,7 @@
 class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::__construct
+     * @covers ehough_iconic_Definition::__construct
      */
     public function testConstructor()
     {
@@ -52,8 +52,8 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::setClass
-     * @covers Symfony\Component\DependencyInjection\Definition::getClass
+     * @covers ehough_iconic_Definition::setClass
+     * @covers ehough_iconic_Definition::getClass
      */
     public function testSetGetClass()
     {
@@ -63,9 +63,9 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::setArguments
-     * @covers Symfony\Component\DependencyInjection\Definition::getArguments
-     * @covers Symfony\Component\DependencyInjection\Definition::addArgument
+     * @covers ehough_iconic_Definition::setArguments
+     * @covers ehough_iconic_Definition::getArguments
+     * @covers ehough_iconic_Definition::addArgument
      */
     public function testArguments()
     {
@@ -77,10 +77,10 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::setMethodCalls
-     * @covers Symfony\Component\DependencyInjection\Definition::addMethodCall
-     * @covers Symfony\Component\DependencyInjection\Definition::hasMethodCall
-     * @covers Symfony\Component\DependencyInjection\Definition::removeMethodCall
+     * @covers ehough_iconic_Definition::setMethodCalls
+     * @covers ehough_iconic_Definition::addMethodCall
+     * @covers ehough_iconic_Definition::hasMethodCall
+     * @covers ehough_iconic_Definition::removeMethodCall
      */
     public function testMethodCalls()
     {
@@ -106,8 +106,8 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::setFile
-     * @covers Symfony\Component\DependencyInjection\Definition::getFile
+     * @covers ehough_iconic_Definition::setFile
+     * @covers ehough_iconic_Definition::getFile
      */
     public function testSetGetFile()
     {
@@ -117,8 +117,8 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::setScope
-     * @covers Symfony\Component\DependencyInjection\Definition::getScope
+     * @covers ehough_iconic_Definition::setScope
+     * @covers ehough_iconic_Definition::getScope
      */
     public function testSetGetScope()
     {
@@ -129,8 +129,8 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::setPublic
-     * @covers Symfony\Component\DependencyInjection\Definition::isPublic
+     * @covers ehough_iconic_Definition::setPublic
+     * @covers ehough_iconic_Definition::isPublic
      */
     public function testSetIsPublic()
     {
@@ -141,8 +141,8 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::setSynthetic
-     * @covers Symfony\Component\DependencyInjection\Definition::isSynthetic
+     * @covers ehough_iconic_Definition::setSynthetic
+     * @covers ehough_iconic_Definition::isSynthetic
      */
     public function testSetIsSynthetic()
     {
@@ -153,8 +153,8 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::setAbstract
-     * @covers Symfony\Component\DependencyInjection\Definition::isAbstract
+     * @covers ehough_iconic_Definition::setAbstract
+     * @covers ehough_iconic_Definition::isAbstract
      */
     public function testSetIsAbstract()
     {
@@ -165,8 +165,8 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::setConfigurator
-     * @covers Symfony\Component\DependencyInjection\Definition::getConfigurator
+     * @covers ehough_iconic_Definition::setConfigurator
+     * @covers ehough_iconic_Definition::getConfigurator
      */
     public function testSetGetConfigurator()
     {
@@ -176,7 +176,7 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::clearTags
+     * @covers ehough_iconic_Definition::clearTags
      */
     public function testClearTags()
     {
@@ -188,7 +188,7 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::clearTags
+     * @covers ehough_iconic_Definition::clearTags
      */
     public function testClearTag()
     {
@@ -207,10 +207,10 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::addTag
-     * @covers Symfony\Component\DependencyInjection\Definition::getTag
-     * @covers Symfony\Component\DependencyInjection\Definition::getTags
-     * @covers Symfony\Component\DependencyInjection\Definition::hasTag
+     * @covers ehough_iconic_Definition::addTag
+     * @covers ehough_iconic_Definition::getTag
+     * @covers ehough_iconic_Definition::getTags
+     * @covers ehough_iconic_Definition::hasTag
      */
     public function testTags()
     {
@@ -230,7 +230,7 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Definition::replaceArgument
+     * @covers ehough_iconic_Definition::replaceArgument
      */
     public function testSetArgument()
     {

@@ -16,7 +16,7 @@
 class ehough_iconic_ReferenceTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers Symfony\Component\DependencyInjection\Reference::__construct
+     * @covers ehough_iconic_Reference::__construct
      */
     public function testConstructor()
     {

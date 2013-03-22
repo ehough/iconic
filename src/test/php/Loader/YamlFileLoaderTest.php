@@ -163,7 +163,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Symfony\Component\DependencyInjection\Loader\YamlFileLoader::supports
+     * @covers ehough_iconic_loader_YamlFileLoader::supports
      */
     public function testSupports()
     {
