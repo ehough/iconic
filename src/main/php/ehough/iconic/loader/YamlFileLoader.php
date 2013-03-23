@@ -290,7 +290,10 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
         if (is_array($value)) {
             $value = array_map(array($this, 'resolveServices'), $value);
         } elseif (is_string($value) &&  0 === strpos($value, '@')) {
-            if (0 === strpos($value, '@?')) {
+            if (0 === strpos($value, '@@')) {
+                $value = substr($value, 1);
+                $invalidBehavior = null;
+            } elseif (0 === strpos($value, '@?')) {
                 $value = substr($value, 2);
                 $invalidBehavior = ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE;
             } else {
@@ -305,7 +308,9 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
                 $strict = true;
             }
 
-            $value = new ehough_iconic_Reference($value, $invalidBehavior, $strict);
+            if (null !== $invalidBehavior) {
+                $value = new ehough_iconic_Reference($value, $invalidBehavior, $strict);
+            }
         }
 
         return $value;

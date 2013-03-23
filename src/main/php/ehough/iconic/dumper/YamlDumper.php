@@ -260,7 +260,7 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
         foreach ($parameters as $key => $value) {
             if (is_array($value)) {
                 $value = $this->prepareParameters($value, $escape);
-            } elseif ($value instanceof ehough_iconic_Reference) {
+            } elseif ($value instanceof ehough_iconic_Reference || is_string($value) && 0 === strpos($value, '@')) {
                 $value = '@'.$value;
             }
 

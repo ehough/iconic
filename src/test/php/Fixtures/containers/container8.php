@@ -7,6 +7,7 @@ $container = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_P
     'FOO'    => '%baz%',
     'baz'    => 'bar',
     'bar'    => 'foo is %%foo bar',
+    'escape' => '@escapeme',
     'values' => array(true, false, null, 0, 1000.3, 'true', 'false', 'null'),
 )));
 
