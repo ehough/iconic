@@ -9,13 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests;
-
-//use Symfony\Component\DependencyInjection\Scope;
-//use Symfony\Component\DependencyInjection\Container;
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-
 class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
 {
     /**
@@ -98,7 +91,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('service_container', 'foo', 'bar'), $sc->getServiceIds(), '->getServiceIds() returns all defined service ids');
 
         $sc = new ehough_iconic_ProjectServiceContainer();
-        $this->assertEquals(array('scoped', 'scoped_foo', 'bar', 'foo_bar', 'foo.baz', 'circular', 'throw_exception', 'throws_exception_on_service_configuration', 'service_container'), $sc->getServiceIds(), '->getServiceIds() returns defined service ids by getXXXService() methods');
+        $this->assertEquals(array('scoped', 'scoped_foo', 'inactive', 'bar', 'foo_bar', 'foo.baz', 'circular', 'throw_exception', 'throws_exception_on_service_configuration', 'service_container'), $sc->getServiceIds(), '->getServiceIds() returns defined service ids by getXXXService() methods');
     }
 
     /**
@@ -177,6 +170,15 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('ehough_iconic_exception_ServiceCircularReferenceException', $e, '->get() throws a ServiceCircularReferenceException if it contains circular reference');
             $this->assertStringStartsWith('Circular reference detected for service "circular"', $e->getMessage(), '->get() throws a \LogicException if it contains circular reference');
         }
+    }
+
+    /**
+     * @covers ehough_iconic_Container::get
+     */
+    public function testGetReturnsNullOnInactiveScope()
+    {
+        $sc = new ehough_iconic_ProjectServiceContainer();
+        $this->assertNull($sc->get('inactive', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
     }
 
     /**
@@ -474,6 +476,11 @@ class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
         }
 
         return $this->services['scoped_foo'] = $this->scopedServices['foo']['scoped_foo'] = new \stdClass();
+    }
+
+    protected function getInactiveService()
+    {
+        throw new ehough_iconic_exception_InactiveScopeException('request', 'request');
     }
 
     protected function getBarService()

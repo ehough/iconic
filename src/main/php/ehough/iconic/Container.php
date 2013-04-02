@@ -9,16 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection;
-
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-//use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-//use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-//use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
-
 /**
  * Container is a dependency injection container.
  *
@@ -206,6 +196,10 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
         }
 
         $this->services[$id] = $service;
+
+        if (method_exists($this, $method = 'synchronize'.strtr($id, array('_' => '', '.' => '_')).'Service')) {
+            $this->$method();
+        }
     }
 
     /**
@@ -221,7 +215,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     {
         $id = strtolower($id);
 
-        return isset($this->services[$id]) || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service');
+        return array_key_exists($id, $this->services) || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service');
     }
 
     /**
@@ -247,7 +241,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     {
         $id = strtolower($id);
 
-        if (isset($this->services[$id])) {
+        if (array_key_exists($id, $this->services)) {
             return $this->services[$id];
         }
 
@@ -263,8 +257,12 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
             } catch (Exception $e) {
                 unset($this->loading[$id]);
 
-                if (isset($this->services[$id])) {
+                if (array_key_exists($id, $this->services)) {
                     unset($this->services[$id]);
+                }
+
+                if ($e instanceof ehough_iconic_exception_InactiveScopeException && self::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
+                    return null;
                 }
 
                 throw $e;
@@ -289,7 +287,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public function initialized($id)
     {
-        return isset($this->services[strtolower($id)]);
+        return array_key_exists(strtolower($id), $this->services);
     }
 
     /**
@@ -393,8 +391,11 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
             $services = $this->scopeStacks[$name]->pop();
             $this->scopedServices += $services;
 
-            array_unshift($services, $this->services);
-            $this->services = call_user_func_array('array_merge', $services);
+            foreach ($services as $array) {
+                foreach ($array as $id => $service) {
+                    $this->set($id, $service, $name);
+                }
+            }
         }
     }
 

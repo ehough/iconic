@@ -88,9 +88,7 @@ class ehough_iconic_compiler_ResolveInvalidReferencesPass implements ehough_icon
                 $exists = $this->container->has($id);
 
                 // resolve invalid behavior
-                if ($exists && ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
-                    $arguments[$k] = new ehough_iconic_Reference($id, ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $argument->isStrict());
-                } elseif (!$exists && ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE === $invalidBehavior) {
+                if (!$exists && ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE === $invalidBehavior) {
                     $arguments[$k] = null;
                 } elseif (!$exists && ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE === $invalidBehavior) {
                     if ($inMethodCall) {

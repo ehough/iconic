@@ -72,8 +72,8 @@ class ehough_iconic_compiler_CheckReferenceValidityPass implements ehough_iconic
                 $this->currentScopeChildren = array_keys($scopes);
                 $this->currentScopeAncestors = array();
             } elseif (ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE !== $scope) {
-                $this->currentScopeChildren = $children[$scope];
-                $this->currentScopeAncestors = $ancestors[$scope];
+                $this->currentScopeChildren = isset($children[$scope]) ? $children[$scope] : array();
+                $this->currentScopeAncestors = isset($ancestors[$scope]) ? $ancestors[$scope] : array();
             }
 
             $this->validateReferences($definition->getArguments());

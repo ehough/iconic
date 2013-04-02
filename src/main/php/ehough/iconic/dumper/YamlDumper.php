@@ -94,6 +94,14 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
             $code .= sprintf("        file: %s\n", $definition->getFile());
         }
 
+        if ($definition->isSynthetic()) {
+            $code .= sprintf("        synthetic: true\n");
+        }
+
+        if ($definition->isSynchronized()) {
+            $code .= sprintf("        synchronized: true\n");
+        }
+
         if ($definition->getFactoryMethod()) {
             $code .= sprintf("        factory_method: %s\n", $definition->getFactoryMethod());
         }

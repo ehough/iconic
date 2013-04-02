@@ -127,6 +127,12 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
         if (!$definition->isPublic()) {
             $service->setAttribute('public', 'false');
         }
+        if ($definition->isSynthetic()) {
+            $service->setAttribute('synthetic', 'true');
+        }
+        if ($definition->isSynchronized()) {
+            $service->setAttribute('synchronized', 'true');
+        }
 
         foreach ($definition->getTags() as $name => $tags) {
             foreach ($tags as $attributes) {
@@ -238,6 +244,9 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
                     $element->setAttribute('on-invalid', 'null');
                 } elseif ($behaviour == ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE) {
                     $element->setAttribute('on-invalid', 'ignore');
+                }
+                if (!$value->isStrict()) {
+                    $element->setAttribute('strict', 'false');
                 }
             } elseif ($value instanceof ehough_iconic_Definition) {
                 $element->setAttribute('type', 'service');

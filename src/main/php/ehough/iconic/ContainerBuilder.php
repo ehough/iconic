@@ -47,7 +47,13 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     private $definitions = array();
 
     /**
-     * @var ehough_iconic_Alias[]
+     *
+     * @var ehough_iconic_Definition[]
+     */
+    private $obsoleteDefinitions = array();
+
+    /**
+     * @var @var ehough_iconic_Alias[]
      */
     private $aliases = array();
 
@@ -351,14 +357,28 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
 
         if ($this->isFrozen()) {
             // setting a synthetic service on a frozen container is alright
-            if (!isset($this->definitions[$id]) || !$this->definitions[$id]->isSynthetic()) {
-                throw new ehough_iconic_exception_BadMethodCallException(sprintf('Setting %s on a frozen container is not allowed.', $id));
+            if (
+                (!isset($this->definitions[$id]) && !isset($this->obsoleteDefinitions[$id]))
+                    ||
+                (isset($this->definitions[$id]) && !$this->definitions[$id]->isSynthetic())
+                    ||
+                (isset($this->obsoleteDefinitions[$id]) && !$this->obsoleteDefinitions[$id]->isSynthetic())
+            ) {
+                throw new ehough_iconic_exception_BadMethodCallException(sprintf('Setting service "%s" on a frozen container is not allowed.', $id));
             }
+        }
+
+        if (isset($this->definitions[$id])) {
+            $this->obsoleteDefinitions[$id] = $this->definitions[$id];
         }
 
         unset($this->definitions[$id], $this->aliases[$id]);
 
         parent::set($id, $service, $scope);
+
+        if (isset($this->obsoleteDefinitions[$id]) && $this->obsoleteDefinitions[$id]->isSynchronized()) {
+            $this->synchronize($id);
+        }
     }
 
     /**
@@ -885,19 +905,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
         }
 
         foreach ($definition->getMethodCalls() as $call) {
-            $services = self::getServiceConditionals($call[1]);
-
-            $ok = true;
-            foreach ($services as $s) {
-                if (!$this->has($s)) {
-                    $ok = false;
-                    break;
-                }
-            }
-
-            if ($ok) {
-                call_user_func_array(array($service, $call[0]), $this->resolveServices($parameterBag->resolveValue($call[1])));
-            }
+            $this->callMethod($service, $call);
         }
 
         $properties = $this->resolveServices($parameterBag->resolveValue($definition->getProperties()));
@@ -998,5 +1006,44 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
         }
 
         return $services;
+    }
+
+    /**
+     * Synchronizes a service change.
+     *
+     * This method updates all services that depend on the given
+     * service by calling all methods referencing it.
+     *
+     * @param string $id A service id
+     */
+    private function synchronize($id)
+    {
+        foreach ($this->definitions as $definitionId => $definition) {
+            // only check initialized services
+            if (!$this->initialized($definitionId)) {
+                continue;
+            }
+
+            foreach ($definition->getMethodCalls() as $call) {
+                foreach ($call[1] as $argument) {
+                    if ($argument instanceof ehough_iconic_Reference && $id == (string) $argument) {
+                        $this->callMethod($this->get($definitionId), $call);
+                    }
+                }
+            }
+        }
+    }
+
+    private function callMethod($service, $call)
+    {
+        $services = self::getServiceConditionals($call[1]);
+
+        foreach ($services as $s) {
+            if (!$this->has($s)) {
+                return;
+            }
+        }
+
+        call_user_func_array(array($service, $call[0]), $this->resolveServices($this->getParameterBag()->resolveValue($call[1])));
     }
 }

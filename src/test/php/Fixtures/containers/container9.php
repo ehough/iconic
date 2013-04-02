@@ -71,5 +71,14 @@ $container
     ->register('baz', 'Baz')
     ->addMethodCall('setFoo', array(new ehough_iconic_Reference('foo_with_inline')))
 ;
+$container
+    ->register('request', 'Request')
+    ->setSynthetic(true)
+    ->setSynchronized(true)
+;
+$container
+    ->register('depends_on_request', 'stdClass')
+    ->addMethodCall('setRequest', array(new ehough_iconic_Reference('request', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE, false)))
+;
 
 return $container;

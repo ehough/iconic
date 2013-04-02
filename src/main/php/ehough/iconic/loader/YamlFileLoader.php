@@ -153,6 +153,10 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
             $definition->setSynthetic($service['synthetic']);
         }
 
+        if (isset($service['synchronized'])) {
+            $definition->setSynchronized($service['synchronized']);
+        }
+
         if (isset($service['public'])) {
             $definition->setPublic($service['public']);
         }
