@@ -9,12 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Compiler;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Reference;
-
 /**
  * Replaces aliases with actual service definitions, effectively removing these
  * aliases.

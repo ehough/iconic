@@ -9,11 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests;
-
-//use Symfony\Component\DependencyInjection\DefinitionDecorator;
-
-class ehough_iconic_DefinitionDecoratorTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_DefinitionDecoratorTest extends PHPUnit_Framework_TestCase
 {
     public function testConstructor()
     {

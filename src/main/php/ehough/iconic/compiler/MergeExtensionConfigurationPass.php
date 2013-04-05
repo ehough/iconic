@@ -9,11 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Compiler;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
-
 /**
  * Merges extension configs into the container builder
  *

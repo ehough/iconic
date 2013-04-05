@@ -9,12 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection;
-
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-//use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-
 /**
  * ehough_iconic_ContainerInterface is the interface implemented by service container classes.
  *

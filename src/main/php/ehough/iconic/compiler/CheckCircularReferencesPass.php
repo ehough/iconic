@@ -9,11 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Compiler;
-
-//use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 /**
  * Checks your services for circular references
  *

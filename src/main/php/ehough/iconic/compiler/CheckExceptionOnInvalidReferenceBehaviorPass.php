@@ -9,15 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Compiler;
-
-//use Symfony\Component\DependencyInjection\Definition;
-
-//use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 /**
  * Checks that all references are pointing to a valid service.
  *

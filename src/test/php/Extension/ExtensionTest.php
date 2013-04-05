@@ -9,9 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Extension;
-
-class ExtensionTest extends \PHPUnit_Framework_TestCase
+class ExtensionTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getResolvedEnabledFixtures

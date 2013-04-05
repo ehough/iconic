@@ -9,12 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Dumper;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Dumper\GraphvizDumper;
-
-class ehough_iconic_dumper_GraphvizDumperTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_dumper_GraphvizDumperTest extends PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 

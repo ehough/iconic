@@ -9,19 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
-
-//use Symfony\Component\DependencyInjection\Reference;
-
-//use Symfony\Component\DependencyInjection\Compiler\CheckCircularReferencesPass;
-
-//use Symfony\Component\DependencyInjection\Compiler\AnalyzeServiceReferencesPass;
-
-//use Symfony\Component\DependencyInjection\Compiler\Compiler;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-class CheckCircularReferencesPassTest extends \PHPUnit_Framework_TestCase
+class CheckCircularReferencesPassTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @expectedException \RuntimeException

@@ -9,12 +9,10 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests;
-
 require_once __DIR__.'/Fixtures/includes/classes.php';
 require_once __DIR__.'/Fixtures/includes/ProjectExtension.php';
 
-class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ehough_iconic_ContainerBuilder::setDefinitions
@@ -69,7 +67,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($builder->has('foo'), '->has() returns false if the service does not exist');
         $builder->register('foo', 'FooClass');
         $this->assertTrue($builder->has('foo'), '->has() returns true if a service definition exists');
-        $builder->set('bar', new \stdClass());
+        $builder->set('bar', new stdClass());
         $this->assertTrue($builder->has('bar'), '->has() returns true if a service exists');
     }
 
@@ -90,7 +88,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->register('foo', 'stdClass');
         $this->assertInternalType('object', $builder->get('foo'), '->get() returns the service definition associated with the id');
-        $builder->set('bar', $bar = new \stdClass());
+        $builder->set('bar', $bar = new stdClass());
         $this->assertEquals($bar, $builder->get('bar'), '->get() returns the service associated with the id');
         $builder->register('bar', 'stdClass');
         $this->assertEquals($bar, $builder->get('bar'), '->get() returns the service associated with the id even if a definition has been defined');
@@ -134,7 +132,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo', 'stdClass');
-        $builder->bar = $bar = new \stdClass();
+        $builder->bar = $bar = new stdClass();
         $builder->register('bar', 'stdClass');
         $this->assertEquals(array('foo', 'bar', 'service_container'), $builder->getServiceIds(), '->getServiceIds() returns all defined service ids');
     }
@@ -249,7 +247,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo1', '%class%');
         $builder->setParameter('class', 'stdClass');
-        $this->assertInstanceOf('\stdClass', $builder->get('foo1'), '->createService() replaces parameters in the class provided by the service definition');
+        $this->assertInstanceOf('stdClass', $builder->get('foo1'), '->createService() replaces parameters in the class provided by the service definition');
     }
 
     /**
@@ -535,7 +533,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $container->setResourceTracking(false);
         $container->setDefinition('a', new ehough_iconic_Definition('stdClass'));
         $container->compile();
-        $container->set('a', new \stdClass());
+        $container->set('a', new stdClass());
     }
 
     /**
@@ -549,7 +547,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
         $container = new ehough_iconic_ContainerBuilder();
         $container->compile();
-        $container->set('a', new \stdClass());
+        $container->set('a', new stdClass());
     }
 
     public function testNoExceptionWhenSetSyntheticServiceOnAFrozenContainer()
@@ -563,7 +561,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $def->setSynthetic(true);
         $container->setDefinition('a', $def);
         $container->compile();
-        $container->set('a', $a = new \stdClass());
+        $container->set('a', $a = new stdClass());
         $this->assertEquals($a, $container->get('a'));
     }
 

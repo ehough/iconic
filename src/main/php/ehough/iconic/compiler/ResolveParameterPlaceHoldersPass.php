@@ -9,11 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Compiler;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
-
 /**
  * Resolves all parameter placeholders "%somevalue%" to their real values.
  *

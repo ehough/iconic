@@ -9,11 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests;
-
-//use Symfony\Component\DependencyInjection\Parameter;
-
-class ParameterTest extends \PHPUnit_Framework_TestCase
+class ParameterTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ehough_iconic_Parameter::__construct

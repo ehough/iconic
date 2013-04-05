@@ -348,9 +348,9 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
 
             // add stack entry for this scope so we can restore the removed services later
             if (!isset($this->scopeStacks[$name])) {
-                $this->scopeStacks[$name] = new \SplStack();
+                $this->scopeStacks[$name] = array();
             }
-            $this->scopeStacks[$name]->push($services);
+            array_push($this->scopeStacks[$name], $services);
         }
 
         $this->scopedServices[$name] = array();
@@ -388,7 +388,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
 
         // check if we need to restore services of a previous scope of this type
         if (isset($this->scopeStacks[$name]) && count($this->scopeStacks[$name]) > 0) {
-            $services = $this->scopeStacks[$name]->pop();
+            $services = array_pop($this->scopeStacks[$name]);
             $this->scopedServices += $services;
 
             foreach ($services as $array) {

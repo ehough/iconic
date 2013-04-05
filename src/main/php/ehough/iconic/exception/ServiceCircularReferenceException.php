@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Exception;
-
 /**
  * This exception is thrown when a circular reference is detected.
  *

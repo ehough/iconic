@@ -9,11 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests;
-
-//use Symfony\Component\DependencyInjection\Definition;
-
-class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_DefinitionTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ehough_iconic_Definition::__construct

@@ -9,19 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Loader;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\Config\Loader\Loader;
-//use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-//use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-//use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
-//use Symfony\Component\Config\Loader\LoaderResolver;
-//use Symfony\Component\Config\FileLocator;
-
-class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
+class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 

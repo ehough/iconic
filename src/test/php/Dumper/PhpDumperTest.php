@@ -9,15 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Dumper;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Dumper\PhpDumper;
-//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Definition;
-
-class PhpDumperTest extends \PHPUnit_Framework_TestCase
+class PhpDumperTest extends PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 

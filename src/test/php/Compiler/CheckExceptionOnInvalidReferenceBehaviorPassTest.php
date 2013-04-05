@@ -9,25 +9,17 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
-
-//use Symfony\Component\DependencyInjection\Definition;
-
-//use Symfony\Component\DependencyInjection\Compiler\CheckExceptionOnInvalidReferenceBehaviorPass;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-class CheckExceptionOnInvalidReferenceBehaviorPassTest extends \PHPUnit_Framework_TestCase
+class CheckExceptionOnInvalidReferenceBehaviorPassTest extends PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
         $container = new ehough_iconic_ContainerBuilder();
 
         $container
-            ->register('a', '\stdClass')
+            ->register('a', 'stdClass')
             ->addArgument(new ehough_iconic_Reference('b'))
         ;
-        $container->register('b', '\stdClass');
+        $container->register('b', 'stdClass');
     }
 
     /**
@@ -38,7 +30,7 @@ class CheckExceptionOnInvalidReferenceBehaviorPassTest extends \PHPUnit_Framewor
         $container = new ehough_iconic_ContainerBuilder();
 
         $container
-            ->register('a', '\stdClass')
+            ->register('a', 'stdClass')
             ->addArgument(new ehough_iconic_Reference('b'))
         ;
 
@@ -56,7 +48,7 @@ class CheckExceptionOnInvalidReferenceBehaviorPassTest extends \PHPUnit_Framewor
         $def->addArgument(new ehough_iconic_Reference('b'));
 
         $container
-            ->register('a', '\stdClass')
+            ->register('a', 'stdClass')
             ->addArgument($def)
         ;
 

@@ -9,12 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Dumper;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
-
-class YamlDumperTest extends \PHPUnit_Framework_TestCase
+class YamlDumperTest extends PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 
@@ -54,7 +49,7 @@ class YamlDumperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(str_replace('%path%', self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR, file_get_contents(self::$fixturesPath.'/yaml/services9.yml')), $dumper->dump(), '->dump() dumps services');
 
         $dumper = new ehough_iconic_dumper_YamlDumper($container = new ehough_iconic_ContainerBuilder());
-        $container->register('foo', 'FooClass')->addArgument(new \stdClass());
+        $container->register('foo', 'FooClass')->addArgument(new stdClass());
         try {
             $dumper->dump();
             $this->fail('->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');

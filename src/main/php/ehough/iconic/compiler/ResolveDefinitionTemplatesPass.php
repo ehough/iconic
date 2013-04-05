@@ -9,13 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Compiler;
-
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\DependencyInjection\DefinitionDecorator;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-
 /**
  * This replaces all ehough_iconic_DefinitionDecorator instances with their equivalent fully
  * merged ehough_iconic_Definition instance.
@@ -59,7 +52,7 @@ class ehough_iconic_compiler_ResolveDefinitionTemplatesPass implements ehough_ic
      *
      * @return ehough_iconic_Definition
      *
-     * @throws \RuntimeException When the definition is invalid
+     * @throws RuntimeException When the definition is invalid
      */
     private function resolveDefinition($id, ehough_iconic_DefinitionDecorator $definition)
     {

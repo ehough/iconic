@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Exception;
-
 /**
  * Thrown when a scope widening injection is detected.
  *

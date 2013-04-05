@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ehough_iconic_Container::__construct
@@ -86,8 +86,8 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     public function testGetServiceIds()
     {
         $sc = new ehough_iconic_Container();
-        $sc->set('foo', $obj = new \stdClass());
-        $sc->set('bar', $obj = new \stdClass());
+        $sc->set('foo', $obj = new stdClass());
+        $sc->set('bar', $obj = new stdClass());
         $this->assertEquals(array('service_container', 'foo', 'bar'), $sc->getServiceIds(), '->getServiceIds() returns all defined service ids');
 
         $sc = new ehough_iconic_ProjectServiceContainer();
@@ -100,7 +100,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     public function testSet()
     {
         $sc = new ehough_iconic_Container();
-        $sc->set('foo', $foo = new \stdClass());
+        $sc->set('foo', $foo = new stdClass());
         $this->assertEquals($foo, $sc->get('foo'), '->set() sets a service');
     }
 
@@ -110,7 +110,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     public function testSetDoesNotAllowPrototypeScope()
     {
         $c = new ehough_iconic_Container();
-        $c->set('foo', new \stdClass(), 'prototype');
+        $c->set('foo', new stdClass(), 'prototype');
     }
 
     /**
@@ -120,7 +120,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     {
         $c = new ehough_iconic_Container();
         $c->addScope(new ehough_iconic_Scope('foo'));
-        $c->set('foo', new \stdClass(), 'foo');
+        $c->set('foo', new stdClass(), 'foo');
     }
 
     public function testSetAlsoSetsScopedService()
@@ -128,7 +128,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
         $c = new ehough_iconic_Container();
         $c->addScope(new ehough_iconic_Scope('foo'));
         $c->enterScope('foo');
-        $c->set('foo', $foo = new \stdClass(), 'foo');
+        $c->set('foo', $foo = new stdClass(), 'foo');
 
         $services = $this->getField($c, 'scopedServices');
         $this->assertTrue(isset($services['foo']['foo']));
@@ -141,13 +141,13 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     public function testGet()
     {
         $sc = new ehough_iconic_ProjectServiceContainer();
-        $sc->set('foo', $foo = new \stdClass());
+        $sc->set('foo', $foo = new stdClass());
         $this->assertEquals($foo, $sc->get('foo'), '->get() returns the service for the given id');
         $this->assertEquals($sc->__bar, $sc->get('bar'), '->get() returns the service for the given id');
         $this->assertEquals($sc->__foo_bar, $sc->get('foo_bar'), '->get() returns the service if a get*Method() is defined');
         $this->assertEquals($sc->__foo_baz, $sc->get('foo.baz'), '->get() returns the service if a get*Method() is defined');
 
-        $sc->set('bar', $bar = new \stdClass());
+        $sc->set('bar', $bar = new stdClass());
         $this->assertEquals($bar, $sc->get('bar'), '->get() prefers to return a service defined with set() than one defined with a getXXXMethod()');
 
         try {
@@ -187,7 +187,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     public function testHas()
     {
         $sc = new ehough_iconic_ProjectServiceContainer();
-        $sc->set('foo', new \stdClass());
+        $sc->set('foo', new stdClass());
         $this->assertFalse($sc->has('foo1'), '->has() returns false if the service does not exist');
         $this->assertTrue($sc->has('foo'), '->has() returns true if the service exists');
         $this->assertTrue($sc->has('bar'), '->has() returns true if a get*Method() is defined');
@@ -201,7 +201,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
     public function testInitialized()
     {
         $sc = new ehough_iconic_ProjectServiceContainer();
-        $sc->set('foo', new \stdClass());
+        $sc->set('foo', new stdClass());
         $this->assertTrue($sc->initialized('foo'), '->initialized() returns true if service is loaded');
         $this->assertFalse($sc->initialized('foo1'), '->initialized() returns false if service is not loaded');
         $this->assertFalse($sc->initialized('bar'), '->initialized() returns false if a service is defined, but not currently loaded');
@@ -246,7 +246,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($container->isScopeActive('foo'));
         $this->assertFalse($container->has('a'));
 
-        $a = new \stdClass();
+        $a = new stdClass();
         $container->set('a', $a, 'bar');
 
         $services = $this->getField($container, 'scopedServices');
@@ -277,7 +277,7 @@ class ehough_iconic_ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($container->isScopeActive('bar'));
         $this->assertFalse($container->has('a'));
 
-        $a = new \stdClass();
+        $a = new stdClass();
         $container->set('a', $a, 'foo');
 
         $services = $this->getField($container, 'scopedServices');
@@ -455,9 +455,9 @@ class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
     {
         parent::__construct();
 
-        $this->__bar = new \stdClass();
-        $this->__foo_bar = new \stdClass();
-        $this->__foo_baz = new \stdClass();
+        $this->__bar = new stdClass();
+        $this->__foo_bar = new stdClass();
+        $this->__foo_baz = new stdClass();
     }
 
     protected function getScopedService()
@@ -466,7 +466,7 @@ class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
             throw new \RuntimeException('Invalid call');
         }
 
-        return $this->services['scoped'] = $this->scopedServices['foo']['scoped'] = new \stdClass();
+        return $this->services['scoped'] = $this->scopedServices['foo']['scoped'] = new stdClass();
     }
 
     protected function getScopedFooService()
@@ -475,7 +475,7 @@ class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
             throw new \RuntimeException('invalid call');
         }
 
-        return $this->services['scoped_foo'] = $this->scopedServices['foo']['scoped_foo'] = new \stdClass();
+        return $this->services['scoped_foo'] = $this->scopedServices['foo']['scoped_foo'] = new stdClass();
     }
 
     protected function getInactiveService()
@@ -510,7 +510,7 @@ class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
 
     protected function getThrowsExceptionOnServiceConfigurationService()
     {
-        $this->services['throws_exception_on_service_configuration'] = $instance = new \stdClass();
+        $this->services['throws_exception_on_service_configuration'] = $instance = new stdClass();
 
         throw new \Exception('Something was terribly wrong while trying to configure the service!');
     }

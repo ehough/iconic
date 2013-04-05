@@ -9,19 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Dumper;
-
-//use Symfony\Component\DependencyInjection\Variable;
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Container;
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Parameter;
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-//use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-
 /**
  * PhpDumper dumps a service container as a PHP class.
  *

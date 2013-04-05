@@ -9,11 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection;
-
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
-
 /**
  * This definition decorates another definition.
  *

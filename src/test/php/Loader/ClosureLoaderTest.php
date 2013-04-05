@@ -9,12 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Loader;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Loader\ClosureLoader;
-
-class ClosureLoaderTest extends \PHPUnit_Framework_TestCase
+class ClosureLoaderTest extends PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {

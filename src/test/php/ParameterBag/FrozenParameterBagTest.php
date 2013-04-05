@@ -9,11 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\ParameterBag;
-
-//use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
-
-class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
+class FrozenParameterBagTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ehough_iconic_parameterbag_FrozenParameterBag::__construct
