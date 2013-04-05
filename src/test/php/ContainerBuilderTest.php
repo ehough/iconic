@@ -447,7 +447,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function testResources()
     {
-        if (!class_exists('Symfony\Component\Config\Resource\FileResource')) {
+        if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
         }
 
@@ -541,7 +541,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
      */
     public function testThrowsExceptionWhenAddServiceOnAFrozenContainer()
     {
-        if (!class_exists('Symfony\Component\Config\Resource\FileResource')) {
+        if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
         }
 
@@ -552,7 +552,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 
     public function testNoExceptionWhenSetSyntheticServiceOnAFrozenContainer()
     {
-        if (!class_exists('Symfony\Component\Config\Resource\FileResource')) {
+        if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
         }
 
