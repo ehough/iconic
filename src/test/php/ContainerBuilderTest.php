@@ -233,10 +233,10 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     {
         $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo1', 'FooClass')->setFile(__DIR__.'/Fixtures/includes/foo.php');
-        $this->assertInstanceOf('\FooClass', $builder->get('foo1'), '->createService() requires the file defined by the service definition');
+        $this->assertInstanceOf('FooClass', $builder->get('foo1'), '->createService() requires the file defined by the service definition');
         $builder->register('foo2', 'FooClass')->setFile(__DIR__.'/Fixtures/includes/%file%.php');
         $builder->setParameter('file', 'foo');
-        $this->assertInstanceOf('\FooClass', $builder->get('foo2'), '->createService() replaces parameters in the file provided by the service definition');
+        $this->assertInstanceOf('FooClass', $builder->get('foo2'), '->createService() replaces parameters in the file provided by the service definition');
     }
 
     /**
@@ -327,7 +327,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 
     /**
      * @covers ehough_iconic_ContainerBuilder::createService
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testCreateSyntheticService()
     {
@@ -449,6 +449,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     {
         if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
+            return;
         }
 
         $container = new ehough_iconic_ContainerBuilder();
@@ -474,7 +475,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
 
-        $container->registerExtension($extension = new \ProjectExtension());
+        $container->registerExtension($extension = new ProjectExtension());
         $this->assertTrue($container->getExtension('project') === $extension, '->registerExtension() registers an extension');
 
         $this->setExpectedException('LogicException');
@@ -543,6 +544,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     {
         if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
+            return;
         }
 
         $container = new ehough_iconic_ContainerBuilder();
@@ -554,6 +556,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     {
         if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
+            return;
         }
 
         $container = new ehough_iconic_ContainerBuilder();
@@ -575,10 +578,10 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
             ->addMethodCall('setBaz', array(new ehough_iconic_Reference('baz')))
         ;
 
-        $container->set('baz', $baz = new \BazClass());
+        $container->set('baz', $baz = new BazClass());
         $this->assertSame($baz, $container->get('bar')->getBaz());
 
-        $container->set('baz', $baz = new \BazClass());
+        $container->set('baz', $baz = new BazClass());
         $this->assertSame($baz, $container->get('bar')->getBaz());
     }
 
@@ -597,11 +600,11 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $container->compile();
 
         $container->enterScope('foo');
-        $container->set('baz', $outerBaz = new \BazClass(), 'foo');
+        $container->set('baz', $outerBaz = new BazClass(), 'foo');
         $this->assertSame($outerBaz, $container->get('bar')->getBaz());
 
         $container->enterScope('foo');
-        $container->set('baz', $innerBaz = new \BazClass(), 'foo');
+        $container->set('baz', $innerBaz = new BazClass(), 'foo');
         $this->assertSame($innerBaz, $container->get('bar')->getBaz());
         $container->leaveScope('foo');
 
