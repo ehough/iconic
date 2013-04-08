@@ -75,7 +75,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
             $sc->getParameter('baba');
             $this->fail('->getParameter() thrown an \InvalidArgumentException if the key does not exist');
         } catch (Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->getParameter() thrown an \InvalidArgumentException if the key does not exist');
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->getParameter() thrown an \InvalidArgumentException if the key does not exist');
             $this->assertEquals('You have requested a non-existent parameter "baba".', $e->getMessage(), '->getParameter() thrown an \InvalidArgumentException if the key does not exist');
         }
     }
@@ -114,7 +114,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testSetDoesNotAllowInactiveScope()
     {
@@ -304,7 +304,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
             $container->leaveScope('foo');
             $this->fail('->leaveScope() throws a \LogicException if the scope is not active yet');
         } catch (Exception $e) {
-            $this->assertInstanceOf('\LogicException', $e, '->leaveScope() throws a \LogicException if the scope is not active yet');
+            $this->assertInstanceOf('LogicException', $e, '->leaveScope() throws a \LogicException if the scope is not active yet');
             $this->assertEquals('The scope "foo" is not active.', $e->getMessage(), '->leaveScope() throws a \LogicException if the scope is not active yet');
         }
 
@@ -312,7 +312,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
             $container->leaveScope('bar');
             $this->fail('->leaveScope() throws a \LogicException if the scope does not exist');
         } catch (Exception $e) {
-            $this->assertInstanceOf('\LogicException', $e, '->leaveScope() throws a \LogicException if the scope does not exist');
+            $this->assertInstanceOf('LogicException', $e, '->leaveScope() throws a \LogicException if the scope does not exist');
             $this->assertEquals('The scope "bar" is not active.', $e->getMessage(), '->leaveScope() throws a \LogicException if the scope does not exist');
         }
     }

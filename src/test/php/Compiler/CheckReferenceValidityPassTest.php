@@ -21,7 +21,7 @@ class CheckReferenceValidityPassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsScopeWidening()
     {
@@ -45,7 +45,7 @@ class CheckReferenceValidityPassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsCrossScopeHierarchyReference()
     {
@@ -60,7 +60,7 @@ class CheckReferenceValidityPassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsReferenceToAbstractDefinition()
     {

@@ -72,7 +72,7 @@ class ehough_iconic_parameterbag_ParameterBagTest extends PHPUnit_Framework_Test
             $bag->get('baba');
             $this->fail('->get() throws an \InvalidArgumentException if the key does not exist');
         } catch (Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->get() throws an \InvalidArgumentException if the key does not exist');
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->get() throws an \InvalidArgumentException if the key does not exist');
             $this->assertEquals('You have requested a non-existent parameter "baba".', $e->getMessage(), '->get() throws an \InvalidArgumentException if the key does not exist');
         }
     }

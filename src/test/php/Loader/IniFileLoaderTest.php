@@ -51,7 +51,7 @@ class IniFileLoaderTest extends PHPUnit_Framework_TestCase
             $this->loader->load('foo.ini');
             $this->fail('->load() throws an InvalidArgumentException if the loaded file does not exist');
         } catch (Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not exist');
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not exist');
             $this->assertStringStartsWith('The file "foo.ini" does not exist (in: ', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file does not exist');
         }
     }
@@ -66,7 +66,7 @@ class IniFileLoaderTest extends PHPUnit_Framework_TestCase
             @$this->loader->load('nonvalid.ini');
             $this->fail('->load() throws an InvalidArgumentException if the loaded file is not parseable');
         } catch (Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file is not parseable');
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file is not parseable');
             $this->assertEquals('The "nonvalid.ini" file is not valid.', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file is not parseable');
         }
     }

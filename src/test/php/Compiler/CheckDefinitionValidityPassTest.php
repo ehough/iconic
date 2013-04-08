@@ -12,7 +12,7 @@
 class CheckDefinitionValidityPassTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsSyntheticNonPublicDefinitions()
     {
@@ -23,7 +23,7 @@ class CheckDefinitionValidityPassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsSyntheticPrototypeDefinitions()
     {
@@ -34,7 +34,7 @@ class CheckDefinitionValidityPassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsNonSyntheticNonAbstractDefinitionWithoutClass()
     {

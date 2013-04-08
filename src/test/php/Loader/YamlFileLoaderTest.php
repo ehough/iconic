@@ -42,7 +42,7 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
             $m->invoke($loader, 'foo.yml');
             $this->fail('->load() throws an InvalidArgumentException if the loaded file does not exist');
         } catch (Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not exist');
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not exist');
             $this->assertEquals('The service file "foo.yml" is not valid.', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file does not exist');
         }
 
@@ -50,7 +50,7 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
             $m->invoke($loader, 'parameters.ini');
             $this->fail('->load() throws an InvalidArgumentException if the loaded file is not a valid YAML file');
         } catch (Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file is not a valid YAML file');
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file is not a valid YAML file');
             $this->assertEquals('The service file "parameters.ini" is not valid.', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file is not a valid YAML file');
         }
 
@@ -61,7 +61,7 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
                 $m->invoke($loader, $fixture.'.yml');
                 $this->fail('->load() throws an InvalidArgumentException if the loaded file does not validate');
             } catch (Exception $e) {
-                $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not validate');
+                $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not validate');
                 $this->assertStringMatchesFormat('The service file "nonvalid%d.yml" is not valid.', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file does not validate');
             }
         }
@@ -149,7 +149,7 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
             $loader->load('services11.yml');
             $this->fail('->load() throws an InvalidArgumentException if the tag is not valid');
         } catch (Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the tag is not valid');
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the tag is not valid');
             $this->assertStringStartsWith('There is no extension able to load the configuration for "foobarfoobar" (in', $e->getMessage(), '->load() throws an InvalidArgumentException if the tag is not valid');
         }
     }

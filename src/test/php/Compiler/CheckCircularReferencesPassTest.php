@@ -12,7 +12,7 @@
 class CheckCircularReferencesPassTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcess()
     {
@@ -24,7 +24,7 @@ class CheckCircularReferencesPassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessWithAliases()
     {
@@ -37,7 +37,7 @@ class CheckCircularReferencesPassTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsIndirectCircularReference()
     {
