@@ -42,7 +42,7 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
             ->getMockForAbstractClass()
         ;
 
-        $r = new \ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
+        $r = new ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
         $r->setAccessible(true);
 
         $r->invoke($extension, $container, array('enabled' => $enabled));
@@ -71,7 +71,7 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
             ->getMockForAbstractClass()
         ;
 
-        $r = new \ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
+        $r = new ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
         $r->setAccessible(true);
 
         $r->invoke($extension, $container, array());

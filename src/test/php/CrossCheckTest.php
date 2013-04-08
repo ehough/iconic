@@ -41,14 +41,14 @@ class CrossCheckTest extends PHPUnit_Framework_TestCase
         file_put_contents($tmp, file_get_contents(self::$fixturesPath.'/'.$type.'/'.$fixture));
 
         $container1 = new ehough_iconic_ContainerBuilder();
-        $loader1 = new $loaderClass($container1, new \Symfony\Component\Config\FileLocator());
+        $loader1 = new $loaderClass($container1, $this->_buildFileLocator());
         $loader1->load($tmp);
 
         $dumper = new $dumperClass($container1);
         file_put_contents($tmp, $dumper->dump());
 
         $container2 = new ehough_iconic_ContainerBuilder();
-        $loader2 = new $loaderClass($container2, new \Symfony\Component\Config\FileLocator());
+        $loader2 = new $loaderClass($container2, $this->_buildFileLocator());
         $loader2->load($tmp);
 
         unlink($tmp);
@@ -94,5 +94,12 @@ class CrossCheckTest extends PHPUnit_Framework_TestCase
         }
 
         return $tests;
+    }
+
+    private function _buildFileLocator()
+    {
+        $ref = new ReflectionClass('\Symfony\Component\Config\FileLocator');
+
+        return $ref->newInstance();
     }
 }

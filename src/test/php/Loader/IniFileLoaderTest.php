@@ -28,7 +28,7 @@ class IniFileLoaderTest extends PHPUnit_Framework_TestCase
         }
 
         $this->container = new ehough_iconic_ContainerBuilder();
-        $this->loader    = new ehough_iconic_loader_IniFileLoader($this->container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/ini'));
+        $this->loader    = new ehough_iconic_loader_IniFileLoader($this->container, $this->_buildFileLocator(self::$fixturesPath.'/ini'));
     }
 
     /**
@@ -50,7 +50,7 @@ class IniFileLoaderTest extends PHPUnit_Framework_TestCase
         try {
             $this->loader->load('foo.ini');
             $this->fail('->load() throws an InvalidArgumentException if the loaded file does not exist');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not exist');
             $this->assertStringStartsWith('The file "foo.ini" does not exist (in: ', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file does not exist');
         }
@@ -65,7 +65,7 @@ class IniFileLoaderTest extends PHPUnit_Framework_TestCase
         try {
             @$this->loader->load('nonvalid.ini');
             $this->fail('->load() throws an InvalidArgumentException if the loaded file is not parseable');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file is not parseable');
             $this->assertEquals('The "nonvalid.ini" file is not valid.', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file is not parseable');
         }
@@ -76,9 +76,23 @@ class IniFileLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testSupports()
     {
-        $loader = new ehough_iconic_loader_IniFileLoader(new ehough_iconic_ContainerBuilder(), new \Symfony\Component\Config\FileLocator());
+        $loader = new ehough_iconic_loader_IniFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator());
 
         $this->assertTrue($loader->supports('foo.ini'), '->supports() returns true if the resource is loadable');
         $this->assertFalse($loader->supports('foo.foo'), '->supports() returns true if the resource is loadable');
+    }
+
+    private function _buildFileLocator($path = null)
+    {
+        $ref = new ReflectionClass('\Symfony\Component\Config\FileLocator');
+
+        if ($path) {
+
+            return $ref->newInstanceArgs(array($path));
+
+        } else {
+
+            return $ref->newInstance();
+        }
     }
 }

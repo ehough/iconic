@@ -449,12 +449,14 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     {
         if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
-            return;
         }
 
         $container = new ehough_iconic_ContainerBuilder();
-        $container->addResource($a = new \Symfony\Component\Config\Resource\FileResource(__DIR__.'/Fixtures/xml/services1.xml'));
-        $container->addResource($b = new \Symfony\Component\Config\Resource\FileResource(__DIR__.'/Fixtures/xml/services2.xml'));
+        $ref = new ReflectionClass('\Symfony\Component\Config\Resource\FileResource');
+        $a = $ref->newInstanceArgs(array(__DIR__.'/Fixtures/xml/services1.xml'));
+        $b = $ref->newInstanceArgs(array(__DIR__.'/Fixtures/xml/services2.xml'));
+        $container->addResource($a);
+        $container->addResource($b);
         $resources = array();
         foreach ($container->getResources() as $resource) {
             if (false === strpos($resource, '.php')) {
@@ -544,7 +546,6 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     {
         if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
-            return;
         }
 
         $container = new ehough_iconic_ContainerBuilder();
@@ -556,7 +557,6 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     {
         if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
-            return;
         }
 
         $container = new ehough_iconic_ContainerBuilder();

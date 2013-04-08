@@ -30,12 +30,12 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
 
     public function testLoad()
     {
-        $loader = new ehough_iconic_loader_XmlFileLoader(new ehough_iconic_ContainerBuilder(), new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/ini'));
+        $loader = new ehough_iconic_loader_XmlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator(self::$fixturesPath.'/ini'));
 
         try {
             $loader->load('foo.xml');
             $this->fail('->load() throws an InvalidArgumentException if the loaded file does not exist');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not exist');
             $this->assertStringStartsWith('The file "foo.xml" does not exist (in:', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file does not exist');
         }
@@ -43,15 +43,15 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
 
     public function testParseFile()
     {
-        $loader = new ehough_iconic_loader_XmlFileLoader(new ehough_iconic_ContainerBuilder(), new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/ini'));
-        $r = new \ReflectionObject($loader);
+        $loader = new ehough_iconic_loader_XmlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator(self::$fixturesPath.'/ini'));
+        $r = new ReflectionObject($loader);
         $m = $r->getMethod('parseFile');
         $m->setAccessible(true);
 
         try {
             $m->invoke($loader, self::$fixturesPath.'/ini/parameters.ini');
             $this->fail('->parseFile() throws an InvalidArgumentException if the loaded file is not a valid XML file');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->parseFile() throws an InvalidArgumentException if the loaded file is not a valid XML file');
             $this->assertRegExp(sprintf('#^Unable to parse file ".+%s".$#', 'parameters.ini'), $e->getMessage(), '->parseFile() throws an InvalidArgumentException if the loaded file is not a valid XML file');
 
@@ -60,12 +60,12 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
             $this->assertStringStartsWith('[ERROR 4] Start tag expected, \'<\' not found (in', $e->getMessage(), '->parseFile() throws an InvalidArgumentException if the loaded file is not a valid XML file');
         }
 
-        $loader = new ehough_iconic_loader_XmlFileLoader(new ehough_iconic_ContainerBuilder(), new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml'));
+        $loader = new ehough_iconic_loader_XmlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator(self::$fixturesPath.'/xml'));
 
         try {
             $m->invoke($loader, self::$fixturesPath.'/xml/nonvalid.xml');
             $this->fail('->parseFile() throws an InvalidArgumentException if the loaded file does not validate the XSD');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->parseFile() throws an InvalidArgumentException if the loaded file does not validate the XSD');
             $this->assertRegExp(sprintf('#^Unable to parse file ".+%s".$#', 'nonvalid.xml'), $e->getMessage(), '->parseFile() throws an InvalidArgumentException if the loaded file is not a valid XML file');
 
@@ -81,7 +81,7 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
     public function testLoadParameters()
     {
         $container = new ehough_iconic_ContainerBuilder();
-        $loader = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml'));
+        $loader = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml'));
         $loader->load('services2.xml');
 
         $actual = $container->getParameterBag()->all();
@@ -97,11 +97,12 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
         }
 
         $container = new ehough_iconic_ContainerBuilder();
-        $resolver = new \Symfony\Component\Config\Loader\LoaderResolver(array(
-            new ehough_iconic_loader_IniFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml')),
-            new ehough_iconic_loader_YamlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml')),
-            $loader = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml')),
-        ));
+        $ref = new ReflectionClass('\Symfony\Component\Config\Loader\LoaderResolver');
+        $resolver = $ref->newInstanceArgs(array(array(
+            new ehough_iconic_loader_IniFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml')),
+            new ehough_iconic_loader_YamlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml')),
+            $loader = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml')),
+        )));
         $loader->setResolver($resolver);
         $loader->load('services4.xml');
 
@@ -117,7 +118,7 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
     public function testLoadAnonymousServices()
     {
         $container = new ehough_iconic_ContainerBuilder();
-        $loader = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml'));
+        $loader = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml'));
         $loader->load('services5.xml');
         $services = $container->getDefinitions();
         $this->assertEquals(4, count($services), '->load() attributes unique ids to anonymous services');
@@ -150,7 +151,7 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
     public function testLoadServices()
     {
         $container = new ehough_iconic_ContainerBuilder();
-        $loader = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml'));
+        $loader = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml'));
         $loader->load('services6.xml');
         $services = $container->getDefinitions();
         $this->assertTrue(isset($services['foo']), '->load() parses <service> elements');
@@ -185,31 +186,31 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
 
     public function testConvertDomElementToArray()
     {
-        $doc = new \DOMDocument("1.0");
+        $doc = new DOMDocument("1.0");
         $doc->loadXML('<foo>bar</foo>');
         $this->assertEquals('bar', ehough_iconic_loader_XmlFileLoader::convertDomElementToArray($doc->documentElement), '::convertDomElementToArray() converts a \DomElement to an array');
 
-        $doc = new \DOMDocument("1.0");
+        $doc = new DOMDocument("1.0");
         $doc->loadXML('<foo foo="bar" />');
         $this->assertEquals(array('foo' => 'bar'), ehough_iconic_loader_XmlFileLoader::convertDomElementToArray($doc->documentElement), '::convertDomElementToArray() converts a \DomElement to an array');
 
-        $doc = new \DOMDocument("1.0");
+        $doc = new DOMDocument("1.0");
         $doc->loadXML('<foo><foo>bar</foo></foo>');
         $this->assertEquals(array('foo' => 'bar'), ehough_iconic_loader_XmlFileLoader::convertDomElementToArray($doc->documentElement), '::convertDomElementToArray() converts a \DomElement to an array');
 
-        $doc = new \DOMDocument("1.0");
+        $doc = new DOMDocument("1.0");
         $doc->loadXML('<foo><foo>bar<foo>bar</foo></foo></foo>');
         $this->assertEquals(array('foo' => array('value' => 'bar', 'foo' => 'bar')), ehough_iconic_loader_XmlFileLoader::convertDomElementToArray($doc->documentElement), '::convertDomElementToArray() converts a \DomElement to an array');
 
-        $doc = new \DOMDocument("1.0");
+        $doc = new DOMDocument("1.0");
         $doc->loadXML('<foo><foo></foo></foo>');
         $this->assertEquals(array('foo' => null), ehough_iconic_loader_XmlFileLoader::convertDomElementToArray($doc->documentElement), '::convertDomElementToArray() converts a \DomElement to an array');
 
-        $doc = new \DOMDocument("1.0");
+        $doc = new DOMDocument("1.0");
         $doc->loadXML('<foo><foo><!-- foo --></foo></foo>');
         $this->assertEquals(array('foo' => null), ehough_iconic_loader_XmlFileLoader::convertDomElementToArray($doc->documentElement), '::convertDomElementToArray() converts a \DomElement to an array');
 
-        $doc = new \DOMDocument("1.0");
+        $doc = new DOMDocument("1.0");
         $doc->loadXML('<foo><foo foo="bar"/><foo foo="bar"/></foo>');
         $this->assertEquals(array('foo' => array(array('foo' => 'bar'), array('foo' => 'bar'))), ehough_iconic_loader_XmlFileLoader::convertDomElementToArray($doc->documentElement), '::convertDomElementToArray() converts a \DomElement to an array');
     }
@@ -217,9 +218,9 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
     public function testExtensions()
     {
         $container = new ehough_iconic_ContainerBuilder();
-        $container->registerExtension(new \ProjectExtension());
-        $container->registerExtension(new \ProjectWithXsdExtension());
-        $loader = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml'));
+        $container->registerExtension(new ProjectExtension());
+        $container->registerExtension(new ProjectWithXsdExtension());
+        $loader = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml'));
 
         // extension without an XSD
         $loader->load('extensions/services1.xml');
@@ -235,9 +236,9 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
 
         // extension with an XSD
         $container = new ehough_iconic_ContainerBuilder();
-        $container->registerExtension(new \ProjectExtension());
-        $container->registerExtension(new \ProjectWithXsdExtension());
-        $loader = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml'));
+        $container->registerExtension(new ProjectExtension());
+        $container->registerExtension(new ProjectWithXsdExtension());
+        $loader = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml'));
         $loader->load('extensions/services2.xml');
         $container->compile();
         $services = $container->getDefinitions();
@@ -252,13 +253,13 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
         $container = new ehough_iconic_ContainerBuilder();
         $container->registerExtension(new ProjectExtension());
         $container->registerExtension(new ProjectWithXsdExtension());
-        $loader = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml'));
+        $loader = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml'));
 
         // extension with an XSD (does not validate)
         try {
             $loader->load('extensions/services3.xml');
             $this->fail('->load() throws an InvalidArgumentException if the configuration does not validate the XSD');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the configuration does not validate the XSD');
             $this->assertRegExp(sprintf('#^Unable to parse file ".+%s".$#', 'services3.xml'), $e->getMessage(), '->load() throws an InvalidArgumentException if the configuration does not validate the XSD');
 
@@ -271,7 +272,7 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
         try {
             $loader->load('extensions/services4.xml');
             $this->fail('->load() throws an InvalidArgumentException if the tag is not valid');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the tag is not valid');
             $this->assertStringStartsWith('There is no extension able to load the configuration for "project:bar" (in', $e->getMessage(), '->load() throws an InvalidArgumentException if the tag is not valid');
         }
@@ -287,15 +288,15 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
 
         // extension with an XSD in PHAR archive
         $container = new ehough_iconic_ContainerBuilder();
-        $container->registerExtension(new \ProjectWithXsdExtensionInPhar());
-        $loader = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml'));
+        $container->registerExtension(new ProjectWithXsdExtensionInPhar());
+        $loader = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml'));
         $loader->load('extensions/services6.xml');
 
         // extension with an XSD in PHAR archive (does not validate)
         try {
             $loader->load('extensions/services7.xml');
             $this->fail('->load() throws an InvalidArgumentException if the configuration does not validate the XSD');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the configuration does not validate the XSD');
             $this->assertRegExp(sprintf('#^Unable to parse file ".+%s".$#', 'services7.xml'), $e->getMessage(), '->load() throws an InvalidArgumentException if the configuration does not validate the XSD');
 
@@ -310,7 +311,8 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
      */
     public function testSupports()
     {
-        $loader = new ehough_iconic_loader_XmlFileLoader(new ehough_iconic_ContainerBuilder(), new \Symfony\Component\Config\FileLocator());
+        $ref = new ReflectionClass('\Symfony\Component\Config\FileLocator');
+        $loader = new ehough_iconic_loader_XmlFileLoader(new ehough_iconic_ContainerBuilder(), $ref->newInstance());
 
         $this->assertTrue($loader->supports('foo.xml'), '->supports() returns true if the resource is loadable');
         $this->assertFalse($loader->supports('foo.foo'), '->supports() returns true if the resource is loadable');
@@ -320,11 +322,11 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
     {
         $container = new ehough_iconic_ContainerBuilder();
 
-        $loader1 = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml/extension1'));
+        $loader1 = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml/extension1'));
         $loader1->load('services.xml');
         $services = $container->getDefinitions();
         $this->assertEquals(2, count($services), '->load() attributes unique ids to anonymous services');
-        $loader2 = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml/extension2'));
+        $loader2 = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml/extension2'));
         $loader2->load('services.xml');
         $services = $container->getDefinitions();
         $this->assertEquals(4, count($services), '->load() attributes unique ids to anonymous services');
@@ -342,13 +344,13 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
     {
         $container = new ehough_iconic_ContainerBuilder();
 
-        $loader = new ehough_iconic_loader_XmlFileLoader($container, new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/xml'));
+        $loader = new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/xml'));
 
         // document types are not allowed.
         try {
             $loader->load('withdoctype.xml');
             $this->fail('->load() throws an InvalidArgumentException if the configuration contains a document type');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the configuration contains a document type');
             $this->assertRegExp(sprintf('#^Unable to parse file ".+%s".$#', 'withdoctype.xml'), $e->getMessage(), '->load() throws an InvalidArgumentException if the configuration contains a document type');
 
@@ -356,5 +358,12 @@ class XmlFileLoaderTest extends PHPUnit_Framework_TestCase
             $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the configuration contains a document type');
             $this->assertSame('Document types are not allowed.', $e->getMessage(), '->load() throws an InvalidArgumentException if the configuration contains a document type');
         }
+    }
+
+    private function _buildFileLocator($path)
+    {
+        $ref = new ReflectionClass('\Symfony\Component\Config\FileLocator');
+
+        return $ref->newInstanceArgs(array($path));
     }
 }

@@ -102,11 +102,11 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(str_replace('%path%', str_replace('\\','\\\\',self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), file_get_contents(self::$fixturesPath.'/php/services9_compiled.php')), $dumper->dump(), '->dump() dumps services');
 
         $dumper = new ehough_iconic_dumper_PhpDumper($container = new ehough_iconic_ContainerBuilder());
-        $container->register('foo', 'FooClass')->addArgument(new \stdClass());
+        $container->register('foo', 'FooClass')->addArgument(new stdClass());
         try {
             $dumper->dump();
             $this->fail('->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_RuntimeException', $e, '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
             $this->assertEquals('Unable to dump a service container if a parameter is an object or a resource.', $e->getMessage(), '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
         }
@@ -117,8 +117,8 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
         require_once self::$fixturesPath.'/php/services9.php';
         require_once self::$fixturesPath.'/includes/foo.php';
 
-        $container = new \ProjectServiceContainer();
-        $container->set('bar', $bar = new \stdClass());
+        $container = new ProjectServiceContainer();
+        $container->set('bar', $bar = new stdClass());
         $container->setParameter('foo_bar', 'foo_bar');
 
         $this->assertEquals($bar, $container->get('bar'), '->set() overrides an already defined service');
@@ -130,8 +130,8 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
         require_once self::$fixturesPath.'/includes/foo.php';
         require_once self::$fixturesPath.'/includes/classes.php';
 
-        $container = new \ProjectServiceContainer();
-        $container->set('bar', $bar = new \stdClass());
+        $container = new ProjectServiceContainer();
+        $container->set('bar', $bar = new stdClass());
 
         $this->assertSame($bar, $container->get('foo')->bar, '->set() overrides an already defined service');
     }

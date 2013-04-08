@@ -74,7 +74,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         try {
             $sc->getParameter('baba');
             $this->fail('->getParameter() thrown an \InvalidArgumentException if the key does not exist');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('\InvalidArgumentException', $e, '->getParameter() thrown an \InvalidArgumentException if the key does not exist');
             $this->assertEquals('You have requested a non-existent parameter "baba".', $e->getMessage(), '->getParameter() thrown an \InvalidArgumentException if the key does not exist');
         }
@@ -153,7 +153,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         try {
             $sc->get('');
             $this->fail('->get() throws a \InvalidArgumentException exception if the service is empty');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_ServiceNotFoundException', $e, '->get() throws a ehough_iconic_exception_ServiceNotFoundException exception if the service is empty');
         }
         $this->assertNull($sc->get('', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
@@ -166,7 +166,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         try {
             $sc->get('circular');
             $this->fail('->get() throws a ServiceCircularReferenceException if it contains circular reference');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_ServiceCircularReferenceException', $e, '->get() throws a ServiceCircularReferenceException if it contains circular reference');
             $this->assertStringStartsWith('Circular reference detected for service "circular"', $e->getMessage(), '->get() throws a \LogicException if it contains circular reference');
         }
@@ -303,7 +303,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         try {
             $container->leaveScope('foo');
             $this->fail('->leaveScope() throws a \LogicException if the scope is not active yet');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('\LogicException', $e, '->leaveScope() throws a \LogicException if the scope is not active yet');
             $this->assertEquals('The scope "foo" is not active.', $e->getMessage(), '->leaveScope() throws a \LogicException if the scope is not active yet');
         }
@@ -311,7 +311,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         try {
             $container->leaveScope('bar');
             $this->fail('->leaveScope() throws a \LogicException if the scope does not exist');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('\LogicException', $e, '->leaveScope() throws a \LogicException if the scope does not exist');
             $this->assertEquals('The scope "bar" is not active.', $e->getMessage(), '->leaveScope() throws a \LogicException if the scope does not exist');
         }
@@ -389,14 +389,14 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         try {
             $c->get('throw_exception');
             $this->fail();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertEquals('Something went terribly wrong!', $e->getMessage());
         }
 
         try {
             $c->get('throw_exception');
             $this->fail();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertEquals('Something went terribly wrong!', $e->getMessage());
         }
     }
@@ -408,7 +408,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         try {
             $c->get('throws_exception_on_service_configuration');
             $this->fail('The container can not contain invalid service!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertEquals('Something was terribly wrong while trying to configure the service!', $e->getMessage());
         }
         $this->assertFalse($c->initialized('throws_exception_on_service_configuration'));
@@ -416,7 +416,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         try {
             $c->get('throws_exception_on_service_configuration');
             $this->fail('The container can not contain invalid service!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertEquals('Something was terribly wrong while trying to configure the service!', $e->getMessage());
         }
         $this->assertFalse($c->initialized('throws_exception_on_service_configuration'));
@@ -440,7 +440,7 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
 
     protected function getField($obj, $field)
     {
-        $reflection = new \ReflectionProperty($obj, $field);
+        $reflection = new ReflectionProperty($obj, $field);
         $reflection->setAccessible(true);
 
         return $reflection->getValue($obj);
@@ -463,7 +463,7 @@ class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
     protected function getScopedService()
     {
         if (!isset($this->scopedServices['foo'])) {
-            throw new \RuntimeException('Invalid call');
+            throw new RuntimeException('Invalid call');
         }
 
         return $this->services['scoped'] = $this->scopedServices['foo']['scoped'] = new stdClass();
@@ -472,7 +472,7 @@ class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
     protected function getScopedFooService()
     {
         if (!isset($this->scopedServices['foo'])) {
-            throw new \RuntimeException('invalid call');
+            throw new RuntimeException('invalid call');
         }
 
         return $this->services['scoped_foo'] = $this->scopedServices['foo']['scoped_foo'] = new stdClass();
@@ -505,13 +505,13 @@ class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
 
     protected function getThrowExceptionService()
     {
-        throw new \Exception('Something went terribly wrong!');
+        throw new Exception('Something went terribly wrong!');
     }
 
     protected function getThrowsExceptionOnServiceConfigurationService()
     {
         $this->services['throws_exception_on_service_configuration'] = $instance = new stdClass();
 
-        throw new \Exception('Something was terribly wrong while trying to configure the service!');
+        throw new Exception('Something was terribly wrong while trying to configure the service!');
     }
 }
