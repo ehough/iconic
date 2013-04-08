@@ -9,16 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
-
-//use Symfony\Component\DependencyInjection\Scope;
-
-//use Symfony\Component\DependencyInjection\Compiler\CheckReferenceValidityPass;
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-class CheckReferenceValidityPassTest extends \PHPUnit_Framework_TestCase
+class CheckReferenceValidityPassTest extends PHPUnit_Framework_TestCase
 {
     public function testProcessIgnoresScopeWideningIfNonStrictReference()
     {
@@ -30,7 +21,7 @@ class CheckReferenceValidityPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsScopeWidening()
     {
@@ -54,7 +45,7 @@ class CheckReferenceValidityPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsCrossScopeHierarchyReference()
     {
@@ -69,7 +60,7 @@ class CheckReferenceValidityPassTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testProcessDetectsReferenceToAbstractDefinition()
     {

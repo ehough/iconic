@@ -9,16 +9,10 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
-
-//use Symfony\Component\DependencyInjection\Alias;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 /**
  * This class tests the integration of the different compiler passes
  */
-class IntegrationTest extends \PHPUnit_Framework_TestCase
+class IntegrationTest extends PHPUnit_Framework_TestCase
 {
     /**
      * This tests that the following dependencies are correctly processed:
@@ -33,18 +27,18 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $container->setResourceTracking(false);
 
         $a = $container
-            ->register('a', '\stdClass')
+            ->register('a', 'stdClass')
             ->addArgument(new ehough_iconic_Reference('c'))
         ;
 
         $b = $container
-            ->register('b', '\stdClass')
+            ->register('b', 'stdClass')
             ->addArgument(new ehough_iconic_Reference('c'))
             ->setPublic(false)
         ;
 
         $c = $container
-            ->register('c', '\stdClass')
+            ->register('c', 'stdClass')
             ->setPublic(false)
         ;
 
@@ -63,14 +57,14 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $container->setResourceTracking(false);
 
         $a = $container
-            ->register('a', '\stdClass')
+            ->register('a', 'stdClass')
             ->addArgument(new ehough_iconic_Reference('b'))
         ;
 
         $container->setAlias('b', new ehough_iconic_Alias('c', false));
 
         $c = $container
-            ->register('c', '\stdClass')
+            ->register('c', 'stdClass')
             ->setPublic(false)
         ;
 
@@ -89,19 +83,19 @@ class IntegrationTest extends \PHPUnit_Framework_TestCase
         $container->setResourceTracking(false);
 
         $container
-            ->register('a', '\stdClass')
+            ->register('a', 'stdClass')
             ->addArgument(new ehough_iconic_Reference('b'))
             ->addMethodCall('setC', array(new ehough_iconic_Reference('c')))
         ;
 
         $container
-            ->register('b', '\stdClass')
+            ->register('b', 'stdClass')
             ->addArgument(new ehough_iconic_Reference('c'))
             ->setPublic(false)
         ;
 
         $container
-            ->register('c', '\stdClass')
+            ->register('c', 'stdClass')
             ->setPublic(false)
         ;
 

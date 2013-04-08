@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Exception;
-
 /**
  * Thrown when a scope widening injection is detected.
  *
@@ -25,16 +23,32 @@ class ehough_iconic_exception_ScopeWideningInjectionException extends ehough_ico
 
     public function __construct($sourceServiceId, $sourceScope, $destServiceId, $destScope, Exception $previous = null)
     {
-        parent::__construct(sprintf(
-            'Scope Widening Injection detected: The definition "%s" references the service "%s" which belongs to a narrower scope. '
-           .'Generally, it is safer to either move "%s" to scope "%s" or alternatively rely on the provider pattern by injecting the container itself, and requesting the service "%s" each time it is needed. '
-           .'In rare, special cases however that might not be necessary, then you can set the reference to strict=false to get rid of this error.',
-           $sourceServiceId,
-           $destServiceId,
-           $sourceServiceId,
-           $destScope,
-           $destServiceId
-        ), 0, $previous);
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+
+            parent::__construct(sprintf(
+                'Scope Widening Injection detected: The definition "%s" references the service "%s" which belongs to a narrower scope. '
+                    .'Generally, it is safer to either move "%s" to scope "%s" or alternatively rely on the provider pattern by injecting the container itself, and requesting the service "%s" each time it is needed. '
+                    .'In rare, special cases however that might not be necessary, then you can set the reference to strict=false to get rid of this error.',
+                $sourceServiceId,
+                $destServiceId,
+                $sourceServiceId,
+                $destScope,
+                $destServiceId
+            ), 0);
+
+        } else {
+
+            parent::__construct(sprintf(
+                'Scope Widening Injection detected: The definition "%s" references the service "%s" which belongs to a narrower scope. '
+                    .'Generally, it is safer to either move "%s" to scope "%s" or alternatively rely on the provider pattern by injecting the container itself, and requesting the service "%s" each time it is needed. '
+                    .'In rare, special cases however that might not be necessary, then you can set the reference to strict=false to get rid of this error.',
+                $sourceServiceId,
+                $destServiceId,
+                $sourceServiceId,
+                $destScope,
+                $destServiceId
+            ), 0, $previous);
+        }
 
         $this->sourceServiceId = $sourceServiceId;
         $this->sourceScope = $sourceScope;

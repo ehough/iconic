@@ -9,19 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Loader;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\Config\Loader\Loader;
-//use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-//use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-//use Symfony\Component\DependencyInjection\Loader\IniFileLoader;
-//use Symfony\Component\Config\Loader\LoaderResolver;
-//use Symfony\Component\Config\FileLocator;
-
-class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
+class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 
@@ -38,42 +26,42 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$fixturesPath = realpath(__DIR__.'/../Fixtures/');
+        self::$fixturesPath = realpath(dirname(__FILE__).'/../Fixtures/');
         require_once self::$fixturesPath.'/includes/foo.php';
         require_once self::$fixturesPath.'/includes/ProjectExtension.php';
     }
 
     public function testLoadFile()
     {
-        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new \Symfony\Component\Config\FileLocator(self::$fixturesPath.'/ini'));
-        $r = new \ReflectionObject($loader);
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator(self::$fixturesPath.'/ini'));
+        $r = new ReflectionObject($loader);
         $m = $r->getMethod('loadFile');
         $m->setAccessible(true);
 
         try {
             $m->invoke($loader, 'foo.yml');
             $this->fail('->load() throws an InvalidArgumentException if the loaded file does not exist');
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not exist');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not exist');
             $this->assertEquals('The service file "foo.yml" is not valid.', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file does not exist');
         }
 
         try {
             $m->invoke($loader, 'parameters.ini');
             $this->fail('->load() throws an InvalidArgumentException if the loaded file is not a valid YAML file');
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file is not a valid YAML file');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file is not a valid YAML file');
             $this->assertEquals('The service file "parameters.ini" is not valid.', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file is not a valid YAML file');
         }
 
-        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator(self::$fixturesPath.'/yaml'));
 
         foreach (array('nonvalid1', 'nonvalid2') as $fixture) {
             try {
                 $m->invoke($loader, $fixture.'.yml');
                 $this->fail('->load() throws an InvalidArgumentException if the loaded file does not validate');
-            } catch (\Exception $e) {
-                $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not validate');
+            } catch (Exception $e) {
+                $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the loaded file does not validate');
                 $this->assertStringMatchesFormat('The service file "nonvalid%d.yml" is not valid.', $e->getMessage(), '->load() throws an InvalidArgumentException if the loaded file does not validate');
             }
         }
@@ -82,24 +70,25 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoadParameters()
     {
         $container = new ehough_iconic_ContainerBuilder();
-        $loader = new ehough_iconic_loader_YamlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/yaml'));
         $loader->load('services2.yml');
-        $this->assertEquals(array('foo' => 'bar', 'mixedcase' => array('MixedCaseKey' => 'value'), 'values' => array(true, false, 0, 1000.3), 'bar' => 'foo', 'foo_bar' => new ehough_iconic_Reference('foo_bar')), $container->getParameterBag()->all(), '->load() converts YAML keys to lowercase');
+        $this->assertEquals(array('foo' => 'bar', 'mixedcase' => array('MixedCaseKey' => 'value'), 'values' => array(true, false, 0, 1000.3), 'bar' => 'foo', 'escape' => '@escapeme', 'foo_bar' => new ehough_iconic_Reference('foo_bar')), $container->getParameterBag()->all(), '->load() converts YAML keys to lowercase');
     }
 
     public function testLoadImports()
     {
         $container = new ehough_iconic_ContainerBuilder();
-        $resolver = new \Symfony\Component\Config\Loader\LoaderResolver(array(
-            new ehough_iconic_loader_IniFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml')),
-            new ehough_iconic_loader_XmlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml')),
-            $loader = new ehough_iconic_loader_YamlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml')),
-        ));
+        $ref = new ReflectionClass('\Symfony\Component\Config\Loader\LoaderResolver');
+        $resolver = $ref->newInstanceArgs(array(array(
+            new ehough_iconic_loader_IniFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/yaml')),
+            new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/yaml')),
+            $loader = new ehough_iconic_loader_YamlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/yaml')),
+        )));
         $loader->setResolver($resolver);
         $loader->load('services4.yml');
 
         $actual = $container->getParameterBag()->all();
-        $expected = array('foo' => 'bar', 'values' => array(true, false), 'bar' => '%foo%', 'foo_bar' => new ehough_iconic_Reference('foo_bar'), 'mixedcase' => array('MixedCaseKey' => 'value'), 'imported_from_ini' => true, 'imported_from_xml' => true);
+        $expected = array('foo' => 'bar', 'values' => array(true, false), 'bar' => '%foo%', 'escape' => '@escapeme', 'foo_bar' => new ehough_iconic_Reference('foo_bar'), 'mixedcase' => array('MixedCaseKey' => 'value'), 'imported_from_ini' => true, 'imported_from_xml' => true);
         $this->assertEquals(array_keys($expected), array_keys($actual), '->load() imports and merges imported files');
 
         // Bad import throws no exception due to ignore_errors value.
@@ -109,7 +98,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoadServices()
     {
         $container = new ehough_iconic_ContainerBuilder();
-        $loader = new ehough_iconic_loader_YamlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/yaml'));
         $loader->load('services6.yml');
         $services = $container->getDefinitions();
         $this->assertTrue(isset($services['foo']), '->load() parses service elements');
@@ -128,6 +117,9 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(array('setBar', array('foo', new ehough_iconic_Reference('foo'), array(true, false)))), $services['method_call2']->getMethodCalls(), '->load() parses the method_call tag');
         $this->assertEquals('baz_factory', $services['factory_service']->getFactoryService());
 
+        $this->assertTrue($services['request']->isSynthetic(), '->load() parses the synthetic flag');
+        $this->assertTrue($services['request']->isSynchronized(), '->load() parses the synchronized flag');
+
         $aliases = $container->getAliases();
         $this->assertTrue(isset($aliases['alias_for_foo']), '->load() parses aliases');
         $this->assertEquals('foo', (string) $aliases['alias_for_foo'], '->load() parses aliases');
@@ -140,8 +132,8 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
     public function testExtensions()
     {
         $container = new ehough_iconic_ContainerBuilder();
-        $container->registerExtension(new \ProjectExtension());
-        $loader = new ehough_iconic_loader_YamlFileLoader($container, new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
+        $container->registerExtension(new ProjectExtension());
+        $loader = new ehough_iconic_loader_YamlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/yaml'));
         $loader->load('services10.yml');
         $container->compile();
         $services = $container->getDefinitions();
@@ -156,8 +148,8 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
         try {
             $loader->load('services11.yml');
             $this->fail('->load() throws an InvalidArgumentException if the tag is not valid');
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('\InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the tag is not valid');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the tag is not valid');
             $this->assertStringStartsWith('There is no extension able to load the configuration for "foobarfoobar" (in', $e->getMessage(), '->load() throws an InvalidArgumentException if the tag is not valid');
         }
     }
@@ -167,7 +159,7 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testSupports()
     {
-        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator());
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator());
 
         $this->assertTrue($loader->supports('foo.yml'), '->supports() returns true if the resource is loadable');
         $this->assertFalse($loader->supports('foo.foo'), '->supports() returns true if the resource is loadable');
@@ -175,11 +167,11 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testNonArrayTagThrowsException()
     {
-        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator(self::$fixturesPath.'/yaml'));
         try {
             $loader->load('badtag1.yml');
             $this->fail('->load() should throw an exception when the tags key of a service is not an array');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if the tags key is not an array');
             $this->assertStringStartsWith('Parameter "tags" must be an array for service', $e->getMessage(), '->load() throws an InvalidArgumentException if the tags key is not an array');
         }
@@ -187,11 +179,11 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testTagWithoutNameThrowsException()
     {
-        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator(self::$fixturesPath.'/yaml'));
         try {
             $loader->load('badtag2.yml');
             $this->fail('->load() should throw an exception when a tag is missing the name key');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if a tag is missing the name key');
             $this->assertStringStartsWith('A "tags" entry is missing a "name" key for service ', $e->getMessage(), '->load() throws an InvalidArgumentException if a tag is missing the name key');
         }
@@ -199,13 +191,27 @@ class YamlFileLoaderTest extends \PHPUnit_Framework_TestCase
 
     public function testTagWithAttributeArrayThrowsException()
     {
-        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), new\Symfony\Component\Config\FileLocator(self::$fixturesPath.'/yaml'));
+        $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator(self::$fixturesPath.'/yaml'));
         try {
             $loader->load('badtag3.yml');
             $this->fail('->load() should throw an exception when a tag-attribute is not a scalar');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if a tag-attribute is not a scalar');
             $this->assertStringStartsWith('A "tags" attribute must be of a scalar-type for service ', $e->getMessage(), '->load() throws an InvalidArgumentException if a tag-attribute is not a scalar');
+        }
+    }
+
+    private function _buildFileLocator($path = null)
+    {
+        $ref = new ReflectionClass('\Symfony\Component\Config\FileLocator');
+
+        if ($path) {
+
+            return $ref->newInstanceArgs(array($path));
+
+        } else {
+
+            return $ref->newInstance();
         }
     }
 }

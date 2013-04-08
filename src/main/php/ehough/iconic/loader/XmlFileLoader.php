@@ -9,19 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Loader;
-
-//use Symfony\Component\Config\Resource\FileResource;
-//use Symfony\Component\Config\Util\XmlUtils;
-//use Symfony\Component\DependencyInjection\DefinitionDecorator;
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Alias;
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\SimpleXMLElement;
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-
 /**
  * XmlFileLoader loads XML files service definitions.
  *
@@ -148,7 +135,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
             $definition = new ehough_iconic_Definition();
         }
 
-        foreach (array('class', 'scope', 'public', 'factory-class', 'factory-method', 'factory-service', 'synthetic', 'abstract') as $key) {
+        foreach (array('class', 'scope', 'public', 'factory-class', 'factory-method', 'factory-service', 'synthetic', 'synchronized', 'abstract') as $key) {
             if (isset($service[$key])) {
                 $method = 'set'.str_replace('-', '', $key);
                 $definition->$method((string) $service->getAttributeAsPhp($key));
@@ -281,7 +268,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
      */
     public function validateSchema(\DOMDocument $dom)
     {
-        $schemaLocations = array('http://symfony.com/schema/dic/services' => str_replace('\\', '/', __DIR__.'/schema/dic/services/services-1.0.xsd'));
+        $schemaLocations = array('http://symfony.com/schema/dic/services' => str_replace('\\', '/', dirname(__FILE__).'/schema/dic/services/services-1.0.xsd'));
 
         if ($element = $dom->documentElement->getAttributeNS('http://www.w3.org/2001/XMLSchema-instance', 'schemaLocation')) {
             $items = preg_split('/\s+/', $element);

@@ -9,19 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Dumper;
-
-//use Symfony\Component\DependencyInjection\Variable;
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Container;
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Parameter;
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-//use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-
 /**
  * PhpDumper dumps a service container as a PHP class.
  *
@@ -59,7 +46,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     {
         parent::__construct($container);
 
-        $this->inlinedDefinitions = new \SplObjectStorage;
+        $this->inlinedDefinitions = new SplObjectStorage;
     }
 
     /**
@@ -194,8 +181,8 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     {
         $code = '';
         $variableMap = $this->definitionVariables;
-        $nbOccurrences = new \SplObjectStorage();
-        $processed = new \SplObjectStorage();
+        $nbOccurrences = new SplObjectStorage();
+        $processed = new SplObjectStorage();
         $inlinedDefinitions = $this->getInlinedDefinitions($definition);
 
         foreach ($inlinedDefinitions as $definition) {
@@ -376,7 +363,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
         $this->referenceVariables[$id] = new ehough_iconic_Variable('instance');
 
         $code = '';
-        $processed = new \SplObjectStorage();
+        $processed = new SplObjectStorage();
         foreach ($this->getInlinedDefinitions($definition) as $iDefinition) {
             if ($processed->contains($iDefinition)) {
                 continue;
@@ -437,7 +424,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     private function addService($id, $definition)
     {
         $name = ehough_iconic_Container::camelize($id);
-        $this->definitionVariables = new \SplObjectStorage();
+        $this->definitionVariables = new SplObjectStorage();
         $this->referenceVariables = array();
         $this->variableCount = 0;
 
@@ -567,7 +554,7 @@ EOF;
      */
     private function addServices()
     {
-        $publicServices = $privateServices = $aliasServices = '';
+        $publicServices = $privateServices = $aliasServices = $synchronizers = '';
         $definitions = $this->container->getDefinitions();
         ksort($definitions);
         foreach ($definitions as $id => $definition) {
@@ -576,6 +563,8 @@ EOF;
             } else {
                 $privateServices .= $this->addService($id, $definition);
             }
+
+            $synchronizers .= $this->addServiceSynchronizer($id, $definition);
         }
 
         $aliases = $this->container->getAliases();
@@ -584,7 +573,60 @@ EOF;
             $aliasServices .= $this->addServiceAlias($alias, $id);
         }
 
-        return $publicServices.$aliasServices.$privateServices;
+        return $publicServices.$aliasServices.$synchronizers.$privateServices;
+    }
+
+    /**
+     * Adds synchronizer methods.
+     *
+     * @param string     $id         A service identifier
+     * @param ehough_iconic_Definition $definition A Definition instance
+     */
+    private function addServiceSynchronizer($id, ehough_iconic_Definition $definition)
+    {
+        if (!$definition->isSynchronized()) {
+            return;
+        }
+
+        $code = '';
+        foreach ($this->container->getDefinitions() as $definitionId => $definition) {
+            foreach ($definition->getMethodCalls() as $call) {
+                foreach ($call[1] as $argument) {
+                    if ($argument instanceof ehough_iconic_Reference && $id == (string) $argument) {
+                        $arguments = array();
+                        foreach ($call[1] as $value) {
+                            $arguments[] = $this->dumpValue($value);
+                        }
+
+                        $call = $this->wrapServiceConditionals($call[1], sprintf("\$this->get('%s')->%s(%s);", $definitionId, $call[0], implode(', ', $arguments)));
+
+                        $code .= <<<EOF
+        if (\$this->initialized('$definitionId')) {
+            $call
+        }
+
+EOF;
+                    }
+                }
+            }
+        }
+
+        if (!$code) {
+            return;
+        }
+
+        $name = ehough_iconic_Container::camelize($id);
+
+        return <<<EOF
+
+    /**
+     * Updates the '$id' service.
+     */
+    protected function synchronize{$name}Service()
+    {
+$code    }
+
+EOF;
     }
 
     private function addNewInstance($id, ehough_iconic_Definition $definition, $return, $instantiation)
@@ -868,9 +910,14 @@ EOF;
         }
 
         // re-indent the wrapped code
-        $code = implode("\n", array_map(function ($line) { return $line ? '    '.$line : $line; }, explode("\n", $code)));
+        $code = implode("\n", array_map(array($this, '_callbackWrapServiceConditionals'), explode("\n", $code)));
 
         return sprintf("        if (%s) {\n%s        }\n", implode(' && ', $conditions), $code);
+    }
+
+    public function _callbackWrapServiceConditionals($line)
+    {
+        return $line ? '    '.$line : $line;
     }
 
     /**
@@ -1056,9 +1103,7 @@ EOF;
                 return $this->dumpParameter(strtolower($match[1]));
             } else {
                 $that = $this;
-                $replaceParameters = function ($match) use ($that) {
-                    return "'.".$that->dumpParameter(strtolower($match[2])).".'";
-                };
+                $replaceParameters = array($this, '_callbackDumpValue');
 
                 $code = str_replace('%%', '%', preg_replace_callback('/(?<!%)(%)([^%]+)\1/', $replaceParameters, var_export($value, true)));
 
@@ -1069,6 +1114,11 @@ EOF;
         } else {
             return var_export($value, true);
         }
+    }
+
+    public function _callbackDumpValue($match)
+    {
+        return "'.".$this->dumpParameter(strtolower($match[2])).".'";
     }
 
     /**

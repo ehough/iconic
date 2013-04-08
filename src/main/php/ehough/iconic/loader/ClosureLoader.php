@@ -9,11 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Loader;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\Config\Loader\Loader;
-
 /**
  * ClosureLoader loads service definitions from a PHP closure.
  *

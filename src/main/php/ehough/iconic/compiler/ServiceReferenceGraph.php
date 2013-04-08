@@ -9,10 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Compiler;
-
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-
 /**
  * This is a directed graph of your services.
  *

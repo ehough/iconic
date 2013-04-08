@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Exception;
-
 /**
  * This exception is thrown when a circular reference in a parameter is detected.
  *
@@ -22,7 +20,14 @@ class ehough_iconic_exception_ParameterCircularReferenceException extends ehough
 
     public function __construct($parameters, Exception $previous = null)
     {
-        parent::__construct(sprintf('Circular reference detected for parameter "%s" ("%s" > "%s").', $parameters[0], implode('" > "', $parameters), $parameters[0]), 0, $previous);
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+
+            parent::__construct(sprintf('Circular reference detected for parameter "%s" ("%s" > "%s").', $parameters[0], implode('" > "', $parameters), $parameters[0]), 0);
+
+        } else {
+
+            parent::__construct(sprintf('Circular reference detected for parameter "%s" ("%s" > "%s").', $parameters[0], implode('" > "', $parameters), $parameters[0]), 0, $previous);
+        }
 
         $this->parameters = $parameters;
     }

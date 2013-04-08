@@ -9,13 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
-
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Compiler\ResolveReferencesToAliasesPass;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-class ResolveReferencesToAliasesPassTest extends \PHPUnit_Framework_TestCase
+class ResolveReferencesToAliasesPassTest extends PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {

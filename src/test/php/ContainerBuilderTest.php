@@ -9,22 +9,10 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests;
+require_once dirname(__FILE__).'/Fixtures/includes/classes.php';
+require_once dirname(__FILE__).'/Fixtures/includes/ProjectExtension.php';
 
-require_once __DIR__.'/Fixtures/includes/classes.php';
-require_once __DIR__.'/Fixtures/includes/ProjectExtension.php';
-
-//use Symfony\Component\DependencyInjection\Alias;
-//use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-//use Symfony\Component\Config\Resource\FileResource;
-
-class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ehough_iconic_ContainerBuilder::setDefinitions
@@ -79,7 +67,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($builder->has('foo'), '->has() returns false if the service does not exist');
         $builder->register('foo', 'FooClass');
         $this->assertTrue($builder->has('foo'), '->has() returns true if a service definition exists');
-        $builder->set('bar', new \stdClass());
+        $builder->set('bar', new stdClass());
         $this->assertTrue($builder->has('bar'), '->has() returns true if a service exists');
     }
 
@@ -100,7 +88,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
         $builder->register('foo', 'stdClass');
         $this->assertInternalType('object', $builder->get('foo'), '->get() returns the service definition associated with the id');
-        $builder->set('bar', $bar = new \stdClass());
+        $builder->set('bar', $bar = new stdClass());
         $this->assertEquals($bar, $builder->get('bar'), '->get() returns the service associated with the id');
         $builder->register('bar', 'stdClass');
         $this->assertEquals($bar, $builder->get('bar'), '->get() returns the service associated with the id even if a definition has been defined');
@@ -144,7 +132,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     {
         $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo', 'stdClass');
-        $builder->bar = $bar = new \stdClass();
+        $builder->bar = $bar = new stdClass();
         $builder->register('bar', 'stdClass');
         $this->assertEquals(array('foo', 'bar', 'service_container'), $builder->getServiceIds(), '->getServiceIds() returns all defined service ids');
     }
@@ -244,11 +232,11 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
     public function testCreateService()
     {
         $builder = new ehough_iconic_ContainerBuilder();
-        $builder->register('foo1', 'FooClass')->setFile(__DIR__.'/Fixtures/includes/foo.php');
-        $this->assertInstanceOf('\FooClass', $builder->get('foo1'), '->createService() requires the file defined by the service definition');
-        $builder->register('foo2', 'FooClass')->setFile(__DIR__.'/Fixtures/includes/%file%.php');
+        $builder->register('foo1', 'FooClass')->setFile(dirname(__FILE__).'/Fixtures/includes/foo.php');
+        $this->assertInstanceOf('FooClass', $builder->get('foo1'), '->createService() requires the file defined by the service definition');
+        $builder->register('foo2', 'FooClass')->setFile(dirname(__FILE__).'/Fixtures/includes/%file%.php');
         $builder->setParameter('file', 'foo');
-        $this->assertInstanceOf('\FooClass', $builder->get('foo2'), '->createService() replaces parameters in the file provided by the service definition');
+        $this->assertInstanceOf('FooClass', $builder->get('foo2'), '->createService() replaces parameters in the file provided by the service definition');
     }
 
     /**
@@ -259,7 +247,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $builder = new ehough_iconic_ContainerBuilder();
         $builder->register('foo1', '%class%');
         $builder->setParameter('class', 'stdClass');
-        $this->assertInstanceOf('\stdClass', $builder->get('foo1'), '->createService() replaces parameters in the class provided by the service definition');
+        $this->assertInstanceOf('stdClass', $builder->get('foo1'), '->createService() replaces parameters in the class provided by the service definition');
     }
 
     /**
@@ -339,7 +327,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ehough_iconic_ContainerBuilder::createService
-     * @expectedException \RuntimeException
+     * @expectedException RuntimeException
      */
     public function testCreateSyntheticService()
     {
@@ -459,13 +447,16 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testResources()
     {
-        if (!class_exists('Symfony\Component\Config\Resource\FileResource')) {
+        if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
         }
 
         $container = new ehough_iconic_ContainerBuilder();
-        $container->addResource($a = new \Symfony\Component\Config\Resource\FileResource(__DIR__.'/Fixtures/xml/services1.xml'));
-        $container->addResource($b = new \Symfony\Component\Config\Resource\FileResource(__DIR__.'/Fixtures/xml/services2.xml'));
+        $ref = new ReflectionClass('\Symfony\Component\Config\Resource\FileResource');
+        $a = $ref->newInstanceArgs(array(dirname(__FILE__).'/Fixtures/xml/services1.xml'));
+        $b = $ref->newInstanceArgs(array(dirname(__FILE__).'/Fixtures/xml/services2.xml'));
+        $container->addResource($a);
+        $container->addResource($b);
         $resources = array();
         foreach ($container->getResources() as $resource) {
             if (false === strpos($resource, '.php')) {
@@ -486,7 +477,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $container = new ehough_iconic_ContainerBuilder();
         $container->setResourceTracking(false);
 
-        $container->registerExtension($extension = new \ProjectExtension());
+        $container->registerExtension($extension = new ProjectExtension());
         $this->assertTrue($container->getExtension('project') === $extension, '->registerExtension() registers an extension');
 
         $this->setExpectedException('LogicException');
@@ -545,7 +536,7 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $container->setResourceTracking(false);
         $container->setDefinition('a', new ehough_iconic_Definition('stdClass'));
         $container->compile();
-        $container->set('a', new \stdClass());
+        $container->set('a', new stdClass());
     }
 
     /**
@@ -553,18 +544,18 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
      */
     public function testThrowsExceptionWhenAddServiceOnAFrozenContainer()
     {
-        if (!class_exists('Symfony\Component\Config\Resource\FileResource')) {
+        if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
         }
 
         $container = new ehough_iconic_ContainerBuilder();
         $container->compile();
-        $container->set('a', new \stdClass());
+        $container->set('a', new stdClass());
     }
 
     public function testNoExceptionWhenSetSyntheticServiceOnAFrozenContainer()
     {
-        if (!class_exists('Symfony\Component\Config\Resource\FileResource')) {
+        if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
             $this->markTestSkipped('The "Config" component is not available');
         }
 
@@ -573,8 +564,59 @@ class ehough_iconic_ContainerBuilderTest extends \PHPUnit_Framework_TestCase
         $def->setSynthetic(true);
         $container->setDefinition('a', $def);
         $container->compile();
-        $container->set('a', $a = new \stdClass());
+        $container->set('a', $a = new stdClass());
         $this->assertEquals($a, $container->get('a'));
+    }
+
+    public function testSetOnSynchronizedService()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('baz', 'BazClass')
+            ->setSynchronized(true)
+        ;
+        $container->register('bar', 'BarClass')
+            ->addMethodCall('setBaz', array(new ehough_iconic_Reference('baz')))
+        ;
+
+        $container->set('baz', $baz = new BazClass());
+        $this->assertSame($baz, $container->get('bar')->getBaz());
+
+        $container->set('baz', $baz = new BazClass());
+        $this->assertSame($baz, $container->get('bar')->getBaz());
+    }
+
+    public function testSynchronizedServiceWithScopes()
+    {
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+            $this->markTestSkipped('PHP < 5.3');
+            return;
+        }
+
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->addScope(new ehough_iconic_Scope('foo'));
+        $container->register('baz', 'BazClass')
+            ->setSynthetic(true)
+            ->setSynchronized(true)
+            ->setScope('foo')
+        ;
+        $container->register('bar', 'BarClass')
+            ->addMethodCall('setBaz', array(new ehough_iconic_Reference('baz', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE, false)))
+        ;
+        $container->compile();
+
+        $container->enterScope('foo');
+        $container->set('baz', $outerBaz = new BazClass(), 'foo');
+        $this->assertSame($outerBaz, $container->get('bar')->getBaz());
+
+        $container->enterScope('foo');
+        $container->set('baz', $innerBaz = new BazClass(), 'foo');
+        $this->assertSame($innerBaz, $container->get('bar')->getBaz());
+        $container->leaveScope('foo');
+
+        $this->assertNotSame($innerBaz, $container->get('bar')->getBaz());
+        $this->assertSame($outerBaz, $container->get('bar')->getBaz());
+
+        $container->leaveScope('foo');
     }
 
     /**

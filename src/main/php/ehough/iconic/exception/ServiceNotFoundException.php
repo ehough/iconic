@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Exception;
-
 /**
  * This exception is thrown when a non-existent service is requested.
  *
@@ -29,7 +27,14 @@ class ehough_iconic_exception_ServiceNotFoundException extends ehough_iconic_exc
             $msg = sprintf('The service "%s" has a dependency on a non-existent service "%s".', $sourceId, $id);
         }
 
-        parent::__construct($msg, 0, $previous);
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+
+            parent::__construct($msg, 0);
+
+        } else {
+
+            parent::__construct($msg, 0, $previous);
+        }
 
         $this->id = $id;
         $this->sourceId = $sourceId;

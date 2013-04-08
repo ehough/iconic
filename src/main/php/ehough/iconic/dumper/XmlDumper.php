@@ -9,14 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Dumper;
-
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Parameter;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-
 /**
  * XmlDumper dumps a service container as an XML string.
  *
@@ -126,6 +118,12 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
         }
         if (!$definition->isPublic()) {
             $service->setAttribute('public', 'false');
+        }
+        if ($definition->isSynthetic()) {
+            $service->setAttribute('synthetic', 'true');
+        }
+        if ($definition->isSynchronized()) {
+            $service->setAttribute('synchronized', 'true');
         }
 
         foreach ($definition->getTags() as $name => $tags) {
@@ -238,6 +236,9 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
                     $element->setAttribute('on-invalid', 'null');
                 } elseif ($behaviour == ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE) {
                     $element->setAttribute('on-invalid', 'ignore');
+                }
+                if (!$value->isStrict()) {
+                    $element->setAttribute('strict', 'false');
                 }
             } elseif ($value instanceof ehough_iconic_Definition) {
                 $element->setAttribute('type', 'service');

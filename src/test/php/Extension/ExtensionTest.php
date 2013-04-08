@@ -9,15 +9,17 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Extension;
-
-class ExtensionTest extends \PHPUnit_Framework_TestCase
+class ExtensionTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @dataProvider getResolvedEnabledFixtures
      */
     public function testIsConfigEnabledReturnsTheResolvedValue($enabled)
     {
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+            $this->markTestSkipped('PHP < 5.3');
+        }
+
         $pb = $this->getMockBuilder('ehough_iconic_parameterbag_ParameterBag')
             ->setMethods(array('resolveValue'))
             ->getMock()
@@ -44,7 +46,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMockForAbstractClass()
         ;
 
-        $r = new \ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
+        $r = new ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
         $r->setAccessible(true);
 
         $r->invoke($extension, $container, array('enabled' => $enabled));
@@ -64,6 +66,11 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsConfigEnabledOnNonEnableableConfig()
     {
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+            $this->markTestSkipped('PHP < 5.3');
+            return;
+        }
+
         $container = $this->getMockBuilder('ehough_iconic_ContainerBuilder')
             ->getMock()
         ;
@@ -73,7 +80,7 @@ class ExtensionTest extends \PHPUnit_Framework_TestCase
             ->getMockForAbstractClass()
         ;
 
-        $r = new \ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
+        $r = new ReflectionMethod('ehough_iconic_extension_Extension', 'isConfigEnabled');
         $r->setAccessible(true);
 
         $r->invoke($extension, $container, array());

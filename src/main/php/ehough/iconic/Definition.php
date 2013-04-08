@@ -9,11 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection;
-
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\OutOfBoundsException;
-
 /**
  * ehough_iconic_Definition represents a service definition.
  *
@@ -36,6 +31,7 @@ class ehough_iconic_Definition
     private $public;
     private $synthetic;
     private $abstract;
+    private $synchronized;
 
     protected $arguments;
 
@@ -56,6 +52,7 @@ class ehough_iconic_Definition
         $this->tags = array();
         $this->public = true;
         $this->synthetic = false;
+        $this->synchronized = false;
         $this->abstract = false;
         $this->properties = array();
     }
@@ -567,6 +564,34 @@ class ehough_iconic_Definition
     public function isPublic()
     {
         return $this->public;
+    }
+
+    /**
+     * Sets the synchronized flag of this service.
+     *
+     * @param Boolean $boolean
+     *
+     * @return ehough_iconic_Definition The current instance
+     *
+     * @api
+     */
+    public function setSynchronized($boolean)
+    {
+        $this->synchronized = (Boolean) $boolean;
+
+        return $this;
+    }
+
+    /**
+     * Whether this service is synchronized.
+     *
+     * @return Boolean
+     *
+     * @api
+     */
+    public function isSynchronized()
+    {
+        return $this->synchronized;
     }
 
     /**

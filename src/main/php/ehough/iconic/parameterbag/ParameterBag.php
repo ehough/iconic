@@ -9,12 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\ParameterBag;
-
-//use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
-//use Symfony\Component\DependencyInjection\Exception\ParameterCircularReferenceException;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-
 /**
  * Holds parameters.
  *
@@ -26,6 +20,9 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
 {
     protected $parameters;
     protected $resolved;
+
+    private $_resolving = array();
+    private $_value = array();
 
     /**
      * Constructor.
@@ -222,30 +219,42 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
             return $this->resolved ? $this->get($key) : $this->resolveValue($this->get($key), $resolving);
         }
 
-        $self = $this;
+        array_push($this->_resolving, $resolving);
+        array_push($this->_value, $value);
 
-        return preg_replace_callback('/%%|%([^%\s]+)%/', function ($match) use ($self, $resolving, $value) {
-            // skip %%
-            if (!isset($match[1])) {
-                return '%%';
-            }
+        $toReturn = preg_replace_callback('/%%|%([^%\s]+)%/', array($this, '_callbackResolveString'), $value);
 
-            $key = strtolower($match[1]);
+        array_pop($this->_resolving);
+        array_pop($this->_value);
+
+        return $toReturn;
+    }
+
+    public function _callbackResolveString($match)
+    {
+        $resolving = end($this->_resolving);
+        $value     = end($this->_value);
+
+        // skip %%
+        if (!isset($match[1])) {
+            return '%%';
+        }
+
+        $key = strtolower($match[1]);
             if (isset($resolving[$key])) {
                 throw new ehough_iconic_exception_ParameterCircularReferenceException(array_keys($resolving));
-            }
+        }
 
-            $resolved = $self->get($key);
+        $resolved = $this->get($key);
 
-            if (!is_string($resolved) && !is_numeric($resolved)) {
+        if (!is_string($resolved) && !is_numeric($resolved)) {
                 throw new ehough_iconic_exception_RuntimeException(sprintf('A string value must be composed of strings and/or numbers, but found parameter "%s" of type %s inside string value "%s".', $key, gettype($resolved), $value));
-            }
+        }
 
-            $resolved = (string) $resolved;
+        $resolved = (string) $resolved;
             $resolving[$key] = true;
 
-            return $self->isResolved() ? $resolved : $self->resolveString($resolved, $resolving);
-        }, $value);
+        return $this->isResolved() ? $resolved : $this->resolveString($resolved, $resolving);
     }
 
     public function isResolved()

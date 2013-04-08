@@ -9,19 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection;
-
-//use Symfony\Component\DependencyInjection\Compiler\Compiler;
-//use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-//use Symfony\Component\DependencyInjection\Compiler\PassConfig;
-//use Symfony\Component\DependencyInjection\Exception\BadMethodCallException;
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\LogicException;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-//use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
-//use Symfony\Component\Config\Resource\FileResource;
-//use Symfony\Component\Config\Resource\ResourceInterface;
-
 /**
  * ContainerBuilder is a DI container that provides an API to easily describe services.
  *
@@ -47,7 +34,13 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     private $definitions = array();
 
     /**
-     * @var ehough_iconic_Alias[]
+     *
+     * @var ehough_iconic_Definition[]
+     */
+    private $obsoleteDefinitions = array();
+
+    /**
+     * @var @var ehough_iconic_Alias[]
      */
     private $aliases = array();
 
@@ -175,7 +168,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      *
      * @api
      */
-    public function addResource(\Symfony\Component\Config\Resource\ResourceInterface $resource)
+    public function addResource($resource)
     {
         if (!$this->trackResources) {
             return $this;
@@ -222,8 +215,9 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
         }
 
         $parent = new ReflectionObject($object);
+        $ref = new ReflectionClass('\Symfony\Component\Config\Resource\FileResource');
         do {
-            $this->addResource(new \Symfony\Component\Config\Resource\FileResource($parent->getFileName()));
+            $this->addResource($ref->newInstanceArgs(array($parent->getFileName())));
         } while ($parent = $parent->getParentClass());
 
         return $this;
@@ -351,14 +345,28 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
 
         if ($this->isFrozen()) {
             // setting a synthetic service on a frozen container is alright
-            if (!isset($this->definitions[$id]) || !$this->definitions[$id]->isSynthetic()) {
-                throw new ehough_iconic_exception_BadMethodCallException(sprintf('Setting %s on a frozen container is not allowed.', $id));
+            if (
+                (!isset($this->definitions[$id]) && !isset($this->obsoleteDefinitions[$id]))
+                    ||
+                (isset($this->definitions[$id]) && !$this->definitions[$id]->isSynthetic())
+                    ||
+                (isset($this->obsoleteDefinitions[$id]) && !$this->obsoleteDefinitions[$id]->isSynthetic())
+            ) {
+                throw new ehough_iconic_exception_BadMethodCallException(sprintf('Setting service "%s" on a frozen container is not allowed.', $id));
             }
+        }
+
+        if (isset($this->definitions[$id])) {
+            $this->obsoleteDefinitions[$id] = $this->definitions[$id];
         }
 
         unset($this->definitions[$id], $this->aliases[$id]);
 
         parent::set($id, $service, $scope);
+
+        if (isset($this->obsoleteDefinitions[$id]) && $this->obsoleteDefinitions[$id]->isSynchronized()) {
+            $this->synchronize($id);
+        }
     }
 
     /**
@@ -885,19 +893,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
         }
 
         foreach ($definition->getMethodCalls() as $call) {
-            $services = self::getServiceConditionals($call[1]);
-
-            $ok = true;
-            foreach ($services as $s) {
-                if (!$this->has($s)) {
-                    $ok = false;
-                    break;
-                }
-            }
-
-            if ($ok) {
-                call_user_func_array(array($service, $call[0]), $this->resolveServices($parameterBag->resolveValue($call[1])));
-            }
+            $this->callMethod($service, $call);
         }
 
         $properties = $this->resolveServices($parameterBag->resolveValue($definition->getProperties()));
@@ -998,5 +994,44 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
         }
 
         return $services;
+    }
+
+    /**
+     * Synchronizes a service change.
+     *
+     * This method updates all services that depend on the given
+     * service by calling all methods referencing it.
+     *
+     * @param string $id A service id
+     */
+    private function synchronize($id)
+    {
+        foreach ($this->definitions as $definitionId => $definition) {
+            // only check initialized services
+            if (!$this->initialized($definitionId)) {
+                continue;
+            }
+
+            foreach ($definition->getMethodCalls() as $call) {
+                foreach ($call[1] as $argument) {
+                    if ($argument instanceof ehough_iconic_Reference && $id == (string) $argument) {
+                        $this->callMethod($this->get($definitionId), $call);
+                    }
+                }
+            }
+        }
+    }
+
+    private function callMethod($service, $call)
+    {
+        $services = self::getServiceConditionals($call[1]);
+
+        foreach ($services as $s) {
+            if (!$this->has($s)) {
+                return;
+            }
+        }
+
+        call_user_func_array(array($service, $call[0]), $this->resolveServices($this->getParameterBag()->resolveValue($call[1])));
     }
 }

@@ -9,11 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests;
-
-//use Symfony\Component\DependencyInjection\Definition;
-
-class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
+class ehough_iconic_DefinitionTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ehough_iconic_Definition::__construct
@@ -149,7 +145,19 @@ class ehough_iconic_DefinitionTest extends \PHPUnit_Framework_TestCase
         $def = new ehough_iconic_Definition('stdClass');
         $this->assertFalse($def->isSynthetic(), '->isSynthetic() returns false by default');
         $this->assertSame($def, $def->setSynthetic(true), '->setSynthetic() implements a fluent interface');
-        $this->assertTrue($def->isSynthetic(), '->isSynthetic() returns true if the instance must not be public.');
+        $this->assertTrue($def->isSynthetic(), '->isSynthetic() returns true if the service is synthetic.');
+    }
+
+    /**
+     * @covers ehough_iconic_Definition::setSynchronized
+     * @covers ehough_iconic_Definition::isSynchronized
+     */
+    public function testSetIsSynchronized()
+    {
+        $def = new ehough_iconic_Definition('stdClass');
+        $this->assertFalse($def->isSynchronized(), '->isSynchronized() returns false by default');
+        $this->assertSame($def, $def->setSynchronized(true), '->setSynchronized() implements a fluent interface');
+        $this->assertTrue($def->isSynchronized(), '->isSynchronized() returns true if the service is synchronized.');
     }
 
     /**

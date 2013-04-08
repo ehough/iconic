@@ -9,11 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\ParameterBag;
-
-//use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
-
-class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
+class FrozenParameterBagTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @covers ehough_iconic_parameterbag_FrozenParameterBag::__construct
@@ -30,7 +26,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ehough_iconic_parameterbag_FrozenParameterBag::clear
-     * @expectedException \LogicException
+     * @expectedException LogicException
      */
     public function testClear()
     {
@@ -40,7 +36,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ehough_iconic_parameterbag_FrozenParameterBag::set
-     * @expectedException \LogicException
+     * @expectedException LogicException
      */
     public function testSet()
     {
@@ -50,7 +46,7 @@ class FrozenParameterBagTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ehough_iconic_parameterbag_FrozenParameterBag::add
-     * @expectedException \LogicException
+     * @expectedException LogicException
      */
     public function testAdd()
     {

@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__.'/../includes/classes.php';
+require_once dirname(__FILE__).'/../includes/classes.php';
 
 //use Symfony\Component\DependencyInjection\ContainerInterface;
 //use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -45,7 +45,7 @@ $container->getParameterBag()->add(array(
 $container->setAlias('alias_for_foo', 'foo');
 $container->
     register('method_call1', 'FooClass')->
-    setFile(realpath(__DIR__.'/../includes/foo.php'))->
+    setFile(realpath(dirname(__FILE__).'/../includes/foo.php'))->
     addMethodCall('setBar', array(new ehough_iconic_Reference('foo')))->
     addMethodCall('setBar', array(new ehough_iconic_Reference('foo2', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE)))->
     addMethodCall('setBar', array(new ehough_iconic_Reference('foo3', ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE)))->
@@ -70,6 +70,15 @@ $container
 $container
     ->register('baz', 'Baz')
     ->addMethodCall('setFoo', array(new ehough_iconic_Reference('foo_with_inline')))
+;
+$container
+    ->register('request', 'Request')
+    ->setSynthetic(true)
+    ->setSynchronized(true)
+;
+$container
+    ->register('depends_on_request', 'stdClass')
+    ->addMethodCall('setRequest', array(new ehough_iconic_Reference('request', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE, false)))
 ;
 
 return $container;

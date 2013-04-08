@@ -9,12 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Loader;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\Config\Loader\FileLoader as BaseFileLoader;
-//use Symfony\Component\Config\FileLocatorInterface;
-
 /**
  * FileLoader is the abstract class used by all built-in loaders that are file based.
  *

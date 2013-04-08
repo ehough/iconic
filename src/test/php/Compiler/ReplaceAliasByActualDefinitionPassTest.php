@@ -9,21 +9,15 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
-
-//use Symfony\Component\DependencyInjection\Compiler\ReplaceAliasByActualDefinitionPass;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Definition;
-
-class ReplaceAliasByActualDefinitionPassTest extends \PHPUnit_Framework_TestCase
+class ReplaceAliasByActualDefinitionPassTest extends PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {
         $container = new ehough_iconic_ContainerBuilder();
 
-        $container->register('a', '\stdClass');
+        $container->register('a', 'stdClass');
 
-        $bDefinition = new ehough_iconic_Definition('\stdClass');
+        $bDefinition = new ehough_iconic_Definition('stdClass');
         $bDefinition->setPublic(false);
         $container->setDefinition('b', $bDefinition);
 

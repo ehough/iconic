@@ -9,12 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Dumper;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Dumper\YamlDumper;
-
-class YamlDumperTest extends \PHPUnit_Framework_TestCase
+class YamlDumperTest extends PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 
@@ -27,7 +22,7 @@ class YamlDumperTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$fixturesPath = realpath(__DIR__.'/../Fixtures/');
+        self::$fixturesPath = realpath(dirname(__FILE__).'/../Fixtures/');
     }
 
     public function testDump()
@@ -54,12 +49,12 @@ class YamlDumperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(str_replace('%path%', self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR, file_get_contents(self::$fixturesPath.'/yaml/services9.yml')), $dumper->dump(), '->dump() dumps services');
 
         $dumper = new ehough_iconic_dumper_YamlDumper($container = new ehough_iconic_ContainerBuilder());
-        $container->register('foo', 'FooClass')->addArgument(new \stdClass());
+        $container->register('foo', 'FooClass')->addArgument(new stdClass());
         try {
             $dumper->dump();
             $this->fail('->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
-        } catch (\Exception $e) {
-            $this->assertInstanceOf('\RuntimeException', $e, '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('RuntimeException', $e, '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
             $this->assertEquals('Unable to dump a service container if a parameter is an object or a resource.', $e->getMessage(), '->dump() throws a RuntimeException if the container to be dumped has reference to objects or resources');
         }
     }

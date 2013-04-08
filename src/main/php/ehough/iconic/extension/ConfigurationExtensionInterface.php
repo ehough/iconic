@@ -9,11 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Extension;
-
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\Config\Definition\ConfigurationInterface;
-
 /**
  * ConfigurationExtensionInterface is the interface implemented by container extension classes.
  *

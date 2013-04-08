@@ -9,10 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection;
-
-//use Symfony\Component\Config\Util\XmlUtils;
-
 /**
  * SimpleXMLElement class.
  *

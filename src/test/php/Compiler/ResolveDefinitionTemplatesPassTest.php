@@ -9,14 +9,7 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Tests\Compiler;
-
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\DefinitionDecorator;
-//use Symfony\Component\DependencyInjection\Compiler\ResolveDefinitionTemplatesPass;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-
-class ResolveDefinitionTemplatesPassTest extends \PHPUnit_Framework_TestCase
+class ResolveDefinitionTemplatesPassTest extends PHPUnit_Framework_TestCase
 {
     public function testProcess()
     {

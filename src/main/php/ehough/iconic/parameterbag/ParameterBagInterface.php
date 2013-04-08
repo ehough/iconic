@@ -9,10 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\ParameterBag;
-
-//use Symfony\Component\DependencyInjection\Exception\ParameterNotFoundException;
-
 /**
  * ehough_iconic_parameterbag_ParameterBagInterface.
  *

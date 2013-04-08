@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection;
-
 /**
  * IntrospectableContainerInterface defines additional introspection functionality
  * for containers, allowing logic to be implemented based on a Container's state.

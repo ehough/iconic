@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Exception;
-
 /**
  * This exception is thrown when a non-existent parameter is used.
  *
@@ -35,7 +33,14 @@ class ehough_iconic_exception_ParameterNotFoundException extends ehough_iconic_e
         $this->sourceId = $sourceId;
         $this->sourceKey = $sourceKey;
 
-        parent::__construct('', 0, $previous);
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+
+            parent::__construct('', 0);
+
+        } else {
+
+            parent::__construct('', 0, $previous);
+        }
 
         $this->updateRepr();
     }

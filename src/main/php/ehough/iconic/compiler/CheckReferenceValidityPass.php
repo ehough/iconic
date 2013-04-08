@@ -9,16 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Compiler;
-
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-//use Symfony\Component\DependencyInjection\Exception\ScopeCrossingInjectionException;
-//use Symfony\Component\DependencyInjection\Exception\ScopeWideningInjectionException;
-
 /**
  * Checks the validity of references
  *
@@ -72,8 +62,8 @@ class ehough_iconic_compiler_CheckReferenceValidityPass implements ehough_iconic
                 $this->currentScopeChildren = array_keys($scopes);
                 $this->currentScopeAncestors = array();
             } elseif (ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE !== $scope) {
-                $this->currentScopeChildren = $children[$scope];
-                $this->currentScopeAncestors = $ancestors[$scope];
+                $this->currentScopeChildren = isset($children[$scope]) ? $children[$scope] : array();
+                $this->currentScopeAncestors = isset($ancestors[$scope]) ? $ancestors[$scope] : array();
             }
 
             $this->validateReferences($definition->getArguments());

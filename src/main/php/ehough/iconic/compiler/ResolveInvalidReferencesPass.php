@@ -9,13 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Compiler;
-
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-
 /**
  * Emulates the invalid behavior if the reference is not found within the
  * container.
@@ -88,9 +81,7 @@ class ehough_iconic_compiler_ResolveInvalidReferencesPass implements ehough_icon
                 $exists = $this->container->has($id);
 
                 // resolve invalid behavior
-                if ($exists && ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
-                    $arguments[$k] = new ehough_iconic_Reference($id, ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE, $argument->isStrict());
-                } elseif (!$exists && ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE === $invalidBehavior) {
+                if (!$exists && ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE === $invalidBehavior) {
                     $arguments[$k] = null;
                 } elseif (!$exists && ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE === $invalidBehavior) {
                     if ($inMethodCall) {

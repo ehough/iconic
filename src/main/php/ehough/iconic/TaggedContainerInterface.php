@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection;
-
 /**
  * TaggedContainerInterface is the interface implemented when a container knows how to deals with tags.
  *

@@ -9,17 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Dumper;
-
-//use Symfony\Component\Yaml\Dumper as YmlDumper;
-//use Symfony\Component\DependencyInjection\Alias;
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\Definition;
-//use Symfony\Component\DependencyInjection\Parameter;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-
 /**
  * YamlDumper dumps a service container as a YAML string.
  *
@@ -92,6 +81,14 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
 
         if ($definition->getFile()) {
             $code .= sprintf("        file: %s\n", $definition->getFile());
+        }
+
+        if ($definition->isSynthetic()) {
+            $code .= sprintf("        synthetic: true\n");
+        }
+
+        if ($definition->isSynchronized()) {
+            $code .= sprintf("        synchronized: true\n");
         }
 
         if ($definition->getFactoryMethod()) {
@@ -260,7 +257,7 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
         foreach ($parameters as $key => $value) {
             if (is_array($value)) {
                 $value = $this->prepareParameters($value, $escape);
-            } elseif ($value instanceof ehough_iconic_Reference) {
+            } elseif ($value instanceof ehough_iconic_Reference || is_string($value) && 0 === strpos($value, '@')) {
                 $value = '@'.$value;
             }
 

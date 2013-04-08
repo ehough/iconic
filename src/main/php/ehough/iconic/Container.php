@@ -9,16 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection;
-
-//use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
-//use Symfony\Component\DependencyInjection\Exception\RuntimeException;
-//use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
-//use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
-//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-//use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
-//use Symfony\Component\DependencyInjection\ParameterBag\FrozenParameterBag;
-
 /**
  * Container is a dependency injection container.
  *
@@ -206,6 +196,10 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
         }
 
         $this->services[$id] = $service;
+
+        if (method_exists($this, $method = 'synchronize'.strtr($id, array('_' => '', '.' => '_')).'Service')) {
+            $this->$method();
+        }
     }
 
     /**
@@ -221,7 +215,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     {
         $id = strtolower($id);
 
-        return isset($this->services[$id]) || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service');
+        return array_key_exists($id, $this->services) || method_exists($this, 'get'.strtr($id, array('_' => '', '.' => '_')).'Service');
     }
 
     /**
@@ -247,7 +241,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     {
         $id = strtolower($id);
 
-        if (isset($this->services[$id])) {
+        if (array_key_exists($id, $this->services)) {
             return $this->services[$id];
         }
 
@@ -263,8 +257,12 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
             } catch (Exception $e) {
                 unset($this->loading[$id]);
 
-                if (isset($this->services[$id])) {
+                if (array_key_exists($id, $this->services)) {
                     unset($this->services[$id]);
+                }
+
+                if ($e instanceof ehough_iconic_exception_InactiveScopeException && self::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
+                    return null;
                 }
 
                 throw $e;
@@ -289,7 +287,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public function initialized($id)
     {
-        return isset($this->services[strtolower($id)]);
+        return array_key_exists(strtolower($id), $this->services);
     }
 
     /**
@@ -350,9 +348,9 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
 
             // add stack entry for this scope so we can restore the removed services later
             if (!isset($this->scopeStacks[$name])) {
-                $this->scopeStacks[$name] = new \SplStack();
+                $this->scopeStacks[$name] = array();
             }
-            $this->scopeStacks[$name]->push($services);
+            array_push($this->scopeStacks[$name], $services);
         }
 
         $this->scopedServices[$name] = array();
@@ -390,11 +388,14 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
 
         // check if we need to restore services of a previous scope of this type
         if (isset($this->scopeStacks[$name]) && count($this->scopeStacks[$name]) > 0) {
-            $services = $this->scopeStacks[$name]->pop();
+            $services = array_pop($this->scopeStacks[$name]);
             $this->scopedServices += $services;
 
-            array_unshift($services, $this->services);
-            $this->services = call_user_func_array('array_merge', $services);
+            foreach ($services as $array) {
+                foreach ($array as $id => $service) {
+                    $this->set($id, $service, $name);
+                }
+            }
         }
     }
 
@@ -471,7 +472,12 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public static function camelize($id)
     {
-        return preg_replace_callback('/(^|_|\.)+(.)/', function ($match) { return ('.' === $match[1] ? '_' : '').strtoupper($match[2]); }, $id);
+        return preg_replace_callback('/(^|_|\.)+(.)/', array('ehough_iconic_Container', '_callbackCamelize'), $id);
+    }
+
+    public static function _callbackCamelize($match)
+    {
+        return ('.' === $match[1] ? '_' : '').strtoupper($match[2]);
     }
 
     /**

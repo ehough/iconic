@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-//namespace Symfony\Component\DependencyInjection\Exception;
-
 /**
  * This exception is thrown when the a scope crossing injection is detected.
  *
@@ -25,17 +23,34 @@ class ehough_iconic_exception_ScopeCrossingInjectionException extends ehough_ico
 
     public function __construct($sourceServiceId, $sourceScope, $destServiceId, $destScope, Exception $previous = null)
     {
-        parent::__construct(sprintf(
-            'Scope Crossing Injection detected: The definition "%s" references the service "%s" which belongs to another scope hierarchy. '
-           .'This service might not be available consistently. Generally, it is safer to either move the definition "%s" to scope "%s", or '
-           .'declare "%s" as a child scope of "%s". If you can be sure that the other scope is always active, you can set the reference to strict=false to get rid of this error.',
-           $sourceServiceId,
-           $destServiceId,
-           $sourceServiceId,
-           $destScope,
-           $sourceScope,
-           $destScope
-        ), 0, $previous);
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+
+            parent::__construct(sprintf(
+                'Scope Crossing Injection detected: The definition "%s" references the service "%s" which belongs to another scope hierarchy. '
+                    .'This service might not be available consistently. Generally, it is safer to either move the definition "%s" to scope "%s", or '
+                    .'declare "%s" as a child scope of "%s". If you can be sure that the other scope is always active, you can set the reference to strict=false to get rid of this error.',
+                $sourceServiceId,
+                $destServiceId,
+                $sourceServiceId,
+                $destScope,
+                $sourceScope,
+                $destScope
+            ), 0);
+
+        } else {
+
+            parent::__construct(sprintf(
+                'Scope Crossing Injection detected: The definition "%s" references the service "%s" which belongs to another scope hierarchy. '
+                    .'This service might not be available consistently. Generally, it is safer to either move the definition "%s" to scope "%s", or '
+                    .'declare "%s" as a child scope of "%s". If you can be sure that the other scope is always active, you can set the reference to strict=false to get rid of this error.',
+                $sourceServiceId,
+                $destServiceId,
+                $sourceServiceId,
+                $destScope,
+                $sourceScope,
+                $destScope
+            ), 0, $previous);
+        }
 
         $this->sourceServiceId = $sourceServiceId;
         $this->sourceScope = $sourceScope;
