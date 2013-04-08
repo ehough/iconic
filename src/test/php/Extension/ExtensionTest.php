@@ -66,6 +66,11 @@ class ExtensionTest extends PHPUnit_Framework_TestCase
      */
     public function testIsConfigEnabledOnNonEnableableConfig()
     {
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+            $this->markTestSkipped('PHP < 5.3');
+            return;
+        }
+
         $container = $this->getMockBuilder('ehough_iconic_ContainerBuilder')
             ->getMock()
         ;
