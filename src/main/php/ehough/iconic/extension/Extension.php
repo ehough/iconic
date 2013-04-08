@@ -78,7 +78,8 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
         $class = $namespace . '\\Configuration';
         if (class_exists($class)) {
             $r = new ReflectionClass($class);
-            $container->addResource(new \Symfony\Component\Config\Resource\FileResource($r->getFileName()));
+            $ref = new ReflectionClass('\Symfony\Component\Config\Resource\FileResource');
+            $container->addResource($ref->newInstanceArgs(array($r->getFileName())));
 
             if (!method_exists($class, '__construct')) {
                 $configuration = new $class();
@@ -90,9 +91,11 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
         return null;
     }
 
-    final protected function processConfiguration(\Symfony\Component\Config\Definition\ConfigurationInterface $configuration, array $configs)
+    final protected function processConfiguration($configuration, array $configs)
     {
-        $processor = new \Symfony\Component\Config\Definition\Processor();
+        $ref = new ReflectionClass('\Symfony\Component\Config\Definition\Processor');
+
+        $processor = $ref->newInstance();
 
         return $processor->processConfiguration($configuration, $configs);
     }

@@ -472,7 +472,12 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public static function camelize($id)
     {
-        return preg_replace_callback('/(^|_|\.)+(.)/', function ($match) { return ('.' === $match[1] ? '_' : '').strtoupper($match[2]); }, $id);
+        return preg_replace_callback('/(^|_|\.)+(.)/', array('ehough_iconic_Container', '_callbackCamelize'), $id);
+    }
+
+    public static function _callbackCamelize($match)
+    {
+        return ('.' === $match[1] ? '_' : '').strtoupper($match[2]);
     }
 
     /**

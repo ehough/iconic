@@ -168,7 +168,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      *
      * @api
      */
-    public function addResource(\Symfony\Component\Config\Resource\ResourceInterface $resource)
+    public function addResource($resource)
     {
         if (!$this->trackResources) {
             return $this;
@@ -215,8 +215,9 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
         }
 
         $parent = new ReflectionObject($object);
+        $ref = new ReflectionClass('\Symfony\Component\Config\Resource\FileResource');
         do {
-            $this->addResource(new \Symfony\Component\Config\Resource\FileResource($parent->getFileName()));
+            $this->addResource($ref->newInstanceArgs(array($parent->getFileName())));
         } while ($parent = $parent->getParentClass());
 
         return $this;
