@@ -46,7 +46,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     {
         parent::__construct($container);
 
-        $this->inlinedDefinitions = new \SplObjectStorage;
+        $this->inlinedDefinitions = new SplObjectStorage;
     }
 
     /**
@@ -181,8 +181,8 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     {
         $code = '';
         $variableMap = $this->definitionVariables;
-        $nbOccurrences = new \SplObjectStorage();
-        $processed = new \SplObjectStorage();
+        $nbOccurrences = new SplObjectStorage();
+        $processed = new SplObjectStorage();
         $inlinedDefinitions = $this->getInlinedDefinitions($definition);
 
         foreach ($inlinedDefinitions as $definition) {
@@ -363,7 +363,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
         $this->referenceVariables[$id] = new ehough_iconic_Variable('instance');
 
         $code = '';
-        $processed = new \SplObjectStorage();
+        $processed = new SplObjectStorage();
         foreach ($this->getInlinedDefinitions($definition) as $iDefinition) {
             if ($processed->contains($iDefinition)) {
                 continue;
@@ -424,7 +424,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     private function addService($id, $definition)
     {
         $name = ehough_iconic_Container::camelize($id);
-        $this->definitionVariables = new \SplObjectStorage();
+        $this->definitionVariables = new SplObjectStorage();
         $this->referenceVariables = array();
         $this->variableCount = 0;
 
@@ -910,9 +910,14 @@ EOF;
         }
 
         // re-indent the wrapped code
-        $code = implode("\n", array_map(function ($line) { return $line ? '    '.$line : $line; }, explode("\n", $code)));
+        $code = implode("\n", array_map(array($this, '_callbackWrapServiceConditionals'), explode("\n", $code)));
 
         return sprintf("        if (%s) {\n%s        }\n", implode(' && ', $conditions), $code);
+    }
+
+    public function _callbackWrapServiceConditionals($line)
+    {
+        return $line ? '    '.$line : $line;
     }
 
     /**
@@ -1098,9 +1103,7 @@ EOF;
                 return $this->dumpParameter(strtolower($match[1]));
             } else {
                 $that = $this;
-                $replaceParameters = function ($match) use ($that) {
-                    return "'.".$that->dumpParameter(strtolower($match[2])).".'";
-                };
+                $replaceParameters = array($this, '_callbackDumpValue');
 
                 $code = str_replace('%%', '%', preg_replace_callback('/(?<!%)(%)([^%]+)\1/', $replaceParameters, var_export($value, true)));
 
@@ -1111,6 +1114,11 @@ EOF;
         } else {
             return var_export($value, true);
         }
+    }
+
+    public function _callbackDumpValue($match)
+    {
+        return "'.".$this->dumpParameter(strtolower($match[2])).".'";
     }
 
     /**
