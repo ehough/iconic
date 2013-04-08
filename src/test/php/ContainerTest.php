@@ -440,6 +440,10 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
 
     protected function getField($obj, $field)
     {
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+            $this->markTestSkipped('PHP < 5.3');
+        }
+
         $reflection = new ReflectionProperty($obj, $field);
         $reflection->setAccessible(true);
 
