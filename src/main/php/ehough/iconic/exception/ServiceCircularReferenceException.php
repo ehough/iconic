@@ -21,7 +21,14 @@ class ehough_iconic_exception_ServiceCircularReferenceException extends ehough_i
 
     public function __construct($serviceId, array $path, Exception $previous = null)
     {
-        parent::__construct(sprintf('Circular reference detected for service "%s", path: "%s".', $serviceId, implode(' -> ', $path)), 0, $previous);
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+
+            parent::__construct(sprintf('Circular reference detected for service "%s", path: "%s".', $serviceId, implode(' -> ', $path)), 0);
+
+        } else {
+
+            parent::__construct(sprintf('Circular reference detected for service "%s", path: "%s".', $serviceId, implode(' -> ', $path)), 0, $previous);
+        }
 
         $this->serviceId = $serviceId;
         $this->path = $path;

@@ -21,7 +21,14 @@ class ehough_iconic_exception_InactiveScopeException extends ehough_iconic_excep
 
     public function __construct($serviceId, $scope, Exception $previous = null)
     {
-        parent::__construct(sprintf('You cannot create a service ("%s") of an inactive scope ("%s").', $serviceId, $scope), 0, $previous);
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+
+            parent::__construct(sprintf('You cannot create a service ("%s") of an inactive scope ("%s").', $serviceId, $scope), 0);
+
+        } else {
+
+            parent::__construct(sprintf('You cannot create a service ("%s") of an inactive scope ("%s").', $serviceId, $scope), 0, $previous);
+        }
 
         $this->serviceId = $serviceId;
         $this->scope = $scope;
