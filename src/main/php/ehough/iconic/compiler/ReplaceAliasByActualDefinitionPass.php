@@ -39,7 +39,15 @@ class ehough_iconic_compiler_ReplaceAliasByActualDefinitionPass implements ehoug
             try {
                 $definition = $container->getDefinition($aliasId);
             } catch (ehough_iconic_exception_InvalidArgumentException $e) {
-                throw new ehough_iconic_exception_InvalidArgumentException(sprintf('Unable to replace alias "%s" with "%s".', $alias, $id), null, $e);
+
+                if (version_compare(PHP_VERSION, '5.3') < 0) {
+
+                    throw new ehough_iconic_exception_InvalidArgumentException(sprintf('Unable to replace alias "%s" with "%s".', $alias, $id), null);
+
+                } else {
+
+                    throw new ehough_iconic_exception_InvalidArgumentException(sprintf('Unable to replace alias "%s" with "%s".', $alias, $id), null, $e);
+                }
             }
 
             if ($definition->isPublic()) {
