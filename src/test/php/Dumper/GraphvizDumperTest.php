@@ -46,6 +46,11 @@ class ehough_iconic_dumper_GraphvizDumperTest extends PHPUnit_Framework_TestCase
 
     public function testDumpWithFrozenContainer()
     {
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+            $this->markTestSkipped('PHP < 5.3');
+            return;
+        }
+        
         $container = include self::$fixturesPath.'/containers/container13.php';
         $dumper = new ehough_iconic_dumper_GraphvizDumper($container);
         $this->assertEquals(str_replace('%path%', dirname(__FILE__), file_get_contents(self::$fixturesPath.'/graphviz/services13.dot')), $dumper->dump(), '->dump() dumps services');

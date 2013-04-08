@@ -587,6 +587,11 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 
     public function testSynchronizedServiceWithScopes()
     {
+        if (version_compare(PHP_VERSION, '5.3') < 0) {
+            $this->markTestSkipped('PHP < 5.3');
+            return;
+        }
+
         $container = new ehough_iconic_ContainerBuilder();
         $container->addScope(new ehough_iconic_Scope('foo'));
         $container->register('baz', 'BazClass')
