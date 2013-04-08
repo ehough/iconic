@@ -22,7 +22,7 @@ class CrossCheckTest extends PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$fixturesPath = __DIR__.'/Fixtures/';
+        self::$fixturesPath = dirname(__FILE__).'/Fixtures/';
 
         require_once self::$fixturesPath.'/includes/classes.php';
         require_once self::$fixturesPath.'/includes/foo.php';

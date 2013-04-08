@@ -9,8 +9,8 @@
  * file that was distributed with this source code.
  */
 
-require_once __DIR__.'/Fixtures/includes/classes.php';
-require_once __DIR__.'/Fixtures/includes/ProjectExtension.php';
+require_once dirname(__FILE__).'/Fixtures/includes/classes.php';
+require_once dirname(__FILE__).'/Fixtures/includes/ProjectExtension.php';
 
 class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 {
@@ -232,9 +232,9 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     public function testCreateService()
     {
         $builder = new ehough_iconic_ContainerBuilder();
-        $builder->register('foo1', 'FooClass')->setFile(__DIR__.'/Fixtures/includes/foo.php');
+        $builder->register('foo1', 'FooClass')->setFile(dirname(__FILE__).'/Fixtures/includes/foo.php');
         $this->assertInstanceOf('FooClass', $builder->get('foo1'), '->createService() requires the file defined by the service definition');
-        $builder->register('foo2', 'FooClass')->setFile(__DIR__.'/Fixtures/includes/%file%.php');
+        $builder->register('foo2', 'FooClass')->setFile(dirname(__FILE__).'/Fixtures/includes/%file%.php');
         $builder->setParameter('file', 'foo');
         $this->assertInstanceOf('FooClass', $builder->get('foo2'), '->createService() replaces parameters in the file provided by the service definition');
     }
@@ -453,8 +453,8 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 
         $container = new ehough_iconic_ContainerBuilder();
         $ref = new ReflectionClass('\Symfony\Component\Config\Resource\FileResource');
-        $a = $ref->newInstanceArgs(array(__DIR__.'/Fixtures/xml/services1.xml'));
-        $b = $ref->newInstanceArgs(array(__DIR__.'/Fixtures/xml/services2.xml'));
+        $a = $ref->newInstanceArgs(array(dirname(__FILE__).'/Fixtures/xml/services1.xml'));
+        $b = $ref->newInstanceArgs(array(dirname(__FILE__).'/Fixtures/xml/services2.xml'));
         $container->addResource($a);
         $container->addResource($b);
         $resources = array();

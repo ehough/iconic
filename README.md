@@ -2,6 +2,14 @@
 
 Fork of [Symfony's Dependency Injection component](https://github.com/symfony/DependencyInjection) compatible with PHP 5.2+.
 
+### Motivation
+
+[Symfony's Dependency Injection component](https://github.com/symfony/DependencyInjection) is a powerful DI library, but it's only compatible with PHP 5.3+. While 97% of PHP servers run PHP 5.2 or higher,
+a whopping **47% of all servers are still running PHP 5.2** ([source](http://w3techs.com/technologies/details/pl-php/5/all)).
+It would be a shame to exempt this library from nearly half of the world's servers just because of a few version incompatibilities.
+
+Once PHP 5.3+ adoption levels near closer to 100%, this library will be retired.
+
 ### Differences from [Symfony's Dependency Injection component](https://github.com/symfony/DependencyInjection)
 
 The primary difference is naming conventions of the Symfony classes.

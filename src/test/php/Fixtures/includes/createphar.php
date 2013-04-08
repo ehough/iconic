@@ -1,6 +1,6 @@
 <?php
 
-$file = __DIR__ . '/ProjectWithXsdExtensionInPhar.phar';
+$file = dirname(__FILE__) . '/ProjectWithXsdExtensionInPhar.phar';
 if (is_file($file)) {
     @unlink($file);
 }
@@ -13,7 +13,7 @@ class ProjectWithXsdExtensionInPhar extends ProjectExtension
 {
     public function getXsdValidationBasePath()
     {
-        return __DIR__.'/schema';
+        return dirname(__FILE__).'/schema';
     }
 
     public function getNamespace()

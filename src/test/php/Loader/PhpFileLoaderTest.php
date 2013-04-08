@@ -36,7 +36,7 @@ class PhpFileLoaderTest extends PHPUnit_Framework_TestCase
     {
         $loader = new ehough_iconic_loader_PhpFileLoader($container = new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator());
 
-        $loader->load(__DIR__.'/../Fixtures/php/simple.php');
+        $loader->load(dirname(__FILE__).'/../Fixtures/php/simple.php');
 
         $this->assertEquals('foo', $container->getParameter('foo'), '->load() loads a PHP file resource');
     }

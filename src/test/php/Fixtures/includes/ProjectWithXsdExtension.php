@@ -4,7 +4,7 @@ class ProjectWithXsdExtension extends ProjectExtension
 {
     public function getXsdValidationBasePath()
     {
-        return __DIR__.'/schema';
+        return dirname(__FILE__).'/schema';
     }
 
     public function getNamespace()

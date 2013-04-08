@@ -15,7 +15,7 @@ class XmlDumperTest extends PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$fixturesPath = realpath(__DIR__.'/../Fixtures/');
+        self::$fixturesPath = realpath(dirname(__FILE__).'/../Fixtures/');
     }
 
     public function testDump()
