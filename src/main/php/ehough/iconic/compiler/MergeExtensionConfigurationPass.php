@@ -40,7 +40,11 @@ class ehough_iconic_compiler_MergeExtensionConfigurationPass implements ehough_i
 
             $tmpContainer = new ehough_iconic_ContainerBuilder($container->getParameterBag());
             $tmpContainer->setResourceTracking($container->isTrackingResources());
-            $tmpContainer->addObjectResource($extension);
+
+            if (class_exists('\Symfony\Component\Config\Resource\FileResource')) {
+
+                $tmpContainer->addObjectResource($extension);
+            }
 
             $extension->load($config, $tmpContainer);
 

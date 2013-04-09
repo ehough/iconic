@@ -267,7 +267,10 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
 
         $this->compiler->addPass($pass, $type);
 
-        $this->addObjectResource($pass);
+        if (class_exists('\Symfony\Component\Config\Resource\FileResource')) {
+
+            $this->addObjectResource($pass);
+        }
 
         return $this;
     }
@@ -557,7 +560,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
             $this->compiler = new ehough_iconic_compiler_Compiler();
         }
 
-        if ($this->trackResources) {
+        if ($this->trackResources && class_exists('\Symfony\Component\Config\Resource\FileResource')) {
             foreach ($this->compiler->getPassConfig()->getPasses() as $pass) {
                 $this->addObjectResource($pass);
             }
