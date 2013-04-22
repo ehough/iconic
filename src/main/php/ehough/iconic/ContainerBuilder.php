@@ -421,6 +421,12 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
 
         try {
             return parent::get($id, ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
+        } catch (ehough_iconic_exception_InactiveScopeException $e) {
+            if (ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
+                return null;
+            }
+
+            throw $e;
         } catch (ehough_iconic_exception_InvalidArgumentException $e) {
             if (isset($this->loading[$id])) {
                 throw new ehough_iconic_exception_LogicException(sprintf('The service "%s" has a circular reference to itself.', $id), 0, $e);
@@ -446,6 +452,11 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
                 $service = $this->createService($definition, $id);
             } catch (Exception $e) {
                 unset($this->loading[$id]);
+
+                if ($e instanceof ehough_iconic_exception_InactiveScopeException && self::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
+                    return null;
+                }
+
                 throw $e;
             }
 
@@ -632,7 +643,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
         }
 
         if ($alias === strtolower($id)) {
-            throw new ehough_iconic_exception_InvalidArgumentException('An alias can not reference itself, got a circular reference on "'.$alias.'".');
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('An alias can not reference itself, got a circular reference on "%s".', $alias));
         }
 
         unset($this->definitions[$alias]);
@@ -885,7 +896,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
 
         if (self::SCOPE_PROTOTYPE !== $scope = $definition->getScope()) {
             if (self::SCOPE_CONTAINER !== $scope && !isset($this->scopedServices[$scope])) {
-                throw new ehough_iconic_exception_RuntimeException(sprintf('You tried to create the "%s" service of an inactive scope.', $id));
+                throw new ehough_iconic_exception_InactiveScopeException($id, $scope);
             }
 
             $this->services[$lowerId = strtolower($id)] = $service;

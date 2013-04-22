@@ -91,6 +91,10 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
             $code .= sprintf("        synchronized: true\n");
         }
 
+        if ($definition->getFactoryClass()) {
+            $code .= sprintf("        factory_class: %s\n", $definition->getFactoryClass());
+        }
+
         if ($definition->getFactoryMethod()) {
             $code .= sprintf("        factory_method: %s\n", $definition->getFactoryMethod());
         }
@@ -245,9 +249,10 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
     }
 
     /**
-     * Prepares parameters
+     * Prepares parameters.
      *
-     * @param array $parameters
+     * @param array   $parameters
+     * @param Boolean $escape
      *
      * @return array
      */

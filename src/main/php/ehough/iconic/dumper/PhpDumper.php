@@ -647,7 +647,7 @@ EOF;
                 return sprintf("        $return{$instantiation}%s->%s(%s);\n", $this->getServiceCall($definition->getFactoryService()), $definition->getFactoryMethod(), implode(', ', $arguments));
             }
 
-            throw new ehough_iconic_exception_RuntimeException('Factory method requires a factory service or factory class in service definition for '.$id);
+            throw new ehough_iconic_exception_RuntimeException(sprintf('Factory method requires a factory service or factory class in service definition for %s', $id));
         }
 
         if (false !== strpos($class, '$')) {
@@ -921,7 +921,7 @@ EOF;
     }
 
     /**
-     * Builds service calls from arguments
+     * Builds service calls from arguments.
      *
      * @param array  $arguments
      * @param array  &$calls    By reference
@@ -950,7 +950,7 @@ EOF;
     }
 
     /**
-     * Returns the inline definition
+     * Returns the inline definition.
      *
      * @param ehough_iconic_Definition $definition
      *
@@ -974,7 +974,7 @@ EOF;
     }
 
     /**
-     * Gets the definition from arguments
+     * Gets the definition from arguments.
      *
      * @param array $arguments
      *
@@ -999,11 +999,12 @@ EOF;
     }
 
     /**
-     * Checks if a service id has a reference
+     * Checks if a service id has a reference.
      *
      * @param string  $id
      * @param array   $arguments
      * @param Boolean $deep
+     * @param array   $visited
      *
      * @return Boolean
      */

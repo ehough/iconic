@@ -126,6 +126,17 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ehough_iconic_ContainerBuilder::get
+     */
+    public function testGetReturnsNullOnInactiveScope()
+    {
+        $builder = new ehough_iconic_ContainerBuilder();
+        $builder->register('foo', 'stdClass')->setScope('request');
+
+        $this->assertNull($builder->get('foo', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
+    }
+
+    /**
      * @covers ehough_iconic_ContainerBuilder::getServiceIds
      */
     public function testGetServiceIds()
