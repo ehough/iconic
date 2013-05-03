@@ -90,7 +90,19 @@ class ehough_iconic_parameterbag_ParameterBag implements ehough_iconic_parameter
         $name = strtolower($name);
 
         if (!array_key_exists($name, $this->parameters)) {
-            throw new ehough_iconic_exception_ParameterNotFoundException($name);
+            if (!$name) {
+                throw new ehough_iconic_exception_ParameterNotFoundException($name);
+            }
+
+            $alternatives = array();
+            foreach (array_keys($this->parameters) as $key) {
+                $lev = levenshtein($name, $key);
+                if ($lev <= strlen($name) / 3 || false !== strpos($key, $name)) {
+                    $alternatives[] = $key;
+                }
+            }
+
+            throw new ehough_iconic_exception_ParameterNotFoundException($name, null, null, null, $alternatives);
         }
 
         return $this->parameters[$name];

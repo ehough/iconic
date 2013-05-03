@@ -274,7 +274,19 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
         }
 
         if (self::EXCEPTION_ON_INVALID_REFERENCE === $invalidBehavior) {
-            throw new ehough_iconic_exception_ServiceNotFoundException($id);
+            if (!$id) {
+                throw new ehough_iconic_exception_ServiceNotFoundException($id);
+            }
+
+            $alternatives = array();
+            foreach (array_keys($this->services) as $key) {
+                $lev = levenshtein($id, $key);
+                if ($lev <= strlen($id) / 3 || false !== strpos($key, $id)) {
+                    $alternatives[] = $key;
+                }
+            }
+
+            throw new ehough_iconic_exception_ServiceNotFoundException($id, null, null, $alternatives);
         }
     }
 
