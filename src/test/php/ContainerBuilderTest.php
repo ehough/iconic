@@ -558,7 +558,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $this->assertNotEmpty($matchingResources);
     }
 
-    public function _callbackTestCompilesClassDefinitionsOfLazyServices(Symfony\Component\Config\Resource\ResourceInterface $resource)
+    public function _callbackTestCompilesClassDefinitionsOfLazyServices($resource)
     {
         return $resource instanceof Symfony\Component\Config\Resource\FileResource && $this->_closureVarClassesPath === realpath($resource->getResource());
     }
