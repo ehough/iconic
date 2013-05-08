@@ -14,6 +14,8 @@ require_once dirname(__FILE__).'/Fixtures/includes/ProjectExtension.php';
 
 class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 {
+    private $_closureVarClassesPath;
+
     /**
      * @covers ehough_iconic_ContainerBuilder::setDefinitions
      * @covers ehough_iconic_ContainerBuilder::getDefinitions
@@ -547,14 +549,18 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $container->compile();
 
         $classesPath       = realpath(dirname(__FILE__).'/Fixtures/includes/classes.php');
+        $this->_closureVarClassesPath = $classesPath;
         $matchingResources = array_filter(
             $container->getResources(),
-            function (Symfony\Component\Config\Resource\ResourceInterface $resource) use ($classesPath) {
-                return $resource instanceof Symfony\Component\Config\Resource\FileResource && $classesPath === realpath($resource->getResource());
-            }
+            array($this, '_callbackTestCompilesClassDefinitionsOfLazyServices')
         );
 
         $this->assertNotEmpty($matchingResources);
+    }
+
+    public function _callbackTestCompilesClassDefinitionsOfLazyServices(Symfony\Component\Config\Resource\ResourceInterface $resource)
+    {
+        return $resource instanceof Symfony\Component\Config\Resource\FileResource && $this->_closureVarClassesPath === realpath($resource->getResource());
     }
 
     /**
