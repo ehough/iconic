@@ -161,6 +161,18 @@ class ehough_iconic_DefinitionTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ehough_iconic_Definition::setLazy
+     * @covers ehough_iconic_Definition::isLazy
+     */
+    public function testSetIsLazy()
+    {
+        $def = new ehough_iconic_Definition('stdClass');
+        $this->assertFalse($def->isLazy(), '->isLazy() returns false by default');
+        $this->assertSame($def, $def->setLazy(true), '->setLazy() implements a fluent interface');
+        $this->assertTrue($def->isLazy(), '->isLazy() returns true if the service is lazy.');
+    }
+
+    /**
      * @covers ehough_iconic_Definition::setAbstract
      * @covers ehough_iconic_Definition::isAbstract
      */

@@ -59,6 +59,11 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     private $trackResources = true;
 
     /**
+     * @var InstantiatorInterface|null
+     */
+    private $proxyInstantiator;
+
+    /**
      * Sets the track resources flag.
      *
      * If you are not using the loaders and therefore don't want
@@ -79,6 +84,16 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     public function isTrackingResources()
     {
         return $this->trackResources;
+    }
+
+    /**
+     * Sets the instantiator to be used when fetching proxies.
+     *
+     * @param ehough_iconic_lazyproxy_instantiator_InstantiatorInterface $proxyInstantiator
+     */
+    public function setProxyInstantiator(ehough_iconic_lazyproxy_instantiator_InstantiatorInterface $proxyInstantiator)
+    {
+        $this->proxyInstantiator = $proxyInstantiator;
     }
 
     /**
@@ -210,15 +225,30 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function addObjectResource($object)
     {
+        if ($this->trackResources) {
+            $this->addClassResource(new ReflectionClass($object));
+        }
+
+        return $this;
+    }
+
+    /**
+     * Adds the given class hierarchy as resources.
+     *
+     * @param ReflectionClass $class
+     *
+     * @return ehough_iconic_ContainerBuilder The current instance
+     */
+    public function addClassResource(\ReflectionClass $class)
+    {
         if (!$this->trackResources) {
             return $this;
         }
 
-        $parent = new ReflectionObject($object);
         $ref = new ReflectionClass('\Symfony\Component\Config\Resource\FileResource');
         do {
-            $this->addResource($ref->newInstanceArgs(array($parent->getFileName())));
-        } while ($parent = $parent->getParentClass());
+            $this->addResource($ref->newInstanceArgs(array($class->getFileName())));
+        } while ($class = $class->getParentClass());
 
         return $this;
     }
@@ -408,8 +438,10 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      *
      * @return object The associated service
      *
-     * @throws ehough_iconic_exception_InvalidArgumentException if the service is not defined
-     * @throws ehough_iconic_exception_LogicException if the service has a circular reference to itself
+     * @throws ehough_iconic_exception_InvalidArgumentException when no definitions are available
+     * @throws eough_iconic_exception_InactiveScopeException   when the current scope is not active
+     * @throws ehough_iconic_exception_LogicException when a circular dependency is detected
+     * @throws Exception
      *
      * @see ehough_iconic_Reference
      *
@@ -574,6 +606,12 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
         if ($this->trackResources && class_exists('\Symfony\Component\Config\Resource\FileResource')) {
             foreach ($this->compiler->getPassConfig()->getPasses() as $pass) {
                 $this->addObjectResource($pass);
+            }
+
+            foreach ($this->definitions as $definition) {
+                if ($definition->isLazy() && ($class = $definition->getClass()) && class_exists($class)) {
+                    $this->addClassResource(new ReflectionClass($class));
+                }
             }
         }
 
@@ -856,6 +894,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      *
      * @param ehough_iconic_Definition $definition A service definition instance
      * @param string     $id         The service identifier
+     * @param Boolean    $tryProxy   Whether to try proxying the service with a lazy proxy
      *
      * @return object The service described by the service definition
      *
@@ -863,11 +902,30 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      * @throws ehough_iconic_exception_RuntimeException When the factory definition is incomplete
      * @throws ehough_iconic_exception_RuntimeException When the service is a synthetic service
      * @throws ehough_iconic_exception_InvalidArgumentException When configure callable is not callable
+     *
+     * @internal this method is public because of PHP 5.3 limitations, do not use it explicitly in your code
      */
-    private function createService(ehough_iconic_Definition $definition, $id)
+    public function createService(ehough_iconic_Definition $definition, $id, $tryProxy = true)
     {
         if ($definition->isSynthetic()) {
             throw new ehough_iconic_exception_RuntimeException(sprintf('You have requested a synthetic service ("%s"). The DIC does not know how to construct this service.', $id));
+        }
+
+        if ($tryProxy && $definition->isLazy()) {
+            $container = $this;
+
+            $inst = new ehough_iconic_lazyproxy_instantiator_IconicInstantiator($definition, $id, $container);
+
+            $proxy = $this
+                ->getProxyInstantiator()
+                ->instantiateProxy(
+                    $container,
+                    $definition,
+                    $id, array($inst, 'create')
+                );
+            $this->shareService($definition, $proxy, $id);
+
+            return $proxy;
         }
 
         $parameterBag = $this->getParameterBag();
@@ -894,16 +952,9 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
             $service = null === $r->getConstructor() ? $r->newInstance() : $r->newInstanceArgs($arguments);
         }
 
-        if (self::SCOPE_PROTOTYPE !== $scope = $definition->getScope()) {
-            if (self::SCOPE_CONTAINER !== $scope && !isset($this->scopedServices[$scope])) {
-                throw new ehough_iconic_exception_InactiveScopeException($id, $scope);
-            }
-
-            $this->services[$lowerId = strtolower($id)] = $service;
-
-            if (self::SCOPE_CONTAINER !== $scope) {
-                $this->scopedServices[$scope][$lowerId] = $service;
-            }
+        if ($tryProxy || !$definition->isLazy()) {
+            // share only if proxying failed, or if not a proxy
+            $this->shareService($definition, $service, $id);
         }
 
         foreach ($definition->getMethodCalls() as $call) {
@@ -955,9 +1006,20 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     /**
      * Returns service ids for a given tag.
      *
+     * Example:
+     *
+     * $container->register('foo')->addTag('my.tag', array('hello' => 'world'));
+     *
+     * $serviceIds = $container->findTaggedServiceIds('my.tag');
+     * foreach ($serviceIds as $serviceId => $tags) {
+     *     foreach ($tags as $tag) {
+     *         echo $tag['hello'];
+     *     }
+     * }
+     *
      * @param string $name The tag name
      *
-     * @return array An array of tags
+     * @return array An array of tags with the tagged service as key, holding a list of attribute arrays.
      *
      * @api
      */
@@ -965,7 +1027,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     {
         $tags = array();
         foreach ($this->getDefinitions() as $id => $definition) {
-            if ($definition->getTag($name)) {
+            if ($definition->hasTag($name)) {
                 $tags[$id] = $definition->getTag($name);
             }
         }
@@ -1011,6 +1073,20 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     }
 
     /**
+     * Retrieves the currently set proxy instantiator or instantiates one.
+     *
+     * @return ehough_iconic_lazyproxy_instantiator_InstantiatorInterface
+     */
+    private function getProxyInstantiator()
+    {
+        if (!$this->proxyInstantiator) {
+            $this->proxyInstantiator = new ehough_iconic_lazyproxy_instantiator_RealServiceInstantiator();
+        }
+
+        return $this->proxyInstantiator;
+    }
+
+    /**
      * Synchronizes a service change.
      *
      * This method updates all services that depend on the given
@@ -1047,5 +1123,29 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
         }
 
         call_user_func_array(array($service, $call[0]), $this->resolveServices($this->getParameterBag()->resolveValue($call[1])));
+    }
+
+    /**
+     * Shares a given service in the container
+     *
+     * @param ehough_iconic_Definition $definition
+     * @param mixed      $service
+     * @param string     $id
+     *
+     * @throws ehough_iconic_exception_InactiveScopeException
+     */
+    private function shareService(ehough_iconic_Definition $definition, $service, $id)
+    {
+        if (self::SCOPE_PROTOTYPE !== $scope = $definition->getScope()) {
+            if (self::SCOPE_CONTAINER !== $scope && !isset($this->scopedServices[$scope])) {
+                throw new ehough_iconic_exception_InactiveScopeException($id, $scope);
+            }
+
+            $this->services[$lowerId = strtolower($id)] = $service;
+
+            if (self::SCOPE_CONTAINER !== $scope) {
+                $this->scopedServices[$scope][$lowerId] = $service;
+            }
+        }
     }
 }

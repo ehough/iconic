@@ -21,6 +21,9 @@ class ProjectServiceContainer extends ehough_iconic_Container
 
         $this->scopes = array();
         $this->scopeChildren = array();
+        $this->methodMap = array(
+            'foo' => 'getFooService',
+        );
     }
 
     /**

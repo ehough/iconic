@@ -18,6 +18,8 @@
  */
 class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoader
 {
+    private $yamlParser;
+
     /**
      * Loads a Yaml file.
      *
@@ -146,6 +148,10 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
             $definition->setSynchronized($service['synchronized']);
         }
 
+        if (isset($service['lazy'])) {
+            $definition->setLazy($service['lazy']);
+        }
+
         if (isset($service['public'])) {
             $definition->setPublic($service['public']);
         }
@@ -228,7 +234,19 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
      */
     protected function loadFile($file)
     {
-        return $this->validate(\Symfony\Component\Yaml\Yaml::parse($file), $file);
+        if (!stream_is_local($file)) {
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('This is not a local file "%s".', $file));
+        }
+
+        if (!file_exists($file)) {
+            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The service file "%s" is not valid.', $file));
+        }
+
+        if (null === $this->yamlParser) {
+            $this->yamlParser = new Symfony\Component\Yaml\Parser();
+        }
+
+        return $this->validate($this->yamlParser->parse(file_get_contents($file)), $file);
     }
 
     /**

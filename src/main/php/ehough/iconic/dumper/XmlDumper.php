@@ -125,6 +125,9 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
         if ($definition->isSynchronized()) {
             $service->setAttribute('synchronized', 'true');
         }
+        if ($definition->isLazy()) {
+            $service->setAttribute('lazy', 'true');
+        }
 
         foreach ($definition->getTags() as $name => $tags) {
             foreach ($tags as $attributes) {
