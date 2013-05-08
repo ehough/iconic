@@ -18,15 +18,21 @@
  */
 class RealServiceInstantiatorTest extends PHPUnit_Framework_TestCase
 {
+    private $_closureVarInstance;
+
     public function testInstantiateProxy()
     {
         $instantiator = new ehough_iconic_lazyproxy_instantiator_RealServiceInstantiator();
-        $instance     = new \stdClass();
+        $instance     = new stdClass();
         $container    = $this->getMock('ehough_iconic_ContainerInterface');
-        $callback     = function () use ($instance) {
-            return $instance;
-        };
+        $this->_closureVarInstance = $instance;
+        $callback     = array($this, '_callbackTestInstantiateProxy');
 
         $this->assertSame($instance, $instantiator->instantiateProxy($container, new ehough_iconic_Definition(), 'foo', $callback));
+    }
+
+    public function _callbackTestInstantiateProxy()
+    {
+        return $this->_closureVarInstance;
     }
 }
