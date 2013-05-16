@@ -238,10 +238,10 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
 
         foreach ($inlinedDefinitions as $definition) {
             if (false === $nbOccurrences->contains($definition)) {
-                $nbOccurrences->offsetSet($definition, 1);
+                $nbOccurrences->attach($definition, 1);
             } else {
                 $i = $nbOccurrences->offsetGet($definition);
-                $nbOccurrences->offsetSet($definition, $i + 1);
+                $nbOccurrences->attach($definition, $i + 1);
             }
         }
 
@@ -249,12 +249,12 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
             if ($processed->contains($sDefinition)) {
                 continue;
             }
-            $processed->offsetSet($sDefinition);
+            $processed->attach($sDefinition);
 
             $class = $this->dumpValue($sDefinition->getClass());
             if ($nbOccurrences->offsetGet($sDefinition) > 1 || $sDefinition->getMethodCalls() || $sDefinition->getProperties() || null !== $sDefinition->getConfigurator() || false !== strpos($class, '$')) {
                 $name = $this->getNextVariableName();
-                $variableMap->offsetSet($sDefinition, new ehough_iconic_Variable($name));
+                $variableMap->attach($sDefinition, new ehough_iconic_Variable($name));
 
                 // a construct like:
                 // $a = new ServiceA(ServiceB $b); $b = new ServiceB(ServiceA $a);
@@ -420,7 +420,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
             if ($processed->contains($iDefinition)) {
                 continue;
             }
-            $processed->offsetSet($iDefinition);
+            $processed->attach($iDefinition);
 
             if (!$this->hasReference($id, $iDefinition->getMethodCalls(), true) && !$this->hasReference($id, $iDefinition->getProperties(), true)) {
                 continue;
@@ -1044,7 +1044,7 @@ EOF;
                 $this->getDefinitionsFromArguments($definition->getProperties())
             );
 
-            $this->inlinedDefinitions->offsetSet($definition, $definitions);
+            $this->inlinedDefinitions->attach($definition, $definitions);
 
             return $definitions;
         }
