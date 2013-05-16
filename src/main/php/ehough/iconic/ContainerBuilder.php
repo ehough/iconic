@@ -239,7 +239,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      *
      * @return ehough_iconic_ContainerBuilder The current instance
      */
-    public function addClassResource(\ReflectionClass $class)
+    public function addClassResource(ReflectionClass $class)
     {
         if (!$this->trackResources) {
             return $this;
