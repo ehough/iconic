@@ -36,6 +36,6 @@ class ProjectServiceContainer extends ehough_iconic_Container
      */
     protected function getFooService()
     {
-        return $this->services['foo'] = new \stdClass();
+        return $this->services['foo'] = new stdClass();
     }
 }

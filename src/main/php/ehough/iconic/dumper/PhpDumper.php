@@ -51,7 +51,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     {
         parent::__construct($container);
 
-        $this->inlinedDefinitions = new SplObjectStorage;
+        $this->inlinedDefinitions = array();
     }
 
     /**
@@ -231,33 +231,30 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     private function addServiceInlinedDefinitions($id, $definition)
     {
         $code = '';
-        $variableMap = $this->definitionVariables;
-        $nbOccurrences = new SplObjectStorage();
-        $processed = new SplObjectStorage();
+        $nbOccurrences = array();
+        $processed = array();
         $inlinedDefinitions = $this->getInlinedDefinitions($definition);
 
         foreach ($inlinedDefinitions as $definition) {
-            if (false === $nbOccurrences->contains($definition)) {
-                $nbOccurrences->attach($definition);
-                $nbOccurrences[$definition] = 1;
+            if (false === $this->_splObjectContains($nbOccurrences, $definition)) {
+                $this->_splObjectSet($nbOccurrences, $definition, 1);
             } else {
-                $i = $nbOccurrences->offsetGet($definition);
-                $nbOccurrences->attach($definition);
-                $nbOccurrences[$definition] = $i + 1;
+                $i = $this->_splGetData($nbOccurrences, $definition, null);
+                $this->_splObjectSet($nbOccurrences, $definition, $i + 1);
             }
         }
 
         foreach ($inlinedDefinitions as $sDefinition) {
-            if ($processed->contains($sDefinition)) {
+            if ($this->_splObjectContains($processed, $sDefinition)) {
                 continue;
             }
-            $processed->attach($sDefinition);
+            $this->_splObjectSet($processed, $sDefinition);
 
             $class = $this->dumpValue($sDefinition->getClass());
-            if ($nbOccurrences->offsetGet($sDefinition) > 1 || $sDefinition->getMethodCalls() || $sDefinition->getProperties() || null !== $sDefinition->getConfigurator() || false !== strpos($class, '$')) {
+            if ($this->_splGetData($nbOccurrences, $sDefinition, null) > 1 || $sDefinition->getMethodCalls() || $sDefinition->getProperties() || null !== $sDefinition->getConfigurator() || false !== strpos($class, '$')) {
                 $name = $this->getNextVariableName();
-                $variableMap->attach($sDefinition);
-                $variableMap[$sDefinition] = new ehough_iconic_Variable($name);
+                $this->_splObjectSet($this->definitionVariables, $sDefinition, new ehough_iconic_Variable($name));
+
                 // a construct like:
                 // $a = new ServiceA(ServiceB $b); $b = new ServiceB(ServiceA $a);
                 // this is an indication for a wrong implementation, you can circumvent this problem
@@ -417,18 +414,18 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
         $this->referenceVariables[$id] = new ehough_iconic_Variable('instance');
 
         $code = '';
-        $processed = new SplObjectStorage();
+        $processed = array();
         foreach ($this->getInlinedDefinitions($definition) as $iDefinition) {
-            if ($processed->contains($iDefinition)) {
+            if ($this->_splObjectContains($processed, $iDefinition)) {
                 continue;
             }
-            $processed->attach($iDefinition);
+            $this->_splObjectSet($processed, $iDefinition);
 
             if (!$this->hasReference($id, $iDefinition->getMethodCalls(), true) && !$this->hasReference($id, $iDefinition->getProperties(), true)) {
                 continue;
             }
 
-            $name = (string) $this->definitionVariables->offsetGet($iDefinition);
+            $name = (string) $this->_splGetData($this->definitionVariables, $iDefinition, $iDefinition->getClass());
             $code .= $this->addServiceMethodCalls(null, $iDefinition, $name);
             $code .= $this->addServiceProperties(null, $iDefinition, $name);
             $code .= $this->addServiceConfigurator(null, $iDefinition, $name);
@@ -478,7 +475,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     private function addService($id, $definition)
     {
         $name = ehough_iconic_Container::camelize($id);
-        $this->definitionVariables = new SplObjectStorage();
+        $this->definitionVariables = array();
         $this->referenceVariables = array();
         $this->variableCount = 0;
 
@@ -721,7 +718,7 @@ EOF;
             return sprintf("        \$class = %s;\n\n        $return{$instantiation}new \$class(%s);\n", $class, implode(', ', $arguments));
         }
 
-        return sprintf("        $return{$instantiation}new \\%s(%s);\n", substr(str_replace('\\\\', '\\', $class), 1, -1), implode(', ', $arguments));
+        return sprintf("        $return{$instantiation}new %s(%s);\n", substr(str_replace('\\\\', '\\', $class), 1, -1), implode(', ', $arguments));
     }
 
     /**
@@ -1031,7 +1028,7 @@ EOF;
     }
 
     /**
-     * Returns the inline definition.
+     * Returns the inline definition
      *
      * @param ehough_iconic_Definition $definition
      *
@@ -1039,20 +1036,19 @@ EOF;
      */
     private function getInlinedDefinitions(ehough_iconic_Definition $definition)
     {
-        if (false === $this->inlinedDefinitions->contains($definition)) {
+        if (false === $this->_splObjectContains($this->inlinedDefinitions, $definition)) {
             $definitions = array_merge(
                 $this->getDefinitionsFromArguments($definition->getArguments()),
                 $this->getDefinitionsFromArguments($definition->getMethodCalls()),
                 $this->getDefinitionsFromArguments($definition->getProperties())
             );
 
-            $this->inlinedDefinitions->attach($definition);
-            $this->inlinedDefinitions[$definition] = $definitions;
+            $this->_splObjectSet($this->inlinedDefinitions, $definition, $definitions);
 
             return $definitions;
         }
 
-        return $this->inlinedDefinitions->offsetGet($definition);
+        return $this->_splGetData($this->inlinedDefinitions, $definition, array());
     }
 
     /**
@@ -1138,8 +1134,8 @@ EOF;
 
             return sprintf('array(%s)', implode(', ', $code));
         } elseif ($value instanceof ehough_iconic_Definition) {
-            if (null !== $this->definitionVariables && $this->definitionVariables->contains($value)) {
-                return $this->dumpValue($this->definitionVariables->offsetGet($value), $interpolate);
+            if (null !== $this->definitionVariables && $this->_splObjectContains($this->definitionVariables, $value)) {
+                return $this->dumpValue($this->_splGetData($this->definitionVariables, $value, get_class($value)), $interpolate);
             }
             if (count($value->getMethodCalls()) > 0) {
                 throw new ehough_iconic_exception_RuntimeException('Cannot dump definitions which have method calls.');
@@ -1281,5 +1277,45 @@ EOF;
 
             return $name;
         }
+    }
+
+
+    private function _splGetData($array, $object, $default)
+    {
+        $hash = spl_object_hash($object);
+
+        if (!array_key_exists($hash, $array)) {
+
+            return $default;
+        }
+
+        if (!isset($array[$hash]['data'])) {
+
+            return $default;
+        }
+
+        return $array[$hash]['data'];
+    }
+
+    private function _splObjectSet(&$array, $object, $data = null)
+    {
+        $hash = spl_object_hash($object);
+
+        if (!array_key_exists($hash, $array)) {
+
+            $array[$hash] = array('object' => $object);
+        }
+
+        if ($data) {
+
+            $array[$hash]['data'] = $data;
+        }
+    }
+
+    private function _splObjectContains($array, $object)
+    {
+        $hash = spl_object_hash($object);
+
+        return array_key_exists($hash, $array);
     }
 }
