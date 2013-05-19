@@ -23,6 +23,19 @@ class ProjectServiceContainer extends ehough_iconic_Container
 
         $this->scopes = array();
         $this->scopeChildren = array();
+        $this->methodMap = array(
+            'bar' => 'getBarService',
+            'baz' => 'getBazService',
+            'depends_on_request' => 'getDependsOnRequestService',
+            'factory_service' => 'getFactoryServiceService',
+            'foo' => 'getFooService',
+            'foo.baz' => 'getFoo_BazService',
+            'foo_bar' => 'getFooBarService',
+            'foo_with_inline' => 'getFooWithInlineService',
+            'method_call1' => 'getMethodCall1Service',
+            'request' => 'getRequestService',
+            'alias_for_foo' => 'getFooService',
+        );
     }
 
     /**
@@ -35,7 +48,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
      */
     protected function getBarService()
     {
-        $this->services['bar'] = $instance = new \FooClass('foo', $this->get('foo.baz'), $this->getParameter('foo_bar'));
+        $this->services['bar'] = $instance = new FooClass('foo', $this->get('foo.baz'), $this->getParameter('foo_bar'));
 
         $this->get('foo.baz')->configure($instance);
 
@@ -52,7 +65,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
      */
     protected function getBazService()
     {
-        $this->services['baz'] = $instance = new \Baz();
+        $this->services['baz'] = $instance = new Baz();
 
         $instance->setFoo($this->get('foo_with_inline'));
 
@@ -69,7 +82,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
      */
     protected function getDependsOnRequestService()
     {
-        $this->services['depends_on_request'] = $instance = new \stdClass();
+        $this->services['depends_on_request'] = $instance = new stdClass();
 
         $instance->setRequest($this->get('request', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
 
@@ -136,7 +149,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
      */
     protected function getFooBarService()
     {
-        return new \FooClass();
+        return new FooClass();
     }
 
     /**
@@ -149,9 +162,9 @@ class ProjectServiceContainer extends ehough_iconic_Container
      */
     protected function getFooWithInlineService()
     {
-        $a = new \Bar();
+        $a = new Bar();
 
-        $this->services['foo_with_inline'] = $instance = new \Foo();
+        $this->services['foo_with_inline'] = $instance = new Foo();
 
         $a->setBaz($this->get('baz'));
         $a->pub = 'pub';
@@ -173,7 +186,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
     {
         require_once '%path%foo.php';
 
-        $this->services['method_call1'] = $instance = new \FooClass();
+        $this->services['method_call1'] = $instance = new FooClass();
 
         $instance->setBar($this->get('foo'));
         $instance->setBar(NULL);

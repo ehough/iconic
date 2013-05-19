@@ -51,11 +51,13 @@ class ehough_iconic_compiler_CheckCircularReferencesPass implements ehough_iconi
     private function checkOutEdges(array $edges)
     {
         foreach ($edges as $edge) {
-            $node = $edge->getDestNode();
-            $this->currentPath[] = $id = $node->getId();
+            $node      = $edge->getDestNode();
+            $id        = $node->getId();
+            $searchKey = array_search($id, $this->currentPath);
+            $this->currentPath[] = $id;
 
-            if ($this->currentId === $id) {
-                throw new ehough_iconic_exception_ServiceCircularReferenceException($this->currentId, $this->currentPath);
+            if (false !== $searchKey) {
+                throw new ehough_iconic_exception_ServiceCircularReferenceException($id, array_slice($this->currentPath, $searchKey));
             }
 
             $this->checkOutEdges($node->getOutEdges());

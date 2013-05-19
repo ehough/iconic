@@ -14,6 +14,8 @@ require_once dirname(__FILE__).'/Fixtures/includes/ProjectExtension.php';
 
 class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 {
+    private $_closureVarClassesPath;
+
     /**
      * @covers ehough_iconic_ContainerBuilder::setDefinitions
      * @covers ehough_iconic_ContainerBuilder::getDefinitions
@@ -123,6 +125,17 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 
         // we must also have the same RuntimeException here
         $builder->get('foo');
+    }
+
+    /**
+     * @covers ehough_iconic_ContainerBuilder::get
+     */
+    public function testGetReturnsNullOnInactiveScope()
+    {
+        $builder = new ehough_iconic_ContainerBuilder();
+        $builder->register('foo', 'stdClass')->setScope('request');
+
+        $this->assertNull($builder->get('foo', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
     }
 
     /**
@@ -237,6 +250,22 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $builder->register('foo2', 'FooClass')->setFile(dirname(__FILE__).'/Fixtures/includes/%file%.php');
         $builder->setParameter('file', 'foo');
         $this->assertInstanceOf('FooClass', $builder->get('foo2'), '->createService() replaces parameters in the file provided by the service definition');
+    }
+
+    /**
+     * @covers ehough_iconic_ContainerBuilder::createService
+     */
+    public function testCreateProxyWithRealServiceInstantiator()
+    {
+        $builder = new ehough_iconic_ContainerBuilder();
+
+        $builder->register('foo1', 'FooClass')->setFile(dirname(__FILE__).'/Fixtures/includes/foo.php');
+        $builder->getDefinition('foo1')->setLazy(true);
+
+        $foo1 = $builder->get('foo1');
+
+        $this->assertSame($foo1, $builder->get('foo1'), 'The same proxy is retrieved on multiple subsequent calls');
+        $this->assertSame('FooClass', get_class($foo1));
     }
 
     /**
@@ -439,6 +468,99 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $container->setAlias('bar', 'foo');
         $container->setAlias('foobar', 'bar');
         $this->assertEquals($definition, $container->findDefinition('foobar'), '->findDefinition() returns a ehough_iconic_Definition');
+    }
+
+    /**
+     * @covers ehough_iconic_ContainerBuilder::addObjectResource
+     */
+    public function testAddObjectResource()
+    {
+        if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
+            $this->markTestSkipped('The "Config" component is not available');
+        }
+
+        $container = new ehough_iconic_ContainerBuilder();
+
+        $container->setResourceTracking(false);
+        $container->addObjectResource(new BarClass());
+
+        $this->assertEmpty($container->getResources(), 'No resources get registered without resource tracking');
+
+        $container->setResourceTracking(true);
+        $container->addObjectResource(new BarClass());
+
+        $resources = $container->getResources();
+
+        $this->assertCount(1, $resources, '1 resource was registered');
+
+        /* @var $resource \Symfony\Component\Config\Resource\FileResource */
+        $resource = end($resources);
+
+        $this->assertInstanceOf('Symfony\Component\Config\Resource\FileResource', $resource);
+        $this->assertSame(realpath(dirname(__FILE__).'/Fixtures/includes/classes.php'), realpath($resource->getResource()));
+    }
+
+    /**
+     * @covers ehough_iconic_ContainerBuilder::addClassResource
+     */
+    public function testAddClassResource()
+    {
+        if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
+            $this->markTestSkipped('The "Config" component is not available');
+        }
+
+        $container = new ehough_iconic_ContainerBuilder();
+
+        $container->setResourceTracking(false);
+        $container->addClassResource(new ReflectionClass('BarClass'));
+
+        $this->assertEmpty($container->getResources(), 'No resources get registered without resource tracking');
+
+        $container->setResourceTracking(true);
+        $container->addClassResource(new ReflectionClass('BarClass'));
+
+        $resources = $container->getResources();
+
+        $this->assertCount(1, $resources, '1 resource was registered');
+
+        /* @var $resource \Symfony\Component\Config\Resource\FileResource */
+        $resource = end($resources);
+
+        $this->assertInstanceOf('Symfony\Component\Config\Resource\FileResource', $resource);
+        $this->assertSame(realpath(dirname(__FILE__).'/Fixtures/includes/classes.php'), realpath($resource->getResource()));
+    }
+
+    /**
+     * @covers ehough_iconic_ContainerBuilder::compile
+     */
+    public function testCompilesClassDefinitionsOfLazyServices()
+    {
+        if (version_compare(PHP_VERSION, '5.3') < 0 || !class_exists('Symfony\Component\Config\Resource\FileResource')) {
+            $this->markTestSkipped('The "Config" component is not available');
+        }
+
+        $container = new ehough_iconic_ContainerBuilder();
+
+        $this->assertEmpty($container->getResources(), 'No resources get registered without resource tracking');
+
+        $container->register('foo', 'BarClass');
+        $container->getDefinition('foo')->setLazy(true);
+
+        $container->compile();
+
+        $classesPath       = realpath(dirname(__FILE__).'/Fixtures/includes/classes.php');
+        $this->_closureVarClassesPath = $classesPath;
+        $matchingResources = array_filter(
+            $container->getResources(),
+            array($this, '_callbackTestCompilesClassDefinitionsOfLazyServices')
+        );
+
+        $this->assertNotEmpty($matchingResources);
+    }
+
+    public function _callbackTestCompilesClassDefinitionsOfLazyServices($resource)
+    {
+        return is_a($resource, 'Symfony\Component\Config\Resource\FileResource') && $this->_closureVarClassesPath === realpath($resource->getResource());
     }
 
     /**

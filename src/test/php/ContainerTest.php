@@ -159,6 +159,30 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         $this->assertNull($sc->get('', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
     }
 
+    public function testGetThrowServiceNotFoundException()
+    {
+        $sc = new ehough_iconic_ProjectServiceContainer();
+        $sc->set('foo', $foo = new stdClass());
+        $sc->set('bar', $foo = new stdClass());
+        $sc->set('baz', $foo = new stdClass());
+
+        try {
+            $sc->get('foo1');
+            $this->fail('->get() throws an Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException if the key does not exist');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('ehough_iconic_exception_ServiceNotFoundException', $e, '->get() throws an Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException if the key does not exist');
+            $this->assertEquals('You have requested a non-existent service "foo1". Did you mean this: "foo"?', $e->getMessage(), '->get() throws an Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException with some advices');
+        }
+
+        try {
+            $sc->get('bag');
+            $this->fail('->get() throws an Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException if the key does not exist');
+        } catch (Exception $e) {
+            $this->assertInstanceOf('ehough_iconic_exception_ServiceNotFoundException', $e, '->get() throws an Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException if the key does not exist');
+            $this->assertEquals('You have requested a non-existent service "bag". Did you mean one of these: "bar", "baz"?', $e->getMessage(), '->get() throws an Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException with some advices');
+        }
+    }
+
     public function testGetCircularReference()
     {
 

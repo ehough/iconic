@@ -18,14 +18,6 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
         self::$fixturesPath = realpath(dirname(__FILE__).'/../Fixtures/');
     }
 
-    public function setUp()
-    {
-        if (version_compare(PHP_VERSION, '5.3') < 0) {
-
-            $this->markTestSkipped('PHP < 5.3');
-        }
-    }
-
     public function testDump()
     {
         $dumper = new ehough_iconic_dumper_PhpDumper($container = new ehough_iconic_ContainerBuilder());

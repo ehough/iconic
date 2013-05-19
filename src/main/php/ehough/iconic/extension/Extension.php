@@ -75,7 +75,7 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
         $reflected = new ReflectionClass($this);
         $namespace = $reflected->getNamespaceName();
 
-        $class = $namespace . '\\Configuration';
+        $class = $namespace.'\\Configuration';
         if (class_exists($class)) {
             $r = new ReflectionClass($class);
             $ref = new ReflectionClass('\Symfony\Component\Config\Resource\FileResource');
