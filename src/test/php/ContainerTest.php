@@ -473,6 +473,14 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
 
         return $reflection->getValue($obj);
     }
+
+    public function testAlias()
+    {
+        $c = new ehough_iconic_ProjectServiceContainer();
+
+        $this->assertTrue($c->has('alias'));
+        $this->assertSame($c->get('alias'), $c->get('bar'));
+    }
 }
 
 class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
@@ -486,6 +494,7 @@ class ehough_iconic_ProjectServiceContainer extends ehough_iconic_Container
         $this->__bar = new stdClass();
         $this->__foo_bar = new stdClass();
         $this->__foo_baz = new stdClass();
+        $this->aliases = array('alias' => 'bar');
     }
 
     protected function getScopedService()

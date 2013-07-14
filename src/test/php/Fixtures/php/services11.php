@@ -24,6 +24,8 @@ class ProjectServiceContainer extends ehough_iconic_Container
         $this->methodMap = array(
             'foo' => 'getFooService',
         );
+
+        $this->aliases = array();
     }
 
     /**
