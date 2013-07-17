@@ -91,3 +91,8 @@ $sc->setParameter('bar.class', 'Bar');
 
 $sc->get('bar');
 ```
+
+### Releases and Versioning
+
+Releases are synchronized with the upstream Symfony repository. e.g. `ehough/iconic v2.3.2` has merged the code
+from `symfony/DependencyInjection v2.3.2`.
