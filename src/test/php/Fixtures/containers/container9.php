@@ -2,11 +2,6 @@
 
 require_once dirname(__FILE__).'/../includes/classes.php';
 
-//use Symfony\Component\DependencyInjection\ContainerInterface;
-//use Symfony\Component\DependencyInjection\ContainerBuilder;
-//use Symfony\Component\DependencyInjection\Reference;
-//use Symfony\Component\DependencyInjection\Parameter;
-
 $container = new ehough_iconic_ContainerBuilder();
 $container->
     register('foo', 'FooClass')->
@@ -43,6 +38,7 @@ $container->getParameterBag()->add(array(
     'foo' => 'bar',
 ));
 $container->setAlias('alias_for_foo', 'foo');
+$container->setAlias('alias_for_alias', 'alias_for_foo');
 $container->
     register('method_call1', 'FooClass')->
     setFile(realpath(dirname(__FILE__).'/../includes/foo.php'))->

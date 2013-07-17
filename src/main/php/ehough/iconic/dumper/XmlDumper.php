@@ -175,9 +175,10 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
      *
      * @param string      $alias
      * @param string      $id
+     * @param ehough_iconic_Alias       $id
      * @param DOMElement $parent
      */
-    private function addServiceAlias($alias, $id, DOMElement $parent)
+    private function addServiceAlias($alias, ehough_iconic_Alias $id, DOMElement $parent)
     {
         $service = $this->document->createElement('service');
         $service->setAttribute('id', $alias);
@@ -205,7 +206,11 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
             $this->addService($definition, $id, $services);
         }
 
-        foreach ($this->container->getAliases() as $alias => $id) {
+        $aliases = $this->container->getAliases();
+        foreach ($aliases as $alias => $id) {
+            while (isset($aliases[(string) $id])) {
+                $id = $aliases[(string) $id];
+            }
             $this->addServiceAlias($alias, $id, $services);
         }
         $parent->appendChild($services);

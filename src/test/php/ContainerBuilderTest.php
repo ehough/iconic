@@ -391,7 +391,6 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $container->setResourceTracking(false);
         $config = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array('foo' => '%bar%')));
         $container->merge($config);
-////// FIXME
         $container->compile();
         $this->assertEquals(array('bar' => 'foo', 'foo' => 'foo'), $container->getParameterBag()->all(), '->merge() evaluates the values of the parameters towards already defined ones');
 
@@ -399,7 +398,6 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $container->setResourceTracking(false);
         $config = new ehough_iconic_ContainerBuilder(new ehough_iconic_parameterbag_ParameterBag(array('foo' => '%bar%', 'baz' => '%foo%')));
         $container->merge($config);
-////// FIXME
         $container->compile();
         $this->assertEquals(array('bar' => 'foo', 'foo' => 'foo', 'baz' => 'foo'), $container->getParameterBag()->all(), '->merge() evaluates the values of the parameters towards already defined ones');
 

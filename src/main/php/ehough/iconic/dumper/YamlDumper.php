@@ -171,7 +171,11 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
             $code .= $this->addService($id, $definition);
         }
 
-        foreach ($this->container->getAliases() as $alias => $id) {
+        $aliases = $this->container->getAliases();
+        foreach ($aliases as $alias => $id) {
+            while (isset($aliases[(string) $id])) {
+                $id = $aliases[(string) $id];
+            }
             $code .= $this->addServiceAlias($alias, $id);
         }
 

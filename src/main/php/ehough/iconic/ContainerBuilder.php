@@ -42,7 +42,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     /**
      * @var @var ehough_iconic_Alias[]
      */
-    private $aliases = array();
+    private $aliasDefinitions = array();
 
     /**
      * @var \Symfony\Component\Config\Resource\ResourceInterface[]
@@ -393,7 +393,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
             $this->obsoleteDefinitions[$id] = $this->definitions[$id];
         }
 
-        unset($this->definitions[$id], $this->aliases[$id]);
+        unset($this->definitions[$id], $this->aliasDefinitions[$id]);
 
         parent::set($id, $service, $scope);
 
@@ -427,7 +427,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     {
         $id = strtolower($id);
 
-        return isset($this->definitions[$id]) || isset($this->aliases[$id]) || parent::has($id);
+        return isset($this->definitions[$id]) || isset($this->aliasDefinitions[$id]) || parent::has($id);
     }
 
     /**
@@ -464,8 +464,8 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
                 throw new ehough_iconic_exception_LogicException(sprintf('The service "%s" has a circular reference to itself.', $id), 0, $e);
             }
 
-            if (!$this->hasDefinition($id) && isset($this->aliases[$id])) {
-                return $this->get($this->aliases[$id]);
+            if (!$this->hasDefinition($id) && isset($this->aliasDefinitions[$id])) {
+                return $this->get($this->aliasDefinitions[$id]);
             }
 
             try {
@@ -629,7 +629,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function getServiceIds()
     {
-        return array_unique(array_merge(array_keys($this->getDefinitions()), array_keys($this->aliases), parent::getServiceIds()));
+        return array_unique(array_merge(array_keys($this->getDefinitions()), array_keys($this->aliasDefinitions), parent::getServiceIds()));
     }
 
     /**
@@ -655,7 +655,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function setAliases(array $aliases)
     {
-        $this->aliases = array();
+        $this->aliasDefinitions = array();
         $this->addAliases($aliases);
     }
 
@@ -686,7 +686,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
 
         unset($this->definitions[$alias]);
 
-        $this->aliases[$alias] = $id;
+        $this->aliasDefinitions[$alias] = $id;
     }
 
     /**
@@ -698,7 +698,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function removeAlias($alias)
     {
-        unset($this->aliases[strtolower($alias)]);
+        unset($this->aliasDefinitions[strtolower($alias)]);
     }
 
     /**
@@ -712,7 +712,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function hasAlias($id)
     {
-        return isset($this->aliases[strtolower($id)]);
+        return isset($this->aliasDefinitions[strtolower($id)]);
     }
 
     /**
@@ -724,7 +724,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function getAliases()
     {
-        return $this->aliases;
+        return $this->aliasDefinitions;
     }
 
     /**
@@ -746,7 +746,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
             throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The service alias "%s" does not exist.', $id));
         }
 
-        return $this->aliases[$id];
+        return $this->aliasDefinitions[$id];
     }
 
     /**
@@ -826,7 +826,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
 
         $id = strtolower($id);
 
-        unset($this->aliases[$id]);
+        unset($this->aliasDefinitions[$id]);
 
         return $this->definitions[$id] = $definition;
     }
