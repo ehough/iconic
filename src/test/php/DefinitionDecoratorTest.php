@@ -57,6 +57,16 @@ class ehough_iconic_DefinitionDecoratorTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(array('public' => true), $def->getChanges());
     }
 
+    public function testSetLazy()
+    {
+        $def = new ehough_iconic_DefinitionDecorator('foo');
+
+        $this->assertFalse($def->isLazy());
+        $this->assertSame($def, $def->setLazy(false));
+        $this->assertFalse($def->isLazy());
+        $this->assertEquals(array('lazy' => true), $def->getChanges());
+    }
+
     public function testSetArgument()
     {
         $def = new ehough_iconic_DefinitionDecorator('foo');

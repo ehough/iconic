@@ -136,6 +136,36 @@ class ResolveDefinitionTemplatesPassTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $def->getClass());
     }
 
+    public function testSetLazyOnServiceHasParent()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+
+        $container->register('parent','stdClass');
+
+        $container->setDefinition('child1',new ehough_iconic_DefinitionDecorator('parent'))
+            ->setLazy(true)
+        ;
+
+        $this->process($container);
+
+        $this->assertTrue($container->getDefinition('child1')->isLazy());
+    }
+
+    public function testSetLazyOnServiceIsParent()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+
+        $container->register('parent','stdClass')
+            ->setLazy(true)
+        ;
+
+        $container->setDefinition('child1',new ehough_iconic_DefinitionDecorator('parent'));
+
+        $this->process($container);
+
+        $this->assertTrue($container->getDefinition('child1')->isLazy());
+    }
+
     protected function process(ehough_iconic_ContainerBuilder $container)
     {
         $pass = new ehough_iconic_compiler_ResolveDefinitionTemplatesPass();

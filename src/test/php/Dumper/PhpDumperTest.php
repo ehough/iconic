@@ -112,6 +112,18 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
         }
     }
 
+    /**
+     * @expectedException ehough_iconic_exception_InvalidArgumentException
+     * @expectedExceptionMessage Service id "bar$" cannot be converted to a valid PHP method name.
+     */
+    public function testAddServiceInvalidServiceId()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('bar$', 'FooClass');
+        $dumper = new ehough_iconic_dumper_PhpDumper($container);
+        $dumper->dump();
+    }
+
     public function testAliases()
     {
         $container = include self::$fixturesPath.'/containers/container9.php';

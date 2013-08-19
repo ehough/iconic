@@ -24,6 +24,29 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @dataProvider dataForTestCamelize
+     */
+    public function testCamelize($id, $expected)
+    {
+        $this->assertEquals($expected, ehough_iconic_Container::camelize($id), sprintf('ehough_iconic_Container::camelize("%s")', $id));
+    }
+
+    public function dataForTestCamelize()
+    {
+        return array(
+            array('foo_bar', 'FooBar'),
+            array('foo.bar', 'Foo_Bar'),
+            array('foo.bar_baz', 'Foo_BarBaz'),
+            array('foo._bar', 'Foo_Bar'),
+            array('foo_.bar', 'Foo_Bar'),
+            array('_foo', 'Foo'),
+            array('.foo', '_Foo'),
+            array('foo_', 'Foo'),
+            array('foo.', 'Foo_'),
+        );
+    }
+
+    /**
      * @covers ehough_iconic_Container::compile
      */
     public function testCompile()
@@ -102,6 +125,16 @@ class ehough_iconic_ContainerTest extends PHPUnit_Framework_TestCase
         $sc = new ehough_iconic_Container();
         $sc->set('foo', $foo = new stdClass());
         $this->assertEquals($foo, $sc->get('foo'), '->set() sets a service');
+    }
+
+    /**
+     * @covers ehough_iconic_Container::set
+     */
+    public function testSetWithNullResetTheService()
+    {
+        $sc = new ehough_iconic_Container();
+        $sc->set('foo', null);
+        $this->assertFalse($sc->has('foo'));
     }
 
     /**
