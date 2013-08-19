@@ -173,6 +173,9 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     /**
      * Sets a service.
      *
+     * Setting a service to null resets the service: has() returns false and get()
+     * behaves in the same way as if the service was never created.
+     *
      * @param string $id      The service identifier
      * @param object $service The service instance
      * @param string $scope   The scope of the service
@@ -202,6 +205,14 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
 
         if (method_exists($this, $method = 'synchronize'.strtr($id, array('_' => '', '.' => '_')).'Service')) {
             $this->$method();
+        }
+
+        if (self::SCOPE_CONTAINER !== $scope && null === $service) {
+            unset($this->scopedServices[$scope][$id]);
+        }
+
+        if (null === $service) {
+            unset($this->services[$id]);
         }
     }
 
@@ -502,12 +513,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public static function camelize($id)
     {
-        return preg_replace_callback('/(^|_|\.)+(.)/', array('ehough_iconic_Container', '_callbackCamelize'), $id);
-    }
-
-    public static function _callbackCamelize($match)
-    {
-        return ('.' === $match[1] ? '_' : '').strtoupper($match[2]);
+        return strtr(ucwords(strtr($id, array('_' => ' ', '.' => '_ '))), array(' ' => ''));
     }
 
     /**
