@@ -11,13 +11,6 @@
 
 class ClosureLoaderTest extends PHPUnit_Framework_TestCase
 {
-    protected function setUp()
-    {
-        if (!class_exists('Symfony\Component\Config\Loader\Loader')) {
-            $this->markTestSkipped('The "Config" component is not available');
-        }
-    }
-
     /**
      * @covers ehough_iconic_loader_ClosureLoader::supports
      */

@@ -213,8 +213,8 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
                 unset($tag['name']);
 
                 foreach ($tag as $attribute => $value) {
-                    if (!is_scalar($value)) {
-                        throw new ehough_iconic_exception_InvalidArgumentException(sprintf('A "tags" attribute must be of a scalar-type for service "%s", tag "%s" in %s.', $id, $name, $file));
+                    if (!is_scalar($value) && null !== $value) {
+                        throw new ehough_iconic_exception_InvalidArgumentException(sprintf('A "tags" attribute must be of a scalar-type for service "%s", tag "%s", attribute "%s" in %s.', $id, $name, $attribute, $file));
                     }
                 }
 

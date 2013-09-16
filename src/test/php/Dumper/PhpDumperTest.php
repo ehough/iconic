@@ -173,4 +173,19 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
 
         $this->assertSame($bar, $container->get('foo')->bar, '->set() overrides an already defined service');
     }
+
+    /**
+     * @expectedException ehough_iconic_exception_ServiceCircularReferenceException
+     */
+    public function testCircularReference()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+        $container->register('foo', 'stdClass')->addArgument(new ehough_iconic_Reference('bar'));
+        $container->register('bar', 'stdClass')->setPublic(false)->addMethodCall('setA', array(new ehough_iconic_Reference('baz')));
+        $container->register('baz', 'stdClass')->addMethodCall('setA', array(new ehough_iconic_Reference('foo')));
+        $container->compile();
+
+        $dumper = new ehough_iconic_dumper_PhpDumper($container);
+        $dumper->dump();
+    }
 }

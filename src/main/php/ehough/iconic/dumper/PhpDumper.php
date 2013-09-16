@@ -427,6 +427,12 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
                 continue;
             }
 
+            // if the instance is simple, the return statement has already been generated
+            // so, the only possible way to get there is because of a circular reference
+            if ($this->isSimpleInstance($id, $definition)) {
+                throw new ehough_iconic_exception_ServiceCircularReferenceException($id, array($id));
+            }
+
             $name = (string) $this->_splGetData($this->definitionVariables, $iDefinition, $iDefinition->getClass());
             $code .= $this->addServiceMethodCalls(null, $iDefinition, $name);
             $code .= $this->addServiceProperties(null, $iDefinition, $name);

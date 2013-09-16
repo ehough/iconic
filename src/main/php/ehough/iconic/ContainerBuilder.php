@@ -291,11 +291,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function addCompilerPass(ehough_iconic_compiler_CompilerPassInterface $pass, $type = ehough_iconic_compiler_PassConfig::TYPE_BEFORE_OPTIMIZATION)
     {
-        if (null === $this->compiler) {
-            $this->compiler = new ehough_iconic_compiler_Compiler();
-        }
-
-        $this->compiler->addPass($pass, $type);
+        $this->getCompiler()->addPass($pass, $type);
 
         if (class_exists('\Symfony\Component\Config\Resource\FileResource')) {
 
@@ -314,11 +310,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function getCompilerPassConfig()
     {
-        if (null === $this->compiler) {
-            $this->compiler = new ehough_iconic_compiler_Compiler();
-        }
-
-        return $this->compiler->getPassConfig();
+        return $this->getCompiler()->getPassConfig();
     }
 
     /**
@@ -599,12 +591,10 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
      */
     public function compile()
     {
-        if (null === $this->compiler) {
-            $this->compiler = new ehough_iconic_compiler_Compiler();
-        }
+        $compiler = $this->getCompiler();
 
         if ($this->trackResources && class_exists('\Symfony\Component\Config\Resource\FileResource')) {
-            foreach ($this->compiler->getPassConfig()->getPasses() as $pass) {
+            foreach ($compiler->getPassConfig()->getPasses() as $pass) {
                 $this->addObjectResource($pass);
             }
 
@@ -615,7 +605,7 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
             }
         }
 
-        $this->compiler->compile($this);
+        $compiler->compile($this);
 
         $this->extensionConfigs = array();
 

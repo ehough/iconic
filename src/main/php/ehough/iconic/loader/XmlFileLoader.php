@@ -220,7 +220,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
         if (false !== $nodes = $xml->xpath('//container:argument[@type="service"][not(@id)]|//container:property[@type="service"][not(@id)]')) {
             foreach ($nodes as $node) {
                 // give it a unique name
-                $id = sprintf('%s_%d', md5($file), ++$count);
+                $id = sprintf('%s_%d', hash('sha256', $file), ++$count);
                 $node['id'] = $id;
 
                 $definitions[$id] = array($node->service, $file, false);
@@ -232,7 +232,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
         if (false !== $nodes = $xml->xpath('//container:services/container:service[not(@id)]')) {
             foreach ($nodes as $node) {
                 // give it a unique name
-                $id = sprintf('%s_%d', md5($file), ++$count);
+                $id = sprintf('%s_%d', hash('sha256', $file), ++$count);
                 $node['id'] = $id;
 
                 $definitions[$id] = array($node, $file, true);
