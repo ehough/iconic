@@ -253,7 +253,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
 
             $oNode = dom_import_simplexml($def[0]);
             if (true === $def[2]) {
-                $nNode = new \DOMElement('_services');
+                $nNode = new DOMElement('_services');
                 $oNode->parentNode->replaceChild($nNode, $oNode);
                 $nNode->setAttribute('id', $id);
             } else {
