@@ -375,7 +375,7 @@ EOF
                 continue;
             }
 
-            $values = static::convertDomElementToArray($node);
+            $values = self::convertDomElementToArray($node);
             if (!is_array($values)) {
                 $values = array();
             }
