@@ -351,7 +351,7 @@ EOF
 
             // can it be handled by an extension?
             if (!$this->container->hasExtension($node->namespaceURI)) {
-                $extensionNamespaces = array_filter(array_map(function ($ext) { return $ext->getNamespace(); }, $this->container->getExtensions()));
+                $extensionNamespaces = array_filter(array_map(array($this, '__callbackFilterValidateExtensions'), $this->container->getExtensions()));
                 throw new ehough_iconic_exception_InvalidArgumentException(sprintf(
                     'There is no extension able to load the configuration for "%s" (in %s). Looked for namespace "%s", found %s',
                     $node->tagName,
@@ -406,5 +406,10 @@ EOF
     public static function convertDomElementToArray(DomElement $element)
     {
         return call_user_func(array('\Symfony\Component\Config\Util\XmlUtils', 'convertDomElementToArray'), $element);
+    }
+
+    public function __callbackFilterValidateExtensions($ext)
+    {
+        return $ext->getNamespace();
     }
 }
