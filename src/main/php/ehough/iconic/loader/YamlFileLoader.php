@@ -300,6 +300,9 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
     {
         if (is_array($value)) {
             $value = array_map(array($this, 'resolveServices'), $value);
+        } elseif (is_string($value) &&  0 === strpos($value, '@=')) {
+            $ref = new ReflectionClass('Symfony\Component\ExpressionLanguage\Expression');
+            return $ref->newInstance(substr($value, 2));
         } elseif (is_string($value) &&  0 === strpos($value, '@')) {
             if (0 === strpos($value, '@@')) {
                 $value = substr($value, 1);

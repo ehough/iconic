@@ -113,7 +113,14 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('sc_configure', $services['configurator1']->getConfigurator(), '->load() parses the configurator tag');
         $this->assertEquals(array(new ehough_iconic_Reference('baz'), 'configure'), $services['configurator2']->getConfigurator(), '->load() parses the configurator tag');
         $this->assertEquals(array('BazClass', 'configureStatic'), $services['configurator3']->getConfigurator(), '->load() parses the configurator tag');
-        $this->assertEquals(array(array('setBar', array()), array('setBar', array())), $services['method_call1']->getMethodCalls(), '->load() parses the method_call tag');
+
+        if (class_exists('Symfony\Component\ExpressionLanguage\Expression')) {
+
+            $ref = new ReflectionClass('Symfony\Component\ExpressionLanguage\Expression');
+            $expression = $ref->newInstance('service("foo").foo() ~ parameter("foo")');
+            $this->assertEquals(array(array('setBar', array()), array('setBar', array()), array('setBar', array($expression))), $services['method_call1']->getMethodCalls(), '->load() parses the method_call tag');
+        }
+
         $this->assertEquals(array(array('setBar', array('foo', new ehough_iconic_Reference('foo'), array(true, false)))), $services['method_call2']->getMethodCalls(), '->load() parses the method_call tag');
         $this->assertEquals('baz_factory', $services['factory_service']->getFactoryService());
 

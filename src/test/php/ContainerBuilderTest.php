@@ -365,6 +365,23 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $builder->get('foo');
     }
 
+    public function testCreateServiceWithExpression()
+    {
+        if (!class_exists('Symfony\Component\ExpressionLanguage\Expression')) {
+
+            $this->markTestSkipped('Symfony expression language component is missing');
+            return;
+        }
+
+        $builder = new ehough_iconic_ContainerBuilder();
+        $builder->setParameter('bar', 'bar');
+        $builder->register('bar', 'BarClass');
+        $ref = new ReflectionClass('Symfony\Component\ExpressionLanguage\Expression');
+        $expression = $ref->newInstance('service("bar").foo ~ parameter("bar")');
+        $builder->register('foo', 'FooClass')->addArgument(array('foo' => $expression));
+        $this->assertEquals('foobar', $builder->get('foo')->arguments['foo']);
+    }
+
     /**
      * @covers ehough_iconic_ContainerBuilder::resolveServices
      */
@@ -374,6 +391,13 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $builder->register('foo', 'FooClass');
         $this->assertEquals($builder->get('foo'), $builder->resolveServices(new ehough_iconic_Reference('foo')), '->resolveServices() resolves service references to service instances');
         $this->assertEquals(array('foo' => array('foo', $builder->get('foo'))), $builder->resolveServices(array('foo' => array('foo', new ehough_iconic_Reference('foo')))), '->resolveServices() resolves service references to service instances in nested arrays');
+
+        if (class_exists('Symfony\Component\ExpressionLanguage\Expression')) {
+
+            $ref = new ReflectionClass('Symfony\Component\ExpressionLanguage\Expression');
+            $expression = $ref->newInstance('service("foo")');
+            $this->assertEquals($builder->get('foo'), $builder->resolveServices($expression), '->resolveServices() resolves expressions');
+        }
     }
 
     /**

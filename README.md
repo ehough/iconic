@@ -25,6 +25,7 @@ A few examples of class naming conversions:
 Other gotchas when using iconic instead of Symfony's Dependency Injection component
 
 * Most of the loaders and dumpers can only be used with PHP 5.3+
+* The expression language feature is only available with PHP 5.3+
 
 ### Usage
 

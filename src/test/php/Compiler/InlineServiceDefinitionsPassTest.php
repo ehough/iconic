@@ -114,6 +114,26 @@ class InlineServiceDefinitionsPassTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($container->hasDefinition('a'));
     }
 
+    public function testProcessDoesNotInlineWhenServiceIsPrivateButLazy()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+        $container
+            ->register('foo')
+            ->setPublic(false)
+            ->setLazy(true)
+        ;
+
+        $container
+            ->register('service')
+            ->setArguments(array($ref = new ehough_iconic_Reference('foo')))
+        ;
+
+        $this->process($container);
+
+        $arguments = $container->getDefinition('service')->getArguments();
+        $this->assertSame($ref, $arguments[0]);
+    }
+
     protected function process(ehough_iconic_ContainerBuilder $container)
     {
         $repeatedPass = new ehough_iconic_compiler_RepeatedPass(array(new ehough_iconic_compiler_AnalyzeServiceReferencesPass(), new ehough_iconic_compiler_InlineServiceDefinitionsPass()));
