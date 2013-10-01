@@ -20,6 +20,17 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
         require_once self::$fixturesPath.'/includes/ProjectExtension.php';
     }
 
+    protected function setUp()
+    {
+        if (!class_exists('Symfony\Component\Config\Loader\Loader')) {
+            $this->markTestSkipped('The "Config" component is not available');
+        }
+
+        if (!class_exists('Symfony\Component\Yaml\Yaml')) {
+            $this->markTestSkipped('The "Yaml" component is not available');
+        }
+    }
+
     public function testLoadFile()
     {
         $loader = new ehough_iconic_loader_YamlFileLoader(new ehough_iconic_ContainerBuilder(), $this->_buildFileLocator(self::$fixturesPath.'/ini'));
