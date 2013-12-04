@@ -764,7 +764,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException ehough_iconic_exception_BadMethodCallException
+     * @expectedException BadMethodCallException
      */
     public function testThrowsExceptionWhenSetDefinitionOnAFrozenContainer()
     {
@@ -794,6 +794,39 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         $container->prependExtensionConfig('foo', $second);
         $configs = $container->getExtensionConfig('foo');
         $this->assertEquals(array($second, $first), $configs);
+    }
+
+    public function testLazyLoadedService()
+    {
+        $loader = new ehough_iconic_loader_ClosureLoader($container = new ehough_iconic_ContainerBuilder());
+        $loader->load(function (ehough_iconic_ContainerBuilder $container) {
+                $container->set('a', new BazClass());
+                $definition = new ehough_iconic_Definition('BazClass');
+                $definition->setLazy(true);
+                $container->setDefinition('a', $definition);
+            }
+        );
+
+        $container->setResourceTracking(true);
+
+        $container->compile();
+
+        $class = new BazClass();
+        $reflectionClass = new ReflectionClass($class);
+
+        $r = new ReflectionProperty($container, 'resources');
+        $r->setAccessible(true);
+        $resources = $r->getValue($container);
+
+        $classInList = false;
+        foreach ($resources as $resource) {
+            if ($resource->getResource() === $reflectionClass->getFileName()) {
+                $classInList = true;
+                break;
+            }
+        }
+
+        $this->assertEquals(true, $classInList);
     }
 }
 

@@ -63,6 +63,10 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
             $code .= sprintf("        class: %s\n", $definition->getClass());
         }
 
+        if (!$definition->isPublic()) {
+            $code .= "        public: false\n";
+        }
+
         $tagsCode = '';
         foreach ($definition->getTags() as $name => $tags) {
             foreach ($tags as $attributes) {

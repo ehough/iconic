@@ -176,7 +176,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
      */
     private function addProxyClasses()
     {
-        /* @var $proxyDefinitions ehough_iconic_Definition[] */
+        /* @var $definitions ehough_iconic_Definition[] */
         $definitions = array_filter(
             $this->container->getDefinitions(),
             array($this->getProxyDumper(), 'isProxyCandidate')

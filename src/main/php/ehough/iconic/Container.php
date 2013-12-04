@@ -56,13 +56,13 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     protected $parameterBag;
 
-    protected $services;
-    protected $methodMap;
-    protected $aliases;
-    protected $scopes;
-    protected $scopeChildren;
-    protected $scopedServices;
-    protected $scopeStacks;
+    protected $services = array();
+    protected $methodMap = array();
+    protected $aliases = array();
+    protected $scopes = array();
+    protected $scopeChildren = array();
+    protected $scopedServices = array();
+    protected $scopeStacks = array();
     protected $loading = array();
 
     /**
@@ -75,13 +75,6 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     public function __construct(ehough_iconic_parameterbag_ParameterBagInterface $parameterBag = null)
     {
         $this->parameterBag = null === $parameterBag ? new ehough_iconic_parameterbag_ParameterBag() : $parameterBag;
-
-        $this->services       = array();
-        $this->aliases        = array();
-        $this->scopes         = array();
-        $this->scopeChildren  = array();
-        $this->scopedServices = array();
-        $this->scopeStacks    = array();
 
         $this->set('service_container', $this);
     }
@@ -335,6 +328,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     public function initialized($id)
     {
         $id = strtolower($id);
+
         return isset($this->services[$id]) || array_key_exists($id, $this->services);
     }
 
@@ -520,7 +514,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      */
     public static function camelize($id)
     {
-        return strtr(ucwords(strtr($id, array('_' => ' ', '.' => '_ '))), array(' ' => ''));
+        return strtr(ucwords(strtr($id, array('_' => ' ', '.' => '_ ', '\\' => '_ '))), array(' ' => ''));
     }
 
     /**
