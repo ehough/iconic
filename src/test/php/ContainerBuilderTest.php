@@ -798,6 +798,12 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 
     public function testLazyLoadedService()
     {
+        if (version_compare(PHP_VERSION, '5.3', '<')) {
+
+            $this->markTestSkipped('Requires PHP 5.3. or higher');
+            return;
+        }
+
         $loader = new ehough_iconic_loader_ClosureLoader($container = new ehough_iconic_ContainerBuilder());
         $loader->load(array($this, '__callbackTestLazyLoadedService'));
 
