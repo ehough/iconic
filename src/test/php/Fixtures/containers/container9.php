@@ -41,7 +41,7 @@ $container->setAlias('alias_for_foo', 'foo');
 $container->setAlias('alias_for_alias', 'alias_for_foo');
 $def = $container->
     register('method_call1', 'FooClass')->
-    setFile(realpath(__DIR__.'/../includes/foo.php'))->
+    setFile(realpath(dirname(__FILE__).'/../includes/foo.php'))->
     addMethodCall('setBar', array(new ehough_iconic_Reference('foo')))->
     addMethodCall('setBar', array(new ehough_iconic_Reference('foo2', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE)))->
     addMethodCall('setBar', array(new ehough_iconic_Reference('foo3', ehough_iconic_ContainerInterface::IGNORE_ON_INVALID_REFERENCE)))->

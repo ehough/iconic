@@ -90,14 +90,23 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
 
     public function testAddService()
     {
+        if (version_compare(PHP_VERSION, '5.3', '>=')) {
+
+            $file = 'services9.php';
+
+        } else {
+
+            $file = 'services9-php52.php';
+        }
+
         // without compilation
         $container = include self::$fixturesPath.'/containers/container9.php';
         $dumper = new ehough_iconic_dumper_PhpDumper($container);
         $realPath = str_replace('\\', '\\\\', self::$fixturesPath . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR);
-        $services9Contents = file_get_contents(self::$fixturesPath . '/php/services9.php');
+        $services9Contents = file_get_contents(self::$fixturesPath . '/php/' . $file);
         $expected = str_replace('%path%', $realPath, $services9Contents);
         $dumped = $dumper->dump();
-        $this->assertEquals($expected, $dumped, '->dump() dumps services (not compiled) ' . $realPath);
+        $this->assertEquals($expected, $dumped, '->dump() dumps services (not compiled) ');
 
         // with compilation
         $container = include self::$fixturesPath.'/containers/container9.php';
