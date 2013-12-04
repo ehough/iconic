@@ -93,13 +93,17 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
         // without compilation
         $container = include self::$fixturesPath.'/containers/container9.php';
         $dumper = new ehough_iconic_dumper_PhpDumper($container);
-        $this->assertEquals(str_replace('%path%', str_replace('\\','\\\\',self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), file_get_contents(self::$fixturesPath.'/php/services9.php')), $dumper->dump(), '->dump() dumps services');
+        $realPath = str_replace('\\', '\\\\', self::$fixturesPath . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR);
+        $services9Contents = file_get_contents(self::$fixturesPath . '/php/services9.php');
+        $expected = str_replace('%path%', $realPath, $services9Contents);
+        $dumped = $dumper->dump();
+        $this->assertEquals($expected, $dumped, '->dump() dumps services (not compiled) ' . $realPath);
 
         // with compilation
         $container = include self::$fixturesPath.'/containers/container9.php';
         $container->compile();
         $dumper = new ehough_iconic_dumper_PhpDumper($container);
-        $this->assertEquals(str_replace('%path%', str_replace('\\','\\\\',self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), file_get_contents(self::$fixturesPath.'/php/services9_compiled.php')), $dumper->dump(), '->dump() dumps services');
+        $this->assertEquals(str_replace('%path%', str_replace('\\','\\\\',self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), file_get_contents(self::$fixturesPath.'/php/services9_compiled.php')), $dumper->dump(), '->dump() dumps services (compiled)');
 
         $dumper = new ehough_iconic_dumper_PhpDumper($container = new ehough_iconic_ContainerBuilder());
         $container->register('foo', 'FooClass')->addArgument(new stdClass());
@@ -113,7 +117,7 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException ehough_iconic_exception_InvalidArgumentException
+     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Service id "bar$" cannot be converted to a valid PHP method name.
      */
     public function testAddServiceInvalidServiceId()
