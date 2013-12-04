@@ -799,13 +799,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     public function testLazyLoadedService()
     {
         $loader = new ehough_iconic_loader_ClosureLoader($container = new ehough_iconic_ContainerBuilder());
-        $loader->load(function (ehough_iconic_ContainerBuilder $container) {
-                $container->set('a', new BazClass());
-                $definition = new ehough_iconic_Definition('BazClass');
-                $definition->setLazy(true);
-                $container->setDefinition('a', $definition);
-            }
-        );
+        $loader->load(array($this, '__callbackTestLazyLoadedService'));
 
         $container->setResourceTracking(true);
 
@@ -827,6 +821,14 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
         }
 
         $this->assertEquals(true, $classInList);
+    }
+
+    public function __callbackTestLazyLoadedService(ehough_iconic_ContainerBuilder $container)
+    {
+        $container->set('a', new BazClass());
+        $definition = new ehough_iconic_Definition('BazClass');
+        $definition->setLazy(true);
+        $container->setDefinition('a', $definition);
     }
 }
 
