@@ -92,18 +92,18 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
     {
         if (version_compare(PHP_VERSION, '5.3', '>=')) {
 
-            $file = 'services9.php';
+            $file = '.php';
 
         } else {
 
-            $file = 'services9-php52.php';
+            $file = '-php52.php';
         }
 
         // without compilation
         $container = include self::$fixturesPath.'/containers/container9.php';
         $dumper = new ehough_iconic_dumper_PhpDumper($container);
         $realPath = str_replace('\\', '\\\\', self::$fixturesPath . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR);
-        $services9Contents = file_get_contents(self::$fixturesPath . '/php/' . $file);
+        $services9Contents = file_get_contents(self::$fixturesPath . '/php/services9' . $file);
         $expected = str_replace('%path%', $realPath, $services9Contents);
         $dumped = $dumper->dump();
         $this->assertEquals($expected, $dumped, '->dump() dumps services (not compiled) ');
@@ -112,7 +112,7 @@ class PhpDumperTest extends PHPUnit_Framework_TestCase
         $container = include self::$fixturesPath.'/containers/container9.php';
         $container->compile();
         $dumper = new ehough_iconic_dumper_PhpDumper($container);
-        $this->assertEquals(str_replace('%path%', str_replace('\\','\\\\',self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), file_get_contents(self::$fixturesPath.'/php/services9_compiled.php')), $dumper->dump(), '->dump() dumps services (compiled)');
+        $this->assertEquals(str_replace('%path%', str_replace('\\','\\\\',self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR), file_get_contents(self::$fixturesPath.'/php/services9_compiled' . $file)), $dumper->dump(), '->dump() dumps services (compiled)');
 
         $dumper = new ehough_iconic_dumper_PhpDumper($container = new ehough_iconic_ContainerBuilder());
         $container->register('foo', 'FooClass')->addArgument(new stdClass());

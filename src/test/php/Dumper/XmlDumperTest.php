@@ -44,9 +44,18 @@ class XmlDumperTest extends PHPUnit_Framework_TestCase
 
     public function testAddService()
     {
+        if (version_compare(PHP_VERSION, '5.3', '>=')) {
+
+            $suffix = '.xml';
+
+        } else {
+
+            $suffix = '-php52.xml';
+        }
+
         $container = include self::$fixturesPath.'/containers/container9.php';
         $dumper = new ehough_iconic_dumper_XmlDumper($container);
-        $this->assertEquals(str_replace('%path%', self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR, file_get_contents(self::$fixturesPath.'/xml/services9.xml')), $dumper->dump(), '->dump() dumps services');
+        $this->assertEquals(str_replace('%path%', self::$fixturesPath.DIRECTORY_SEPARATOR.'includes'.DIRECTORY_SEPARATOR, file_get_contents(self::$fixturesPath.'/xml/services9' . $suffix)), $dumper->dump(), '->dump() dumps services');
 
         $dumper = new ehough_iconic_dumper_XmlDumper($container = new ehough_iconic_ContainerBuilder());
         $container->register('foo', 'FooClass')->addArgument(new stdClass());
