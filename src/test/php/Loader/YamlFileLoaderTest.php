@@ -13,6 +13,13 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 
+    public static function setUpBeforeClass()
+    {
+        self::$fixturesPath = realpath(dirname(__FILE__).'/../Fixtures/');
+        require_once self::$fixturesPath.'/includes/foo.php';
+        require_once self::$fixturesPath.'/includes/ProjectExtension.php';
+    }
+
     protected function setUp()
     {
         if (!class_exists('Symfony\Component\Config\Loader\Loader')) {
@@ -22,13 +29,6 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
         if (!class_exists('Symfony\Component\Yaml\Yaml')) {
             $this->markTestSkipped('The "Yaml" component is not available');
         }
-    }
-
-    public static function setUpBeforeClass()
-    {
-        self::$fixturesPath = realpath(dirname(__FILE__).'/../Fixtures/');
-        require_once self::$fixturesPath.'/includes/foo.php';
-        require_once self::$fixturesPath.'/includes/ProjectExtension.php';
     }
 
     public function testLoadFile()
@@ -113,7 +113,14 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('sc_configure', $services['configurator1']->getConfigurator(), '->load() parses the configurator tag');
         $this->assertEquals(array(new ehough_iconic_Reference('baz'), 'configure'), $services['configurator2']->getConfigurator(), '->load() parses the configurator tag');
         $this->assertEquals(array('BazClass', 'configureStatic'), $services['configurator3']->getConfigurator(), '->load() parses the configurator tag');
-        $this->assertEquals(array(array('setBar', array()), array('setBar', array())), $services['method_call1']->getMethodCalls(), '->load() parses the method_call tag');
+
+        if (class_exists('Symfony\Component\ExpressionLanguage\Expression')) {
+
+            $ref = new ReflectionClass('Symfony\Component\ExpressionLanguage\Expression');
+            $expression = $ref->newInstance('service("foo").foo() ~ parameter("foo")');
+            $this->assertEquals(array(array('setBar', array()), array('setBar', array()), array('setBar', array($expression))), $services['method_call1']->getMethodCalls(), '->load() parses the method_call tag');
+        }
+
         $this->assertEquals(array(array('setBar', array('foo', new ehough_iconic_Reference('foo'), array(true, false)))), $services['method_call2']->getMethodCalls(), '->load() parses the method_call tag');
         $this->assertEquals('baz_factory', $services['factory_service']->getFactoryService());
 
@@ -198,7 +205,7 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
             $this->fail('->load() should throw an exception when a tag-attribute is not a scalar');
         } catch (Exception $e) {
             $this->assertInstanceOf('ehough_iconic_exception_InvalidArgumentException', $e, '->load() throws an InvalidArgumentException if a tag-attribute is not a scalar');
-            $this->assertStringStartsWith('A "tags" attribute must be of a scalar-type for service ', $e->getMessage(), '->load() throws an InvalidArgumentException if a tag-attribute is not a scalar');
+            $this->assertStringStartsWith('A "tags" attribute must be of a scalar-type for service "foo_service", tag "foo", attribute "bar"', $e->getMessage(), '->load() throws an InvalidArgumentException if a tag-attribute is not a scalar');
         }
     }
 

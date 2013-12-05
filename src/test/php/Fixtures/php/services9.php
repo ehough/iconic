@@ -188,6 +188,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
         if ($this->has('foobaz')) {
             $instance->setBar($this->get('foobaz', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
         }
+        $instance->setBar(($this->get("foo")->foo() . $this->getParameter("foo")));
 
         return $instance;
     }

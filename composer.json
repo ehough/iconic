@@ -16,7 +16,8 @@
     "require-dev": {
         "symfony/yaml": "~2.0",
         "symfony/config": "~2.2",
-        "phpunit/phpunit": "3.7.*"
+        "phpunit/phpunit": "3.7.*",
+        "symfony/expression-language": "~2.4"
     },
 
     "autoload": {
@@ -24,6 +25,7 @@
             "ehough_iconic": "src/main/php"
         }
     },
+    "minimum-stability": "dev",
     "suggest": {
         "symfony/yaml": "",
         "symfony/config": "",

@@ -193,7 +193,6 @@ class ProjectServiceContainer extends ehough_iconic_Container
 
         $instance->setBar($this->get('foo'));
         $instance->setBar(NULL);
-        $instance->setBar(($this->get("foo")->foo() . $this->getParameter("foo")));
 
         return $instance;
     }

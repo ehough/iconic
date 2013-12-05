@@ -5,7 +5,7 @@ Fork of [Symfony's Dependency Injection component](https://github.com/symfony/De
 ### Motivation
 
 [Symfony's Dependency Injection component](https://github.com/symfony/DependencyInjection) is a powerful DI library, but it's only compatible with PHP 5.3+. While 97% of PHP servers run PHP 5.2 or higher,
-a whopping **44% of all servers are still running PHP 5.2 or lower** ([source](http://w3techs.com/technologies/details/pl-php/5/all)).
+**32% of all servers are still running PHP 5.2 or lower** ([source](http://w3techs.com/technologies/details/pl-php/5/all)).
 It would be a shame to exempt this library from nearly half of the world's servers just because of a few version incompatibilities.
 
 Once PHP 5.3+ adoption levels near closer to 100%, this library will be retired.
@@ -25,6 +25,7 @@ A few examples of class naming conversions:
 Other gotchas when using iconic instead of Symfony's Dependency Injection component
 
 * Most of the loaders and dumpers can only be used with PHP 5.3+
+* The expression language feature is only available with PHP 5.3+
 
 ### Usage
 

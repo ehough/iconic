@@ -13,19 +13,19 @@ class CrossCheckTest extends PHPUnit_Framework_TestCase
 {
     protected static $fixturesPath;
 
-    protected function setUp()
-    {
-        if (!class_exists('Symfony\Component\Config\Loader\Loader')) {
-            $this->markTestSkipped('The "Config" component is not available');
-        }
-    }
-
     public static function setUpBeforeClass()
     {
         self::$fixturesPath = dirname(__FILE__).'/Fixtures/';
 
         require_once self::$fixturesPath.'/includes/classes.php';
         require_once self::$fixturesPath.'/includes/foo.php';
+    }
+
+    protected function setUp()
+    {
+        if (!class_exists('Symfony\Component\Config\Loader\Loader')) {
+            $this->markTestSkipped('The "Config" component is not available');
+        }
     }
 
     /**

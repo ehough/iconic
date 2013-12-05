@@ -13,16 +13,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
      */
     public function __construct()
     {
-        $this->parameters = $this->getDefaultParameters();
-
-        $this->services =
-        $this->scopedServices =
-        $this->scopeStacks = array();
-
-        $this->set('service_container', $this);
-
-        $this->scopes = array();
-        $this->scopeChildren = array();
+        parent::__construct(new ehough_iconic_parameterbag_ParameterBag($this->getDefaultParameters()));
         $this->methodMap = array(
             'bar' => 'getBarService',
             'baz' => 'getBazService',
@@ -32,6 +23,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
             'foo.baz' => 'getFoo_BazService',
             'foo_bar' => 'getFooBarService',
             'foo_with_inline' => 'getFooWithInlineService',
+            'inlined' => 'getInlinedService',
             'method_call1' => 'getMethodCall1Service',
             'request' => 'getRequestService',
         );
@@ -117,7 +109,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
     {
         $a = $this->get('foo.baz');
 
-        $this->services['foo'] = $instance = call_user_func(array('FooClass', 'getInstance'), 'foo', $a, array('bar' => 'foo is bar', 'foobar' => 'bar'), true, $this);
+        $this->services['foo'] = $instance = call_user_func(array('FooClass', 'getInstance'), 'foo', $a, array($this->getParameter('foo') => 'foo is '.$this->getParameter('foo').'', 'foobar' => $this->getParameter('foo')), true, $this);
 
         $instance->setBar($this->get('bar'));
         $instance->initialize();
@@ -134,13 +126,13 @@ class ProjectServiceContainer extends ehough_iconic_Container
      * This service is shared.
      * This method always returns the same instance of the service.
      *
-     * @return BazClass A BazClass instance.
+     * @return object A %baz_class% instance.
      */
     protected function getFoo_BazService()
     {
-        $this->services['foo.baz'] = $instance = call_user_func(array('BazClass', 'getInstance'));
+        $this->services['foo.baz'] = $instance = call_user_func(array($this->getParameter('baz_class'), 'getInstance'));
 
-        call_user_func(array('BazClass', 'configureStatic1'), $instance);
+        call_user_func(array($this->getParameter('baz_class'), 'configureStatic1'), $instance);
 
         return $instance;
     }
@@ -148,11 +140,13 @@ class ProjectServiceContainer extends ehough_iconic_Container
     /**
      * Gets the 'foo_bar' service.
      *
-     * @return FooClass A FooClass instance.
+     * @return object A %foo_class% instance.
      */
     protected function getFooBarService()
     {
-        return new FooClass();
+        $class = $this->getParameter('foo_class');
+
+        return new $class();
     }
 
     /**
@@ -165,14 +159,9 @@ class ProjectServiceContainer extends ehough_iconic_Container
      */
     protected function getFooWithInlineService()
     {
-        $a = new Bar();
-
         $this->services['foo_with_inline'] = $instance = new Foo();
 
-        $a->setBaz($this->get('baz'));
-        $a->pub = 'pub';
-
-        $instance->setBar($a);
+        $instance->setBar($this->get('inlined'));
 
         return $instance;
     }
@@ -192,8 +181,13 @@ class ProjectServiceContainer extends ehough_iconic_Container
         $this->services['method_call1'] = $instance = new FooClass();
 
         $instance->setBar($this->get('foo'));
-        $instance->setBar(NULL);
-        $instance->setBar(($this->get("foo")->foo() . $this->getParameter("foo")));
+        $instance->setBar($this->get('foo2', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
+        if ($this->has('foo3')) {
+            $instance->setBar($this->get('foo3', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
+        }
+        if ($this->has('foobaz')) {
+            $instance->setBar($this->get('foobaz', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
+        }
 
         return $instance;
     }
@@ -222,48 +216,27 @@ class ProjectServiceContainer extends ehough_iconic_Container
     }
 
     /**
-     * {@inheritdoc}
+     * Gets the 'inlined' service.
+     *
+     * This service is shared.
+     * This method always returns the same instance of the service.
+     *
+     * This service is private.
+     * If you want to be able to request this service from the container directly,
+     * make it public, otherwise you might end up with broken code.
+     *
+     * @return Bar A Bar instance.
      */
-    public function getParameter($name)
+    protected function getInlinedService()
     {
-        $name = strtolower($name);
+        $this->services['inlined'] = $instance = new Bar();
 
-        if (!(isset($this->parameters[$name]) || array_key_exists($name, $this->parameters))) {
-            throw new ehough_iconic_exception_InvalidArgumentException(sprintf('The parameter "%s" must be defined.', $name));
-        }
+        $instance->setBaz($this->get('baz'));
+        $instance->pub = 'pub';
 
-        return $this->parameters[$name];
+        return $instance;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function hasParameter($name)
-    {
-        $name = strtolower($name);
-
-        return isset($this->parameters[$name]) || array_key_exists($name, $this->parameters);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setParameter($name, $value)
-    {
-        throw new ehough_iconic_exception_LogicException('Impossible to call set() on a frozen ehough_iconic_parameterbag_ParameterBag.');
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getParameterBag()
-    {
-        if (null === $this->parameterBag) {
-            $this->parameterBag = new ehough_iconic_parameterbag_FrozenParameterBag($this->parameters);
-        }
-
-        return $this->parameterBag;
-    }
     /**
      * Gets the default parameters.
      *
