@@ -10,7 +10,7 @@ $container->
     setFactoryClass('FooClass')->
     setFactoryMethod('getInstance')->
     setArguments(array('foo', new ehough_iconic_Reference('foo.baz'), array('%foo%' => 'foo is %foo%', 'foobar' => '%foo%'), true, new ehough_iconic_Reference('service_container')))->
-    setProperties(array('foo' => 'bar', 'moo' => new ehough_iconic_Reference('foo.baz')))->
+    setProperties(array('foo' => 'bar', 'moo' => new ehough_iconic_Reference('foo.baz'), 'qux' => array('%foo%' => 'foo is %foo%', 'foobar' => '%foo%')))->
     addMethodCall('setBar', array(new ehough_iconic_Reference('bar')))->
     addMethodCall('initialize')->
     setConfigurator('sc_configure')
@@ -83,6 +83,15 @@ $container
 $container
     ->register('depends_on_request', 'stdClass')
     ->addMethodCall('setRequest', array(new ehough_iconic_Reference('request', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE, false)))
+;
+$container
+    ->register('configurator_service', 'ConfClass')
+    ->setPublic(false)
+    ->addMethodCall('setFoo', array(new ehough_iconic_Reference('baz')))
+;
+$container
+    ->register('configured_service', 'stdClass')
+    ->setConfigurator(array(new ehough_iconic_Reference('configurator_service'), 'configureStdClass'))
 ;
 
 return $container;

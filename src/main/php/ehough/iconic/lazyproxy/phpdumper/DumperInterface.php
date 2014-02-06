@@ -10,7 +10,7 @@
  */
 
 /**
- * Lazy proxy dumper capable of generating the instantiation logic php code for proxied services.
+ * Lazy proxy dumper capable of generating the instantiation logic PHP code for proxied services.
  *
  * @author Marco Pivetta <ocramius@gmail.com>
  */

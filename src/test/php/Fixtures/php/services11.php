@@ -8,6 +8,8 @@
  */
 class ProjectServiceContainer extends ehough_iconic_Container
 {
+    private $parameters;
+
     /**
      * Constructor.
      */

@@ -134,6 +134,21 @@ class InlineServiceDefinitionsPassTest extends PHPUnit_Framework_TestCase
         $this->assertSame($ref, $arguments[0]);
     }
 
+    public function testProcessDoesNotInlineWhenServiceReferencesItself()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+        $container
+            ->register('foo')
+            ->setPublic(false)
+            ->addMethodCall('foo', array($ref = new ehough_iconic_Reference('foo')))
+        ;
+
+        $this->process($container);
+
+        $calls = $container->getDefinition('foo')->getMethodCalls();
+        $this->assertSame($ref, $calls[0][1][0]);
+    }
+
     protected function process(ehough_iconic_ContainerBuilder $container)
     {
         $repeatedPass = new ehough_iconic_compiler_RepeatedPass(array(new ehough_iconic_compiler_AnalyzeServiceReferencesPass(), new ehough_iconic_compiler_InlineServiceDefinitionsPass()));

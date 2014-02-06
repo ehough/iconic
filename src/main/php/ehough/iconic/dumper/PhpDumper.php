@@ -142,6 +142,7 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
             $this->getServiceCallsFromArguments($iDefinition->getArguments(), $calls, $behavior);
             $this->getServiceCallsFromArguments($iDefinition->getMethodCalls(), $calls, $behavior);
             $this->getServiceCallsFromArguments($iDefinition->getProperties(), $calls, $behavior);
+            $this->getServiceCallsFromArguments(array($iDefinition->getConfigurator()), $calls, $behavior);
         }
 
         $code = '';
@@ -463,8 +464,15 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
         }
 
         if (is_array($callable)) {
-            if ($callable[0] instanceof ehough_iconic_Reference) {
-                return sprintf("        %s->%s(\$%s);\n", $this->getServiceCall((string) $callable[0]), $callable[1], $variableName);
+            if ($callable[0] instanceof ehough_iconic_Reference
+                || ($callable[0] instanceof ehough_iconic_Definition && $this->_splObjectContains($this->definitionVariables, $callable[0]))) {
+                return sprintf("        %s->%s(\$%s);\n", $this->dumpValue($callable[0]), $callable[1], $variableName);
+            }
+
+            $class = $this->dumpValue($callable[0]);
+            // If the class is a string we can optimize call_user_func away
+            if (strpos($class, "'") === 0) {
+                return sprintf("        %s::%s(\$%s);\n", $this->dumpLiteralClass($class), $callable[1], $variableName);
             }
 
             return sprintf("        call_user_func(array(%s, '%s'), \$%s);\n", $this->dumpValue($callable[0]), $callable[1], $variableName);
@@ -671,6 +679,13 @@ EOF;
 
         if (null !== $definition->getFactoryMethod()) {
             if (null !== $definition->getFactoryClass()) {
+                $class = $this->dumpValue($definition->getFactoryClass());
+
+                // If the class is a string we can optimize call_user_func away
+                if (strpos($class, "'") === 0) {
+                    return sprintf("        $return{$instantiation}%s::%s(%s);\n", $this->dumpLiteralClass($class), $definition->getFactoryMethod(), $arguments ? implode(', ', $arguments) : '');
+                }
+
                 return sprintf("        $return{$instantiation}call_user_func(array(%s, '%s')%s);\n", $this->dumpValue($definition->getFactoryClass()), $definition->getFactoryMethod(), $arguments ? ', '.implode(', ', $arguments) : '');
             }
 
@@ -685,7 +700,7 @@ EOF;
             return sprintf("        \$class = %s;\n\n        $return{$instantiation}new \$class(%s);\n", $class, implode(', ', $arguments));
         }
 
-        return sprintf("        $return{$instantiation}new %s(%s);\n", substr(str_replace('\\\\', '\\', $class), 1, -1), implode(', ', $arguments));
+        return sprintf("        $return{$instantiation}new %s(%s);\n", $this->dumpLiteralClass($class), implode(', ', $arguments));
     }
 
     /**
@@ -760,6 +775,8 @@ EOF;
     private function addFrozenConstructor()
     {
         $code = <<<EOF
+
+    private \$parameters;
 
     /**
      * Constructor.
@@ -953,6 +970,8 @@ EOF;
                 throw new ehough_iconic_exception_InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain service definitions. Definition for "%s" found in "%s".', $value->getClass(), $path.'/'.$key));
             } elseif ($value instanceof ehough_iconic_Reference) {
                 throw new ehough_iconic_exception_InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain references to other services (reference to service "%s" found in "%s").', $value, $path.'/'.$key));
+            } elseif (is_a($value, 'Symfony\Component\ExpressionLanguage\Expression')) {
+                throw new ehough_iconic_exception_InvalidArgumentException(sprintf('You cannot dump a container with parameters that contain expressions. Expression "%s" found in "%s".', $value, $path.'/'.$key));
             } else {
                 $value = var_export($value, true);
             }
@@ -1048,7 +1067,8 @@ EOF;
             $definitions = array_merge(
                 $this->getDefinitionsFromArguments($definition->getArguments()),
                 $this->getDefinitionsFromArguments($definition->getMethodCalls()),
-                $this->getDefinitionsFromArguments($definition->getProperties())
+                $this->getDefinitionsFromArguments($definition->getProperties()),
+                $this->getDefinitionsFromArguments(array($definition->getConfigurator()))
             );
 
             $this->_splObjectSet($this->inlinedDefinitions, $definition, $definitions);
@@ -1209,6 +1229,18 @@ EOF;
     public function _callbackDumpValue($match)
     {
         return "'.".$this->dumpParameter(strtolower($match[2])).".'";
+    }
+
+    /**
+     * Dumps a string to a literal (aka PHP Code) class value.
+     *
+     * @param string $class
+     *
+     * @return string
+     */
+    private function dumpLiteralClass($class)
+    {
+         return substr(str_replace('\\\\', '\\', $class), 1, -1);
     }
 
     /**

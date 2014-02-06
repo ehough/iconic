@@ -55,6 +55,11 @@ class ehough_iconic_compiler_InlineServiceDefinitionsPass implements ehough_icon
             $definition->setProperties(
                 $this->inlineArguments($container, $definition->getProperties())
             );
+
+            $configurator = $this->inlineArguments($container, array($definition->getConfigurator()));
+            $definition->setConfigurator(
+                $configurator[0]
+            );
         }
     }
 
@@ -116,6 +121,10 @@ class ehough_iconic_compiler_InlineServiceDefinitionsPass implements ehough_icon
 
         if (!$this->graph->hasNode($id)) {
             return true;
+        }
+
+        if ($this->currentId == $id) {
+            return false;
         }
 
         $ids = array();
