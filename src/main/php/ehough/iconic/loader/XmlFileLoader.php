@@ -177,6 +177,10 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
                     continue;
                 }
 
+                if (false !== strpos($name, '-') && false === strpos($name, '_') && !array_key_exists($normalizedName = str_replace('-', '_', $name), $parameters)) {
+                    $parameters[$normalizedName] = ehough_iconic_SimpleXMLElement::phpize($value);
+                }
+                // keep not normalized key for BC too
                 $parameters[$name] = ehough_iconic_SimpleXMLElement::phpize($value);
             }
 
