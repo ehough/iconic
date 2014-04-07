@@ -13,6 +13,8 @@
  * SimpleXMLElement class.
  *
  * @author Fabien Potencier <fabien@symfony.com>
+ *
+ * @deprecated Deprecated since version 2.5, to be removed in 3.0.
  */
 class ehough_iconic_SimpleXMLElement extends SimpleXMLElement
 {

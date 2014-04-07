@@ -82,6 +82,7 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
         $resolver = $ref->newInstanceArgs(array(array(
             new ehough_iconic_loader_IniFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/yaml')),
             new ehough_iconic_loader_XmlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/yaml')),
+            new ehough_iconic_loader_PhpFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/php')),
             $loader = new ehough_iconic_loader_YamlFileLoader($container, $this->_buildFileLocator(self::$fixturesPath.'/yaml')),
         )));
         $loader->setResolver($resolver);
@@ -102,7 +103,7 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
         $loader->load('services6.yml');
         $services = $container->getDefinitions();
         $this->assertTrue(isset($services['foo']), '->load() parses service elements');
-        $this->assertEquals('ehough_iconic_Definition', get_class($services['foo']), '->load() converts service element to ehough_iconic_Definition instances');
+        $this->assertInstanceOf('ehough_iconic_Definition', $services['foo'], '->load() converts service element to ehough_iconic_Definition instances');
         $this->assertEquals('FooClass', $services['foo']->getClass(), '->load() parses the class attribute');
         $this->assertEquals('container', $services['scope.container']->getScope());
         $this->assertEquals('custom', $services['scope.custom']->getScope());
@@ -135,6 +136,10 @@ class YamlFileLoaderTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(isset($aliases['another_alias_for_foo']));
         $this->assertEquals('foo', (string) $aliases['another_alias_for_foo']);
         $this->assertFalse($aliases['another_alias_for_foo']->isPublic());
+
+        $this->assertNull($services['request']->getDecoratedService());
+        $this->assertEquals(array('decorated', null), $services['decorator_service']->getDecoratedService());
+        $this->assertEquals(array('decorated', 'decorated.pif-pouf'), $services['decorator_service_with_name']->getDecoratedService());
     }
 
     public function testExtensions()

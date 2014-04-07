@@ -139,6 +139,16 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ehough_iconic_ContainerBuilder::get
+     */
+    public function testGetReturnsNullOnInactiveScopeWhenServiceIsCreatedByAMethod()
+    {
+        $builder = new ProjectContainer();
+
+        $this->assertNull($builder->get('foobaz', ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE));
+    }
+
+    /**
      * @covers ehough_iconic_ContainerBuilder::getServiceIds
      */
     public function testGetServiceIds()
@@ -826,7 +836,7 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
             }
         }
 
-        $this->assertEquals(true, $classInList);
+        $this->assertTrue($classInList);
     }
 
     public function __callbackTestLazyLoadedService(ehough_iconic_ContainerBuilder $container)
@@ -839,3 +849,11 @@ class ehough_iconic_ContainerBuilderTest extends PHPUnit_Framework_TestCase
 }
 
 class ehough_iconic_FooClass {}
+
+class ProjectContainer extends ehough_iconic_ContainerBuilder
+{
+    public function getFoobazService()
+    {
+        throw new ehough_iconic_exception_InactiveScopeException('foo', 'request');
+    }
+}
