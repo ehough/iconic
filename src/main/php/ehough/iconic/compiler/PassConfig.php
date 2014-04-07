@@ -42,6 +42,7 @@ class ehough_iconic_compiler_PassConfig
 
         $this->optimizationPasses = array(
             new ehough_iconic_compiler_ResolveDefinitionTemplatesPass(),
+            new ehough_iconic_compiler_DecoratorServicePass(),
             new ehough_iconic_compiler_ResolveParameterPlaceHoldersPass(),
             new ehough_iconic_compiler_CheckDefinitionValidityPass(),
             new ehough_iconic_compiler_ResolveReferencesToAliasesPass(),

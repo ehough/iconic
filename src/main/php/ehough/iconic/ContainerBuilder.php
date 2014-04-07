@@ -448,51 +448,45 @@ class ehough_iconic_ContainerBuilder extends ehough_iconic_Container implements 
     {
         $id = strtolower($id);
 
+        if ($service = parent::get($id, ehough_iconic_ContainerInterface::NULL_ON_INVALID_REFERENCE)) {
+            return $service;
+        }
+
+        if (isset($this->loading[$id])) {
+            throw new ehough_iconic_exception_LogicException(sprintf('The service "%s" has a circular reference to itself.', $id));
+        }
+
+        if (!$this->hasDefinition($id) && isset($this->aliasDefinitions[$id])) {
+            return $this->get($this->aliasDefinitions[$id]);
+        }
+
         try {
-            return parent::get($id, ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE);
-        } catch (ehough_iconic_exception_InactiveScopeException $e) {
+            $definition = $this->getDefinition($id);
+            } catch (ehough_iconic_exception_InvalidArgumentException $e) {
             if (ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
                 return null;
             }
 
             throw $e;
-        } catch (ehough_iconic_exception_InvalidArgumentException $e) {
-            if (isset($this->loading[$id])) {
-                throw new ehough_iconic_exception_LogicException(sprintf('The service "%s" has a circular reference to itself.', $id), 0, $e);
-            }
+        }
 
-            if (!$this->hasDefinition($id) && isset($this->aliasDefinitions[$id])) {
-                return $this->get($this->aliasDefinitions[$id]);
-            }
+        $this->loading[$id] = true;
 
-            try {
-                $definition = $this->getDefinition($id);
-            } catch (ehough_iconic_exception_InvalidArgumentException $e) {
-                if (ehough_iconic_ContainerInterface::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
-                    return null;
-                }
-
-                throw $e;
-            }
-
-            $this->loading[$id] = true;
-
-            try {
-                $service = $this->createService($definition, $id);
-            } catch (Exception $e) {
-                unset($this->loading[$id]);
-
-                if ($e instanceof ehough_iconic_exception_InactiveScopeException && self::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
-                    return null;
-                }
-
-                throw $e;
-            }
-
+        try {
+            $service = $this->createService($definition, $id);
+        } catch (Exception $e) {
             unset($this->loading[$id]);
 
-            return $service;
+            if ($e instanceof ehough_iconic_exception_InactiveScopeException && self::EXCEPTION_ON_INVALID_REFERENCE !== $invalidBehavior) {
+                return null;
+            }
+
+            throw $e;
         }
+
+        unset($this->loading[$id]);
+
+        return $service;
     }
 
     /**

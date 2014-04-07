@@ -53,7 +53,7 @@ if (class_exists('\Symfony\Component\ExpressionLanguage\Expression')) {
     $expression = $ref->newInstance('service("foo").foo() ~ parameter("foo")');
 
     $def->addMethodCall('setBar', array($expression));
-}
+};
 
 $container->
     register('factory_service', 'Bar')->
@@ -92,6 +92,17 @@ $container
 $container
     ->register('configured_service', 'stdClass')
     ->setConfigurator(array(new ehough_iconic_Reference('configurator_service'), 'configureStdClass'))
+;
+$container
+    ->register('decorated', 'stdClass')
+;
+$container
+    ->register('decorator_service', 'stdClass')
+    ->setDecoratedService('decorated')
+;
+$container
+    ->register('decorator_service_with_name', 'stdClass')
+    ->setDecoratedService('decorated', 'decorated.pif-pouf')
 ;
 
 return $container;

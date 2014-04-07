@@ -40,7 +40,7 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
         }
 
         // imports
-        $this->parseImports($content, $file);
+        $this->parseImports($content, $path);
 
         // parameters
         if (isset($content['parameters'])) {
@@ -220,6 +220,11 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
 
                 $definition->addTag($name, $tag);
             }
+        }
+
+        if (isset($service['decorates'])) {
+            $renameId = isset($service['decoration-inner-name']) ? $service['decoration-inner-name'] : null;
+            $definition->setDecoratedService($service['decorates'], $renameId);
         }
 
         $this->container->setDefinition($id, $definition);

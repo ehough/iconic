@@ -127,6 +127,14 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
             $code .= sprintf("        scope: %s\n", $scope);
         }
 
+        if (null !== $decorated = $definition->getDecoratedService()) {
+            list ($decorated, $renamedId) = $decorated;
+            $code .= sprintf("        decorates: %s\n", $decorated);
+            if (null !== $renamedId) {
+                $code .= sprintf("        decoration-inner-name: %s\n", $renamedId);
+            }
+        }
+
         if ($callable = $definition->getConfigurator()) {
             if (is_array($callable)) {
                 if ($callable[0] instanceof ehough_iconic_Reference) {

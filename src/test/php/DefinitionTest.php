@@ -58,6 +58,26 @@ class ehough_iconic_DefinitionTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $def->getClass(), '->getClass() returns the class name');
     }
 
+    public function testSetGetDecoratedService()
+    {
+        $def = new ehough_iconic_Definition('stdClass');
+        $this->assertNull($def->getDecoratedService());
+        $def->setDecoratedService('foo', 'foo.renamed');
+        $this->assertEquals(array('foo', 'foo.renamed'), $def->getDecoratedService());
+        $def->setDecoratedService(null);
+        $this->assertNull($def->getDecoratedService());
+
+        $def = new ehough_iconic_Definition('stdClass');
+        $def->setDecoratedService('foo');
+        $this->assertEquals(array('foo', null), $def->getDecoratedService());
+        $def->setDecoratedService(null);
+        $this->assertNull($def->getDecoratedService());
+
+        $def = new ehough_iconic_Definition('stdClass');
+        $this->setExpectedException('InvalidArgumentException', 'The decorated service inner name for "foo" must be different than the service name itself.');
+        $def->setDecoratedService('foo', 'foo');
+    }
+
     /**
      * @covers ehough_iconic_Definition::setArguments
      * @covers ehough_iconic_Definition::getArguments
