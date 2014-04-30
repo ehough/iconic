@@ -23,7 +23,7 @@ interface ehough_iconic_IntrospectableContainerInterface extends ehough_iconic_C
      *
      * @param string $id
      *
-     * @return Boolean true if the service has been initialized, false otherwise
+     * @return bool    true if the service has been initialized, false otherwise
      *
      */
     public function initialized($id);

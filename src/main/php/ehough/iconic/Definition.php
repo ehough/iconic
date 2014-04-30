@@ -262,7 +262,7 @@ class ehough_iconic_Definition
     /**
      * Sets a specific argument
      *
-     * @param integer $index
+     * @param int     $index
      * @param mixed   $argument
      *
      * @return ehough_iconic_Definition The current instance
@@ -297,7 +297,7 @@ class ehough_iconic_Definition
     /**
      * Gets an argument to pass to the service constructor/factory method.
      *
-     * @param integer $index
+     * @param int     $index
      *
      * @return mixed The argument value
      *
@@ -381,7 +381,7 @@ class ehough_iconic_Definition
      *
      * @param string $method The method name to search for
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */
@@ -472,7 +472,7 @@ class ehough_iconic_Definition
      *
      * @param string $name
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */
@@ -570,7 +570,7 @@ class ehough_iconic_Definition
     /**
      * Sets the visibility of this service.
      *
-     * @param Boolean $boolean
+     * @param bool    $boolean
      *
      * @return ehough_iconic_Definition The current instance
      *
@@ -578,7 +578,7 @@ class ehough_iconic_Definition
      */
     public function setPublic($boolean)
     {
-        $this->public = (Boolean) $boolean;
+        $this->public = (bool) $boolean;
 
         return $this;
     }
@@ -586,7 +586,7 @@ class ehough_iconic_Definition
     /**
      * Whether this service is public facing
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */
@@ -598,7 +598,7 @@ class ehough_iconic_Definition
     /**
      * Sets the synchronized flag of this service.
      *
-     * @param Boolean $boolean
+     * @param bool    $boolean
      *
      * @return ehough_iconic_Definition The current instance
      *
@@ -606,7 +606,7 @@ class ehough_iconic_Definition
      */
     public function setSynchronized($boolean)
     {
-        $this->synchronized = (Boolean) $boolean;
+        $this->synchronized = (bool) $boolean;
 
         return $this;
     }
@@ -614,7 +614,7 @@ class ehough_iconic_Definition
     /**
      * Whether this service is synchronized.
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */
@@ -626,13 +626,13 @@ class ehough_iconic_Definition
     /**
      * Sets the lazy flag of this service.
      *
-     * @param Boolean $lazy
+     * @param bool    $lazy
      *
      * @return Definition The current instance
      */
     public function setLazy($lazy)
     {
-        $this->lazy = (Boolean) $lazy;
+        $this->lazy = (bool) $lazy;
 
         return $this;
     }
@@ -640,7 +640,7 @@ class ehough_iconic_Definition
     /**
      * Whether this service is lazy.
      *
-     * @return Boolean
+     * @return bool
      */
     public function isLazy()
     {
@@ -651,7 +651,7 @@ class ehough_iconic_Definition
      * Sets whether this definition is synthetic, that is not constructed by the
      * container, but dynamically injected.
      *
-     * @param Boolean $boolean
+     * @param bool    $boolean
      *
      * @return ehough_iconic_Definition the current instance
      *
@@ -659,7 +659,7 @@ class ehough_iconic_Definition
      */
     public function setSynthetic($boolean)
     {
-        $this->synthetic = (Boolean) $boolean;
+        $this->synthetic = (bool) $boolean;
 
         return $this;
     }
@@ -668,7 +668,7 @@ class ehough_iconic_Definition
      * Whether this definition is synthetic, that is not constructed by the
      * container, but dynamically injected.
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */
@@ -681,7 +681,7 @@ class ehough_iconic_Definition
      * Whether this definition is abstract, that means it merely serves as a
      * template for other definitions.
      *
-     * @param Boolean $boolean
+     * @param bool    $boolean
      *
      * @return ehough_iconic_Definition the current instance
      *
@@ -689,7 +689,7 @@ class ehough_iconic_Definition
      */
     public function setAbstract($boolean)
     {
-        $this->abstract = (Boolean) $boolean;
+        $this->abstract = (bool) $boolean;
 
         return $this;
     }
@@ -698,7 +698,7 @@ class ehough_iconic_Definition
      * Whether this definition is abstract, that means it merely serves as a
      * template for other definitions.
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */

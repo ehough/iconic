@@ -23,7 +23,7 @@ class ehough_iconic_compiler_InlineServiceDefinitionsPass implements ehough_icon
     private $currentId;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setRepeatedPass(ehough_iconic_compiler_RepeatedPass $repeatedPass)
     {
@@ -107,7 +107,7 @@ class ehough_iconic_compiler_InlineServiceDefinitionsPass implements ehough_icon
      * @param string           $id
      * @param ehough_iconic_Definition       $definition
      *
-     * @return Boolean If the definition is inlineable
+     * @return bool    If the definition is inlineable
      */
     private function isInlineableDefinition(ehough_iconic_ContainerBuilder $container, $id, ehough_iconic_Definition $definition)
     {

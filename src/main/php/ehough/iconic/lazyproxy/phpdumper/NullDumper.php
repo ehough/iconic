@@ -17,7 +17,7 @@
 class ehough_iconic_lazyproxy_phpdumper_NullDumper implements ehough_iconic_lazyproxy_phpdumper_DumperInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function isProxyCandidate(ehough_iconic_Definition $definition)
     {
@@ -25,7 +25,7 @@ class ehough_iconic_lazyproxy_phpdumper_NullDumper implements ehough_iconic_lazy
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getProxyFactoryCode(ehough_iconic_Definition $definition, $id)
     {
@@ -33,7 +33,7 @@ class ehough_iconic_lazyproxy_phpdumper_NullDumper implements ehough_iconic_lazy
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getProxyCode(ehough_iconic_Definition $definition)
     {

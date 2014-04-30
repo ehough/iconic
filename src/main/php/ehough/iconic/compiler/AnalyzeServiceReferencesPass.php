@@ -30,15 +30,15 @@ class ehough_iconic_compiler_AnalyzeServiceReferencesPass implements ehough_icon
     /**
      * Constructor.
      *
-     * @param Boolean $onlyConstructorArguments Sets this Service Reference pass to ignore method calls
+     * @param bool    $onlyConstructorArguments Sets this Service Reference pass to ignore method calls
      */
     public function __construct($onlyConstructorArguments = false)
     {
-        $this->onlyConstructorArguments = (Boolean) $onlyConstructorArguments;
+        $this->onlyConstructorArguments = (bool) $onlyConstructorArguments;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setRepeatedPass(ehough_iconic_compiler_RepeatedPass $repeatedPass)
     {
@@ -126,7 +126,7 @@ class ehough_iconic_compiler_AnalyzeServiceReferencesPass implements ehough_icon
         }
 
         if (!$this->container->hasDefinition($id)) {
-            return null;
+            return;
         }
 
         return $id;

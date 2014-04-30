@@ -37,7 +37,7 @@ class ehough_iconic_parameterbag_FrozenParameterBag extends ehough_iconic_parame
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @api
      */
@@ -47,7 +47,7 @@ class ehough_iconic_parameterbag_FrozenParameterBag extends ehough_iconic_parame
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @api
      */
@@ -57,7 +57,7 @@ class ehough_iconic_parameterbag_FrozenParameterBag extends ehough_iconic_parame
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @api
      */

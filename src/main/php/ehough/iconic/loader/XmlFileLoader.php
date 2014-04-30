@@ -57,7 +57,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
      * @param mixed  $resource A resource
      * @param string $type     The resource type
      *
-     * @return Boolean true if this class supports the given resource, false otherwise
+     * @return bool    true if this class supports the given resource, false otherwise
      */
     public function supports($resource, $type = null)
     {
@@ -94,7 +94,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
 
         foreach ($imports as $import) {
             $this->setCurrentDir(dirname($file));
-            $this->import($import->getAttribute('resource'), null, (Boolean) self::_phpize($import->getAttribute('ignore-errors')), $file);
+            $this->import($import->getAttribute('resource'), null, (bool) self::_phpize($import->getAttribute('ignore-errors')), $file);
         }
     }
 
@@ -289,7 +289,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
      *
      * @param DOMElement $node
      * @param string     $name
-     * @param Boolean    $lowercase
+     * @param bool       $lowercase
      *
      * @return mixed
      */
@@ -381,7 +381,7 @@ class ehough_iconic_loader_XmlFileLoader extends ehough_iconic_loader_FileLoader
      *
      * @param \DOMDocument $dom
      *
-     * @return Boolean
+     * @return bool
      *
      * @throws ehough_iconic_exception_RuntimeException When extension references a non-existent XSD file
      */

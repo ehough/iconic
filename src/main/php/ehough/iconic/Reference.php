@@ -27,7 +27,7 @@ class ehough_iconic_Reference
      *
      * @param string  $id              The service identifier
      * @param int     $invalidBehavior The behavior when the service does not exist
-     * @param Boolean $strict          Sets how this reference is validated
+     * @param bool    $strict          Sets how this reference is validated
      *
      * @see Container
      */
@@ -61,7 +61,7 @@ class ehough_iconic_Reference
     /**
      * Returns true when this ehough_iconic_Reference is strict
      *
-     * @return Boolean
+     * @return bool
      */
     public function isStrict()
     {

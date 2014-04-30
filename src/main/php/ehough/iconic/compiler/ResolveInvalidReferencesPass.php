@@ -62,8 +62,8 @@ class ehough_iconic_compiler_ResolveInvalidReferencesPass implements ehough_icon
     /**
      * Processes arguments to determine invalid references.
      *
-     * @param array   $arguments    An array of ehough_iconic_Reference objects
-     * @param Boolean $inMethodCall
+     * @param array $arguments    An array of ehough_iconic_Reference objects
+     * @param bool  $inMethodCall
      *
      * @return array
      *

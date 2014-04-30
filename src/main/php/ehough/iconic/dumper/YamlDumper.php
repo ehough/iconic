@@ -131,7 +131,7 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
             list ($decorated, $renamedId) = $decorated;
             $code .= sprintf("        decorates: %s\n", $decorated);
             if (null !== $renamedId) {
-                $code .= sprintf("        decoration-inner-name: %s\n", $renamedId);
+                $code .= sprintf("        decoration_inner_name: %s\n", $renamedId);
             }
         }
 
@@ -279,7 +279,7 @@ class ehough_iconic_dumper_YamlDumper extends ehough_iconic_dumper_Dumper
      * Prepares parameters.
      *
      * @param array   $parameters
-     * @param Boolean $escape
+     * @param bool    $escape
      *
      * @return array
      */
