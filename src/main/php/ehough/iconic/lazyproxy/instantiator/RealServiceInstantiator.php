@@ -10,7 +10,7 @@
  */
 
 /**
- * {@inheritDoc}
+ * {@inheritdoc}
  *
  * Noop proxy instantiator - simply produces the real service instead of a proxy instance.
  *
@@ -19,7 +19,7 @@
 class ehough_iconic_lazyproxy_instantiator_RealServiceInstantiator implements ehough_iconic_lazyproxy_instantiator_InstantiatorInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function instantiateProxy(ehough_iconic_ContainerInterface $container, ehough_iconic_Definition $definition, $id, $realInstantiator)
     {

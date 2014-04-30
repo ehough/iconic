@@ -44,7 +44,7 @@ class ehough_iconic_loader_PhpFileLoader extends ehough_iconic_loader_FileLoader
      * @param mixed  $resource A resource
      * @param string $type     The resource type
      *
-     * @return Boolean true if this class supports the given resource, false otherwise
+     * @return bool    true if this class supports the given resource, false otherwise
      */
     public function supports($resource, $type = null)
     {

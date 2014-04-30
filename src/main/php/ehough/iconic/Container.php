@@ -99,7 +99,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     /**
      * Returns true if the container parameter bag are frozen.
      *
-     * @return Boolean true if the container parameter bag are frozen, false otherwise
+     * @return bool    true if the container parameter bag are frozen, false otherwise
      *
      * @api
      */
@@ -141,7 +141,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @param string $name The parameter name
      *
-     * @return Boolean The presence of parameter in container
+     * @return bool    The presence of parameter in container
      *
      * @api
      */
@@ -214,7 +214,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @param string $id The service identifier
      *
-     * @return Boolean true if the service is defined, false otherwise
+     * @return bool    true if the service is defined, false otherwise
      *
      * @api
      */
@@ -236,7 +236,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      * with a get{$id}Service() method, the former has always precedence.
      *
      * @param string  $id              The service identifier
-     * @param integer $invalidBehavior The behavior when the service does not exist
+     * @param int     $invalidBehavior The behavior when the service does not exist
      *
      * @return object The associated service
      *
@@ -323,7 +323,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @param string $id The service identifier
      *
-     * @return Boolean true if service has already been initialized, false otherwise
+     * @return bool    true if service has already been initialized, false otherwise
      */
     public function initialized($id)
     {
@@ -480,7 +480,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @param string $name The name of the scope
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */
@@ -496,7 +496,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @param string $name
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */

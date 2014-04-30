@@ -59,7 +59,7 @@ interface ehough_iconic_ContainerInterface
      *
      * @param string $id The service identifier
      *
-     * @return Boolean true if the service is defined, false otherwise
+     * @return bool    true if the service is defined, false otherwise
      *
      * @api
      */
@@ -83,7 +83,7 @@ interface ehough_iconic_ContainerInterface
      *
      * @param string $name The parameter name
      *
-     * @return Boolean The presence of parameter in container
+     * @return bool    The presence of parameter in container
      *
      * @api
      */
@@ -131,7 +131,7 @@ interface ehough_iconic_ContainerInterface
      *
      * @param string $name
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */
@@ -144,7 +144,7 @@ interface ehough_iconic_ContainerInterface
      *
      * @param string $name
      *
-     * @return Boolean
+     * @return bool
      *
      * @api
      */

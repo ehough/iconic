@@ -149,7 +149,7 @@ class ehough_iconic_compiler_CheckReferenceValidityPass implements ehough_iconic
     private function getDefinition($id)
     {
         if (!$this->container->hasDefinition($id)) {
-            return null;
+            return;
         }
 
         return $this->container->getDefinition($id);

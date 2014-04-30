@@ -18,7 +18,7 @@
 class ehough_iconic_compiler_RepeatedPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     /**
-     * @var Boolean
+     * @var bool
      */
     private $repeat = false;
 

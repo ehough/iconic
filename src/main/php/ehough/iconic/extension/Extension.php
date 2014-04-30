@@ -68,7 +68,7 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getConfiguration(array $config, ehough_iconic_ContainerBuilder $container)
     {
@@ -87,8 +87,6 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
                 return $configuration;
             }
         }
-
-        return null;
     }
 
     final protected function processConfiguration($configuration, array $configs)
@@ -104,7 +102,7 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
      * @param ehough_iconic_ContainerBuilder $container
      * @param array            $config
      *
-     * @return Boolean Whether the configuration is enabled
+     * @return bool    Whether the configuration is enabled
      *
      * @throws ehough_iconic_exception_InvalidArgumentException When the config is not enableable
      */
@@ -114,6 +112,6 @@ abstract class ehough_iconic_extension_Extension implements ehough_iconic_extens
             throw new ehough_iconic_exception_InvalidArgumentException("The config array has no 'enabled' key.");
         }
 
-        return (Boolean) $container->getParameterBag()->resolveValue($config['enabled']);
+        return (bool) $container->getParameterBag()->resolveValue($config['enabled']);
     }
 }

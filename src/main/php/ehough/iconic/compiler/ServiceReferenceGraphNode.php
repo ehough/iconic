@@ -58,7 +58,7 @@ class ehough_iconic_compiler_ServiceReferenceGraphNode
     /**
      * Checks if the value of this node is an ehough_iconic_Alias.
      *
-     * @return Boolean True if the value is an ehough_iconic_Alias instance
+     * @return bool True if the value is an ehough_iconic_Alias instance
      */
     public function isAlias()
     {
@@ -68,7 +68,7 @@ class ehough_iconic_compiler_ServiceReferenceGraphNode
     /**
      * Checks if the value of this node is a ehough_iconic_Definition.
      *
-     * @return Boolean True if the value is a ehough_iconic_Definition instance
+     * @return bool True if the value is a ehough_iconic_Definition instance
      */
     public function isDefinition()
     {

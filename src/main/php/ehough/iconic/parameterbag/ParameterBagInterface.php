@@ -71,7 +71,7 @@ interface ehough_iconic_parameterbag_ParameterBagInterface
      *
      * @param string $name The parameter name
      *
-     * @return Boolean true if the parameter name is defined, false otherwise
+     * @return bool    true if the parameter name is defined, false otherwise
      *
      * @api
      */

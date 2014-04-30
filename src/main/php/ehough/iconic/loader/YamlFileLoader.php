@@ -62,7 +62,7 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
      * @param mixed  $resource A resource
      * @param string $type     The resource type
      *
-     * @return Boolean true if this class supports the given resource, false otherwise
+     * @return bool    true if this class supports the given resource, false otherwise
      */
     public function supports($resource, $type = null)
     {
@@ -83,7 +83,7 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
 
         foreach ($content['imports'] as $import) {
             $this->setCurrentDir(dirname($file));
-            $this->import($import['resource'], null, isset($import['ignore_errors']) ? (Boolean) $import['ignore_errors'] : false, $file);
+            $this->import($import['resource'], null, isset($import['ignore_errors']) ? (bool) $import['ignore_errors'] : false, $file);
         }
     }
 
@@ -120,7 +120,7 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
 
             return;
         } elseif (isset($service['alias'])) {
-            $public = !array_key_exists('public', $service) || (Boolean) $service['public'];
+            $public = !array_key_exists('public', $service) || (bool) $service['public'];
             $this->container->setAlias($id, new ehough_iconic_Alias($service['alias'], $public));
 
             return;
@@ -223,7 +223,7 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
         }
 
         if (isset($service['decorates'])) {
-            $renameId = isset($service['decoration-inner-name']) ? $service['decoration-inner-name'] : null;
+            $renameId = isset($service['decoration_inner_name']) ? $service['decoration_inner_name'] : null;
             $definition->setDecoratedService($service['decorates'], $renameId);
         }
 

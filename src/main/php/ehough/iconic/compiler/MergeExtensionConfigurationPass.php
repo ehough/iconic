@@ -17,7 +17,7 @@
 class ehough_iconic_compiler_MergeExtensionConfigurationPass implements ehough_iconic_compiler_CompilerPassInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(ehough_iconic_ContainerBuilder $container)
     {
