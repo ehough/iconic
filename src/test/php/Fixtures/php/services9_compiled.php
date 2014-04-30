@@ -309,7 +309,7 @@ class ProjectServiceContainer extends ehough_iconic_Container
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getParameterBag()
     {
