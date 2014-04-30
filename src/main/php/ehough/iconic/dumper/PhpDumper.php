@@ -917,7 +917,7 @@ EOF;
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
     public function getParameterBag()
     {
