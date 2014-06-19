@@ -19,7 +19,7 @@ interface ehough_iconic_extension_ConfigurationExtensionInterface
     /**
      * Returns extension configuration
      *
-     * @param array            $config    $config    An array of configuration values
+     * @param array                          $config    An array of configuration values
      * @param ehough_iconic_ContainerBuilder $container A ContainerBuilder instance
      *
      * @return \Symfony\Component\Config\Definition\ConfigurationInterface|null The configuration or null
