@@ -62,4 +62,12 @@ class ehough_iconic_dumper_GraphvizDumperTest extends PHPUnit_Framework_TestCase
         $dumper = new ehough_iconic_dumper_GraphvizDumper($container);
         $this->assertEquals(str_replace('%path%', dirname(__FILE__), file_get_contents(self::$fixturesPath.'/graphviz/services14.dot')), $dumper->dump(), '->dump() dumps services');
     }
+
+    public function testDumpWithUnresolvedParameter()
+    {
+        $container = include self::$fixturesPath.'/containers/container17.php';
+        $dumper = new ehough_iconic_dumper_GraphvizDumper($container);
+
+        $this->assertEquals(str_replace('%path%', dirname(__FILE__), file_get_contents(self::$fixturesPath.'/graphviz/services17.dot')), $dumper->dump(), '->dump() dumps services');
+    }
 }

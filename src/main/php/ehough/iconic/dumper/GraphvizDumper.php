@@ -155,7 +155,15 @@ class ehough_iconic_dumper_GraphvizDumper extends ehough_iconic_dumper_Dumper
         $container = $this->cloneContainer();
 
         foreach ($container->getDefinitions() as $id => $definition) {
-            $nodes[$id] = array('class' => str_replace('\\', '\\\\', $this->container->getParameterBag()->resolveValue($definition->getClass())), 'attributes' => array_merge($this->options['node.definition'], array('style' => ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE !== $definition->getScope() ? 'filled' : 'dotted')));
+
+            $className = $definition->getClass();
+
+            try {
+                $className = $this->container->getParameterBag()->resolveValue($className);
+            } catch (ehough_iconic_exception_ParameterNotFoundException $e) {
+            }
+
+            $nodes[$id] = array('class' => str_replace('\\', '\\\\', $className), 'attributes' => array_merge($this->options['node.definition'], array('style' => ehough_iconic_ContainerInterface::SCOPE_PROTOTYPE !== $definition->getScope() ? 'filled' : 'dotted')));
 
             $container->setDefinition($id, new ehough_iconic_Definition('stdClass'));
         }
