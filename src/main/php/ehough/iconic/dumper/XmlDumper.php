@@ -110,6 +110,9 @@ class ehough_iconic_dumper_XmlDumper extends ehough_iconic_dumper_Dumper
         if ($definition->getFactoryMethod()) {
             $service->setAttribute('factory-method', $definition->getFactoryMethod());
         }
+        if ($definition->getFactoryClass()) {
+            $service->setAttribute('factory-class', $definition->getFactoryClass());
+        }
         if ($definition->getFactoryService()) {
             $service->setAttribute('factory-service', $definition->getFactoryService());
         }
