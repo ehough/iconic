@@ -186,6 +186,12 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
 
         $id = strtolower($id);
 
+        if ('service_container' === $id) {
+            // BC: 'service_container' is no longer a self-reference but always
+            // $this, so ignore this call.
+            // @todo Throw InvalidArgumentException in next major release.
+            return;
+        }
         if (self::SCOPE_CONTAINER !== $scope) {
             if (!isset($this->scopedServices[$scope])) {
                 throw new ehough_iconic_exception_RuntimeException(sprintf('You cannot set service "%s" of inactive scope.', $id));
@@ -222,6 +228,10 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     {
         $id = strtolower($id);
 
+        if ('service_container' === $id) {
+            return true;
+        }
+
         return isset($this->services[$id])
             || array_key_exists($id, $this->services)
             || isset($this->aliases[$id])
@@ -240,9 +250,10 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
      *
      * @return object The associated service
      *
-     * @throws ehough_iconic_exception_InvalidArgumentException if the service is not defined
+     * @throws ehough_iconic_exception_InvalidArgumentException          if the service is not defined
      * @throws ehough_iconic_exception_ServiceCircularReferenceException When a circular reference is detected
-     * @throws ehough_iconic_exception_ServiceNotFoundException When the service is not defined
+     * @throws ehough_iconic_exception_ServiceNotFoundException          When the service is not defined
+     * @throws  Exception                                                if an exception has been thrown when the service has been resolved
      *
      * @see ehough_iconic_Reference
      *
@@ -257,6 +268,9 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
         foreach (array(false, true) as $strtolower) {
             if ($strtolower) {
                 $id = strtolower($id);
+            }
+            if ('service_container' === $id) {
+                return $this;
             }
             if (isset($this->aliases[$id])) {
                 $id = $this->aliases[$id];
@@ -329,6 +343,12 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
     {
         $id = strtolower($id);
 
+        if ('service_container' === $id) {
+            // BC: 'service_container' was a synthetic service previously.
+            // @todo Change to false in next major release.
+            return true;
+        }
+
         return isset($this->services[$id]) || array_key_exists($id, $this->services);
     }
 
@@ -346,6 +366,7 @@ class ehough_iconic_Container implements ehough_iconic_IntrospectableContainerIn
                 $ids[] = self::underscore($match[1]);
             }
         }
+        $ids[] = 'service_container';
 
         return array_unique(array_merge($ids, array_keys($this->services)));
     }

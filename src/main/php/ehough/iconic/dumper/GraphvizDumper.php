@@ -192,8 +192,8 @@ class ehough_iconic_dumper_GraphvizDumper extends ehough_iconic_dumper_Dumper
         $container->setDefinitions($this->container->getDefinitions());
         $container->setAliases($this->container->getAliases());
         $container->setResources($this->container->getResources());
-        foreach ($this->container->getScopes() as $scope) {
-            $container->addScope($scope);
+        foreach ($this->container->getScopes() as $scope => $parentScope) {
+            $container->addScope(new ehough_iconic_Scope($scope, $parentScope));
         }
         foreach ($this->container->getExtensions() as $extension) {
             $container->registerExtension($extension);

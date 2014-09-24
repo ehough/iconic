@@ -236,6 +236,8 @@ class ehough_iconic_loader_YamlFileLoader extends ehough_iconic_loader_FileLoade
      * @param string $file
      *
      * @return array The file content
+     *
+     * @throws ehough_iconic_exception_InvalidArgumentException when the given file is not a local file or when it does not exist
      */
     protected function loadFile($file)
     {

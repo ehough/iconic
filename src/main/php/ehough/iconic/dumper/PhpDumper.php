@@ -409,9 +409,12 @@ class ehough_iconic_dumper_PhpDumper extends ehough_iconic_dumper_Dumper
     /**
      * Generates the inline definition setup.
      *
-     * @param string     $id
+     * @param string                   $id
      * @param ehough_iconic_Definition $definition
+     *
      * @return string
+     *
+     * @throws ehough_iconic_exception_ServiceCircularReferenceException when the container contains a circular reference
      */
     private function addServiceInlinedDefinitionsSetup($id, $definition)
     {
@@ -622,6 +625,8 @@ EOF;
      *
      * @param string     $id         A service identifier
      * @param ehough_iconic_Definition $definition A Definition instance
+     *
+     * @return string|null
      */
     private function addServiceSynchronizer($id, ehough_iconic_Definition $definition)
     {
