@@ -88,6 +88,26 @@ class AnalyzeServiceReferencesPassTest extends PHPUnit_Framework_TestCase
         $this->assertCount(2, $graph->getNode('a')->getInEdges());
     }
 
+    public function testProcessDetectsFactoryReferences()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+
+        $container
+            ->register('foo', 'stdClass')
+            ->setFactoryClass('stdClass')
+            ->setFactoryMethod('getInstance');
+
+        $container
+            ->register('bar', 'stdClass')
+            ->setFactoryService('foo')
+            ->setFactoryMethod('getInstance');
+
+        $graph = $this->process($container);
+
+        $this->assertTrue($graph->hasNode('foo'));
+        $this->assertCount(1, $graph->getNode('foo')->getInEdges());
+    }
+
     protected function process(ehough_iconic_ContainerBuilder $container)
     {
         $pass = new ehough_iconic_compiler_RepeatedPass(array(new ehough_iconic_compiler_AnalyzeServiceReferencesPass()));

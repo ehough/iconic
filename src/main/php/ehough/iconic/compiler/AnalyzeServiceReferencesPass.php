@@ -63,7 +63,11 @@ class ehough_iconic_compiler_AnalyzeServiceReferencesPass implements ehough_icon
 
             $this->currentId = $id;
             $this->currentDefinition = $definition;
+
             $this->processArguments($definition->getArguments());
+            if ($definition->getFactoryService()) {
+                $this->processArguments(array(new ehough_iconic_Reference($definition->getFactoryService())));
+            }
 
             if (!$this->onlyConstructorArguments) {
                 $this->processArguments($definition->getMethodCalls());
