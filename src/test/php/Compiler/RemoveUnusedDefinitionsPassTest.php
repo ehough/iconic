@@ -71,6 +71,33 @@ class RemoveUnusedDefinitionsPassTest extends PHPUnit_Framework_TestCase
         $this->assertTrue($container->hasDefinition('bar'));
     }
 
+    public function testProcessWontRemovePrivateFactory()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+
+        $container
+            ->register('foo', 'stdClass')
+            ->setFactoryClass('stdClass')
+            ->setFactoryMethod('getInstance')
+            ->setPublic(false);
+
+        $container
+            ->register('bar', 'stdClass')
+            ->setFactoryService('foo')
+            ->setFactoryMethod('getInstance')
+            ->setPublic(false);
+
+        $container
+            ->register('foobar')
+            ->addArgument(new ehough_iconic_Reference('bar'));
+
+        $this->process($container);
+
+        $this->assertTrue($container->hasDefinition('foo'));
+        $this->assertTrue($container->hasDefinition('bar'));
+        $this->assertTrue($container->hasDefinition('foobar'));
+    }
+
     protected function process(ehough_iconic_ContainerBuilder $container)
     {
         $repeatedPass = new ehough_iconic_compiler_RepeatedPass(array(new ehough_iconic_compiler_AnalyzeServiceReferencesPass(), new ehough_iconic_compiler_RemoveUnusedDefinitionsPass()));

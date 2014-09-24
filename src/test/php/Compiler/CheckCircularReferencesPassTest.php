@@ -39,11 +39,50 @@ class CheckCircularReferencesPassTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException ehough_iconic_exception_ServiceCircularReferenceException
      */
+    public function testProcessWithFactory()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+
+        $container
+            ->register('a', 'stdClass')
+            ->setFactoryService('b')
+            ->setFactoryMethod('getInstance');
+
+        $container
+            ->register('b', 'stdClass')
+            ->setFactoryService('a')
+            ->setFactoryMethod('getInstance');
+
+        $this->process($container);
+    }
+
+    /**
+     * @expectedException ehough_iconic_exception_ServiceCircularReferenceException
+     */
     public function testProcessDetectsIndirectCircularReference()
     {
         $container = new ehough_iconic_ContainerBuilder();
         $container->register('a')->addArgument(new ehough_iconic_Reference('b'));
         $container->register('b')->addArgument(new ehough_iconic_Reference('c'));
+        $container->register('c')->addArgument(new ehough_iconic_Reference('a'));
+
+        $this->process($container);
+    }
+
+    /**
+     * @expectedException ehough_iconic_exception_ServiceCircularReferenceException
+     */
+    public function testProcessDetectsIndirectCircularReferenceWithFactory()
+    {
+        $container = new ehough_iconic_ContainerBuilder();
+
+        $container->register('a')->addArgument(new ehough_iconic_Reference('b'));
+
+        $container
+            ->register('b', 'stdClass')
+            ->setFactoryService('c')
+            ->setFactoryMethod('getInstance');
+
         $container->register('c')->addArgument(new ehough_iconic_Reference('a'));
 
         $this->process($container);
@@ -70,6 +109,8 @@ class CheckCircularReferencesPassTest extends PHPUnit_Framework_TestCase
 
         $this->process($container);
     }
+
+
 
     protected function process(ehough_iconic_ContainerBuilder $container)
     {
