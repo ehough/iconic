@@ -1,4 +1,11 @@
-# iconic [![Build Status](https://secure.travis-ci.org/ehough/iconic.png)](http://travis-ci.org/ehough/iconic)
+## iconic
+
+[![Build Status](https://secure.travis-ci.org/ehough/iconic.png)](http://travis-ci.org/ehough/iconic)
+[![Project Status: Unsupported - The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.](http://www.repostatus.org/badges/latest/unsupported.svg)](http://www.repostatus.org/#unsupported)
+[![Latest Stable Version](https://poser.pugx.org/ehough/iconic/v/stable)](https://packagist.org/packages/ehough/iconic)
+[![License](https://poser.pugx.org/ehough/iconic/license)](https://packagist.org/packages/ehough/iconic)
+
+**This library is no longer supported or maintained as PHP 5.2 usage levels have finally dropped below 10%**
 
 Fork of [Symfony's Dependency Injection component](https://github.com/symfony/DependencyInjection) compatible with PHP 5.2+.
 
@@ -7,8 +14,6 @@ Fork of [Symfony's Dependency Injection component](https://github.com/symfony/De
 [Symfony's Dependency Injection component](https://github.com/symfony/DependencyInjection) is a powerful DI library, but it's only compatible with PHP 5.3+. While 97% of PHP servers run PHP 5.2 or higher,
 **32% of all servers are still running PHP 5.2 or lower** ([source](http://w3techs.com/technologies/details/pl-php/5/all)).
 It would be a shame to exempt this library from nearly a third of the world's servers just because of a few version incompatibilities.
-
-Once PHP 5.3+ adoption levels near closer to 100%, this library will be retired.
 
 ### Differences from [Symfony's Dependency Injection component](https://github.com/symfony/DependencyInjection)
 
